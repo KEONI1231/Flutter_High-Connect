@@ -1,5 +1,9 @@
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/screen/certified_screen.dart';
+import 'package:per_pro/screen/find_account_screen.dart';
+import 'package:per_pro/screen/signup_screen.dart';
 
 class login_screen extends StatefulWidget {
   const login_screen({Key? key}) : super(key: key);
@@ -29,7 +33,11 @@ class _login_screenState extends State<login_screen> {
                 child: Column(
                   children: [
                     login_part(),
-                    bottom_part(),
+                    bottom_part(
+                      onPressed_signup: onPressed_signup_btn,
+                      onPressed_findaccount: onPressed_findaccount_btn,
+                      onPressed_certified: onPressed_certified_btn,
+                    ),
                   ],
                 ),
               ),
@@ -38,6 +46,27 @@ class _login_screenState extends State<login_screen> {
         ],
       )),
     );
+  }
+
+  void onPressed_signup_btn() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return signup();
+    }));
+  }
+
+  void onPressed_findaccount_btn() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return findaccount();
+    }));
+  }
+
+  void onPressed_certified_btn() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return certified_screen();
+    }));
   }
 }
 
@@ -66,7 +95,15 @@ class login_part extends StatelessWidget {
 }
 
 class bottom_part extends StatelessWidget {
-  const bottom_part({Key? key}) : super(key: key);
+  final VoidCallback onPressed_signup;
+  final VoidCallback onPressed_findaccount;
+  final VoidCallback onPressed_certified;
+  const bottom_part({
+    required this.onPressed_signup,
+    required this.onPressed_findaccount,
+    required this.onPressed_certified,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +125,18 @@ class bottom_part extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: onPressed_signup,
               child: Text('회원가입'),
             ),
             Text("|"),
             TextButton(
-              onPressed: () {},
+              onPressed: onPressed_findaccount,
               child: Text('아이디찾기'),
+            ),
+            Text("|"),
+            TextButton(
+              onPressed: onPressed_certified,
+              child: Text('학교인증'),
             ),
           ],
         ),
