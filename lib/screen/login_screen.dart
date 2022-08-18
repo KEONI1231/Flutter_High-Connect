@@ -36,7 +36,6 @@ class _login_screenState extends State<login_screen> {
                     bottom_part(
                       onPressed_signup: onPressed_signup_btn,
                       onPressed_findaccount: onPressed_findaccount_btn,
-                      onPressed_certified: onPressed_certified_btn,
                     ),
                   ],
                 ),
@@ -97,11 +96,10 @@ class login_part extends StatelessWidget {
 class bottom_part extends StatelessWidget {
   final VoidCallback onPressed_signup;
   final VoidCallback onPressed_findaccount;
-  final VoidCallback onPressed_certified;
+
   const bottom_part({
     required this.onPressed_signup,
     required this.onPressed_findaccount,
-    required this.onPressed_certified,
     Key? key,
   }) : super(key: key);
 
@@ -133,11 +131,6 @@ class bottom_part extends StatelessWidget {
             TextButton(
               onPressed: onPressed_findaccount,
               child: Text('아이디찾기'),
-            ),
-            Text("|"),
-            TextButton(
-              onPressed: onPressed_certified,
-              child: Text('학교인증'),
             ),
           ],
         ),
