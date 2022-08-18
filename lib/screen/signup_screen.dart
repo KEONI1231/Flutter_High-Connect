@@ -24,17 +24,18 @@ class _signUpState extends State<signUp> {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: BRIGHT_COLOR,
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               AppBar(
-                backgroundColor: PRIMARY_BACKGROUND,
+                backgroundColor: PRIMARY_COLOR,
                 title: Text('Sign Up'),
                 centerTitle: true,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 0, 40.0, 0),
+                padding: const EdgeInsets.fromLTRB(40.0, 40, 40.0, 40),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -46,9 +47,11 @@ class _signUpState extends State<signUp> {
                         onPressed: onSignUpPressed,
                       ),
                       const SizedBox(height: 16),
-                      CustomTextField(idTextChecker: false, label: 'password 입력'),
+                      CustomTextField(
+                          idTextChecker: false, label: 'password 입력'),
                       const SizedBox(height: 16),
-                      CustomTextField(idTextChecker: false, label: 'password 확인'),
+                      CustomTextField(
+                          idTextChecker: false, label: 'password 확인'),
                       const SizedBox(height: 16),
                       CustomTextField(idTextChecker: false, label: 'E-MAIL'),
                       const SizedBox(height: 16),
@@ -97,9 +100,13 @@ class currentPageBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: PRIMARY_BACKGROUND,
+        primary: PRIMARY_COLOR,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0)
+        )
       ),
       onPressed: onPressed,
+      
       child: text == true
           ? Text('중복확인')
           : Icon(

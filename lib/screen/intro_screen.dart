@@ -16,7 +16,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: PRIMARY_BACKGROUND,
+        backgroundColor: PRIMARY_COLOR,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

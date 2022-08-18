@@ -15,8 +15,10 @@ class CustomTextField extends StatelessWidget {
       //text 필드 데코레이션 정의 변수.
       labelText: label,
       border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+        borderRadius: BorderRadius.all(Radius.circular(8.0),),
       ),
+
+
     );
     return TextFormField(
       validator: (String? val) {

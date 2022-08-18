@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/screen/certified_screen.dart';
@@ -22,7 +21,7 @@ class _login_screenState extends State<login_screen> {
           body: Column(
         children: [
           AppBar(
-            backgroundColor: PRIMARY_BACKGROUND,
+            backgroundColor: PRIMARY_COLOR,
             title: Text('로그인'),
             centerTitle: true,
           ),
@@ -60,13 +59,6 @@ class _login_screenState extends State<login_screen> {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return findaccount();
-    }));
-  }
-
-  void onPressed_certified_btn() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) {
-      return certified_screen();
     }));
   }
 }
@@ -112,20 +104,26 @@ class bottom_part extends StatelessWidget {
         ButtonTheme(
           minWidth: 80.0,
           height: 30.0,
-          child: RaisedButton(
-              //로그인 시도 버튼.
-              color: PRIMARY_BACKGROUND,
-              child: Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-                size: 35.0,
+          child: ElevatedButton(
+            //로그인 시도 버튼.
+            style: ElevatedButton.styleFrom(
+              primary: PRIMARY_COLOR,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return HomeScreen();
-                }));
-              }),
+            ),
+            child: Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return HomeScreen();
+              }));
+            },
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
