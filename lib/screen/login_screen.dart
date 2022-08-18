@@ -5,6 +5,8 @@ import 'package:per_pro/screen/certified_screen.dart';
 import 'package:per_pro/screen/find_account_screen.dart';
 import 'package:per_pro/screen/signup_screen.dart';
 
+import 'home_screen.dart';
+
 class login_screen extends StatefulWidget {
   const login_screen({Key? key}) : super(key: key);
 
@@ -118,7 +120,12 @@ class bottom_part extends StatelessWidget {
                 color: Colors.white,
                 size: 35.0,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return HomeScreen();
+                }));
+              }),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

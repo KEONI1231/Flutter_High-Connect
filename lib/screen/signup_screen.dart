@@ -40,28 +40,26 @@ class _signUpState extends State<signUp> {
                   child: Column(
                     children: [
                       Image.asset('asset/img/login_screen_logo.png'),
-                      CustomTextField(label: 'ID입력'),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: PRIMARY_BACKGROUND,
-                        ),
-                        onPressed: () {},
-                        child: Text('중복확인'),
+                      CustomTextField(idTextChecker: true, label: 'ID입력'),
+                      currentPageBtn(
+                        text: true,
+                        onPressed: onSignUpPressed,
                       ),
                       const SizedBox(height: 16),
-                      CustomTextField(label: 'password 입력'),
+                      CustomTextField(idTextChecker: false, label: 'password 입력'),
                       const SizedBox(height: 16),
-                      CustomTextField(label: 'password 확인'),
+                      CustomTextField(idTextChecker: false, label: 'password 확인'),
                       const SizedBox(height: 16),
-                      CustomTextField(label: 'E-MAIL'),
+                      CustomTextField(idTextChecker: false, label: 'E-MAIL'),
                       const SizedBox(height: 16),
-                      CustomTextField(label: '닉네임'),
+                      CustomTextField(idTextChecker: false, label: '닉네임'),
                       const SizedBox(height: 16),
                       const SizedBox(
                         height: 50,
                       ),
                       const Text('● 이부분은 약관'),
-                      SignUpCheckerBtn(
+                      currentPageBtn(
+                        text: false,
                         onPressed: onSignUpPressed,
                       ),
                       const SizedBox(height: 50),
@@ -78,6 +76,7 @@ class _signUpState extends State<signUp> {
 
   void onSignUpPressed() {
     //폼키는 생성을 했지만 form위젯과 결합을 안했을때
+
     if (formKey.currentState == null) {
       return;
     }
@@ -88,9 +87,11 @@ class _signUpState extends State<signUp> {
   }
 }
 
-class SignUpCheckerBtn extends StatelessWidget {
+class currentPageBtn extends StatelessWidget {
+  final bool text;
   final VoidCallback onPressed;
-  const SignUpCheckerBtn({required this.onPressed, Key? key}) : super(key: key);
+  const currentPageBtn({required this.text, required this.onPressed, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +100,13 @@ class SignUpCheckerBtn extends StatelessWidget {
         primary: PRIMARY_BACKGROUND,
       ),
       onPressed: onPressed,
+      child: text == true
+          ? Text('중복확인')
+          : Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 35.0,
+            ),
       /*() {
 
         showDialog(
@@ -123,11 +131,6 @@ class SignUpCheckerBtn extends StatelessWidget {
           },
         );
       },*/
-      child: Icon(
-        Icons.arrow_forward,
-        color: Colors.white,
-        size: 35.0,
-      ),
     );
   }
 }

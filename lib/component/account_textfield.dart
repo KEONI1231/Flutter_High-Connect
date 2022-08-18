@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
+  final bool idTextChecker;
   const CustomTextField({
+    required this.idTextChecker,
     required this.label,
     Key? key,
   }) : super(key: key);
