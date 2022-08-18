@@ -112,7 +112,8 @@ class bottom_part extends StatelessWidget {
         ButtonTheme(
           minWidth: 80.0,
           height: 30.0,
-          child: RaisedButton( //로그인 시도 버튼.
+          child: RaisedButton(
+              //로그인 시도 버튼.
               color: PRIMARY_BACKGROUND,
               child: Icon(
                 Icons.arrow_forward,
