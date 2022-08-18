@@ -11,9 +11,8 @@ class _findaccountState extends State<findaccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('비밀번호 찾기'),
-      )
-    );
+        body: Center(
+      child: Text('비밀번호 찾기'),
+    ));
   }
 }

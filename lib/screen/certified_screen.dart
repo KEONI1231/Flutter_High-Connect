@@ -11,9 +11,8 @@ class _certified_screenState extends State<certified_screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text('학교인증'),
-      )
-    );
+        body: Center(
+      child: Text('학교인증'),
+    ));
   }
 }

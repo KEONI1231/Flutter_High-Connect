@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
             intro_bottom(),
             ElevatedButton(
                 onPressed: () {
-
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {

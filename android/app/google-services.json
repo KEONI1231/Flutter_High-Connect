@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "444479731626",
+    "project_id": "high-connect-1app",
+    "storage_bucket": "high-connect-1app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444479731626:android:f7009ff73b1b655b51ddd3",
+        "android_client_info": {
+          "package_name": "com.example.per_pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444479731626-ifuj77gics761teijpa1fetphl2eokke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA392zMHYjvxCYSyQurtzs25hHtzYgKzj4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444479731626-ifuj77gics761teijpa1fetphl2eokke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
