@@ -18,32 +18,34 @@ class _login_screenState extends State<login_screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Column(
-        children: [
-          AppBar(
-            backgroundColor: PRIMARY_COLOR,
-            title: Text('로그인'),
-            centerTitle: true,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('asset/img/login_screen_logo.png'),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(48.0, 0, 48.0, 0),
-                child: Column(
-                  children: [
-                    login_part(),
-                    bottom_part(
-                      onPressed_signup: onPressed_signup_btn,
-                      onPressed_findaccount: onPressed_findaccount_btn,
-                    ),
-                  ],
+          body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AppBar(
+              backgroundColor: PRIMARY_COLOR,
+              title: Text('로그인'),
+              centerTitle: true,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('asset/img/login_screen_logo.png'),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(48.0, 0, 48.0, 0),
+                  child: Column(
+                    children: [
+                      login_part(),
+                      bottom_part(
+                        onPressed_signup: onPressed_signup_btn,
+                        onPressed_findaccount: onPressed_findaccount_btn,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       )),
     );
   }

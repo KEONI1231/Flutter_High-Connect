@@ -50,7 +50,7 @@ class CustomTextField extends StatelessWidget {
         if (textInputType == TextInputType.phone) {
           bool phoneNumberValid =
               RegExp(r'^010-?([0-9]{4})-?([0-9]{4})$').hasMatch(val);
-          if(phoneNumberValid == false) {
+          if (phoneNumberValid == false) {
             return '전화번호 형식이 잘못되었습니다';
           }
         }
