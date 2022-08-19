@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/screen/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Navi'),
             centerTitle: true,
             backgroundColor: PRIMARY_COLOR,
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.settings))],
+            actions: [IconButton(onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return SettingScreen(); //로그인 화면으로 이동.
+                  },
+                ),
+              );
+            }, icon: Icon(Icons.settings))],
           ),
           body: TabBarView(
             children: [

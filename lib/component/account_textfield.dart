@@ -39,9 +39,7 @@ class CustomTextField extends StatelessWidget {
           /*signup_screen.dart에서 CustomTextField를 사용할때 매게변수로 넘겨준 값들중
             TextInputType이 있는데 이 타입이 emailAddress이면 아래의 emailValid라고 하는
             bool값 변수를 활용하여 이메일 형식의 문자열인지 검사함.
-
           */
-
           bool emailValid = RegExp( //아랫줄 정규식은 이메일 형식을 조사하기 위한 값인데 걍 구글에서 긁어온거임. 복잡해서 나도 굳이 읽어보진않음
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
               .hasMatch(val);//이메일 형식이 맞으면 true를 반환.
