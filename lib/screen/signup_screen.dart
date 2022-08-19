@@ -12,7 +12,6 @@ class signUp extends StatefulWidget {
 
 class _signUpState extends State<signUp> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
   final TextEditingController _idTextController = TextEditingController();
   final TextEditingController _pwTextController = TextEditingController();
   final TextEditingController _repwTextController = TextEditingController();
@@ -64,13 +63,14 @@ class _signUpState extends State<signUp> {
                       CustomTextField(
                         label: 'password 입력',
                         Controller: _pwTextController,
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.visiblePassword,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
                         label: 'password 확인',
                         Controller: _repwTextController,
-                        textInputType: TextInputType.text,
+                        textInputType: TextInputType.visiblePassword,
+                        passwordChecker: _pwTextController.text,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
@@ -142,7 +142,8 @@ class _signUpState extends State<signUp> {
         'bool certificated': 1,
       });
     } else {
-      print('에러');
+
+
     }
   }
 }
