@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../constant/color.dart';
 
@@ -11,6 +12,15 @@ class signUp extends StatefulWidget {
 }
 
 class _signUpState extends State<signUp> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  final TextEditingController _idTextController = TextEditingController();
+  final TextEditingController _pwTextController = TextEditingController();
+  final TextEditingController _repwTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _nicknameTextController = TextEditingController();
+  final TextEditingController _realNameTextController = TextEditingController();
+  final TextEditingController _phoneNumberTextController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -41,22 +51,52 @@ class _signUpState extends State<signUp> {
                   child: Column(
                     children: [
                       Image.asset('asset/img/login_screen_logo.png'),
-                      CustomTextField(idTextChecker: true, label: 'ID입력'),
+                      CustomTextField(
+                        idTextChecker: true,
+                        label: 'ID입력',
+                        Controller: _idTextController,
+                      ),
                       currentPageBtn(
                         text: true,
-                        onPressed: onSignUpPressed,
+                        onPressed: onidCheckerPressed,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
-                          idTextChecker: false, label: 'password 입력'),
+                        idTextChecker: false,
+                        label: 'password 입력',
+                        Controller: _pwTextController,
+                      ),
                       const SizedBox(height: 16),
                       CustomTextField(
-                          idTextChecker: false, label: 'password 확인'),
+                        idTextChecker: false,
+                        label: 'password 확인',
+                        Controller: _repwTextController,
+                      ),
                       const SizedBox(height: 16),
-                      CustomTextField(idTextChecker: false, label: 'E-MAIL'),
+                      CustomTextField(
+                        idTextChecker: false,
+                        label: 'E-MAIL',
+                        Controller: _emailTextController,
+                      ),
                       const SizedBox(height: 16),
-                      CustomTextField(idTextChecker: false, label: '닉네임'),
+                      CustomTextField(
+                        idTextChecker: false,
+                        label: '닉네임',
+                        Controller: _nicknameTextController,
+                      ),
                       const SizedBox(height: 16),
+                      CustomTextField(
+                        idTextChecker: false,
+                        label: '실명', // 학교인증용
+                        Controller: _realNameTextController,
+                      ),const SizedBox(
+                        height: 16,
+                      ),
+                      CustomTextField(
+                        idTextChecker: false,
+                        label: 'Phone Number',
+                        Controller: _phoneNumberTextController,
+                      ),
                       const SizedBox(
                         height: 50,
                       ),
@@ -65,6 +105,7 @@ class _signUpState extends State<signUp> {
                         text: false,
                         onPressed: onSignUpPressed,
                       ),
+
                       const SizedBox(height: 50),
                     ],
                   ),
@@ -77,16 +118,27 @@ class _signUpState extends State<signUp> {
     );
   }
 
+  void onidCheckerPressed() {}
   void onSignUpPressed() {
-    //폼키는 생성을 했지만 form위젯과 결합을 안했을때
-
-    if (formKey.currentState == null) {
-      return;
-    }
-    if (formKey.currentState!.validate()) {
-    } else {
-      print('에러발생');
-    }
+    firestore.collection('users').doc().set(
+      {
+        'id': _idTextController.text,
+        'pw': _pwTextController.text,
+        'real name' : _realNameTextController.text,
+        'nick name' : _nicknameTextController.text,
+        'created Time' : DateTime.now().toString(),
+        'my school' : '',
+        'email' : _emailTextController.text,
+        'phone number' : _phoneNumberTextController.text,
+        'my post' : '',
+        'my scrap' : '',
+        'my heart' : '',
+        'my repl' : '',
+        'anony message' : '',
+        'bool Admin' : 1,
+        'bool certificated' : 1,
+      },
+    );
   }
 }
 
@@ -100,13 +152,10 @@ class currentPageBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: PRIMARY_COLOR,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0)
-        )
-      ),
+          primary: PRIMARY_COLOR,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
       onPressed: onPressed,
-      
       child: text == true
           ? Text('중복확인')
           : Icon(

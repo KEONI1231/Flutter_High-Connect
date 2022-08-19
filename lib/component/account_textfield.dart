@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final bool idTextChecker;
+  final TextEditingController Controller;
   const CustomTextField({
+    required this.Controller,
     required this.idTextChecker,
     required this.label,
     Key? key,
@@ -21,6 +23,7 @@ class CustomTextField extends StatelessWidget {
 
     );
     return TextFormField(
+      controller: Controller,
       validator: (String? val) {
         if (val == null || val.isEmpty) {
           return '값을 입력해주세요.';
