@@ -12,6 +12,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  //에뮬레이터 실행시에 처음 보여줄 화면
+  // splash screen(로딩중) 이 될 화면. 이 화면은 크게 어려운거 없고 걍 읽어보셈
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,14 +22,14 @@ class _MyAppState extends State<MyApp> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('asset/img/logo.png'),
-            intro_bottom(),
+            Image.asset('asset/img/logo.png'),//고등어 이미지.
+            intro_bottom(), //각종 기본적인 텍스트.
             ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return login_screen();
+                        return login_screen(); //로그인 화면으로 이동.
                       },
                     ),
                   );

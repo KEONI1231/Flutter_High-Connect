@@ -8,7 +8,7 @@ void main() async{
   await Firebase.initializeApp();
   runApp(
     MaterialApp(
-      home: MyApp(),
+      home: MyApp(), // 시작 부분.
     ),
   );
 }

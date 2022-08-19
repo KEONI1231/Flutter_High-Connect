@@ -8,6 +8,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// 이 스크린이 메인 우리가 구현해야할 화면들임. 스와이프하면 옆 화면으로 이동함.
+// 하단 네브바에 메뉴 6개넣으니까 너무 좁아 보여서 설정창은 앱바의 우측으로 뺐음.
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {

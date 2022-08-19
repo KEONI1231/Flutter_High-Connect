@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/screen/certified_screen.dart';
@@ -35,9 +36,9 @@ class _login_screenState extends State<login_screen> {
                   child: Column(
                     children: [
                       login_part(),
-                      bottom_part(
-                        onPressed_signup: onPressed_signup_btn,
-                        onPressed_findaccount: onPressed_findaccount_btn,
+                      bottom_part( //텍스트 버튼을 모아둔 봄
+                        onPressed_signup: onPressed_signup_btn, //회원가입 버튼
+                        onPressed_findaccount: onPressed_findaccount_btn, //아이디 찾기 버튼
                       ),
                     ],
                   ),
@@ -50,14 +51,14 @@ class _login_screenState extends State<login_screen> {
     );
   }
 
-  void onPressed_signup_btn() {
+  void onPressed_signup_btn() { //회원가입(signup.dart) 스크린으로 이동
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return signUp();
     }));
   }
 
-  void onPressed_findaccount_btn() {
+  void onPressed_findaccount_btn() { //계정찾기(find_account_screen.dart) 스크린으로 이동
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return findaccount();
@@ -70,20 +71,51 @@ class login_part extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final TextEditingController _idTextController = TextEditingController();
+    final TextEditingController _pwTextController = TextEditingController();
     return Column(
       children: [
-        TextField(
+        TextField( //아이디 입력하는 텍스트 필드.
+          controller: _idTextController, //입력값을 받아오기 위한 텍스트 컨트롤러
           decoration: InputDecoration(labelText: 'Enter "ID"'),
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.text,
         ),
-        TextField(
+        TextField( //패스워드 입력하는 택스트 필드
+          controller: _pwTextController,
           decoration: InputDecoration(labelText: 'Enter "Password"'),
           keyboardType: TextInputType.text,
-          obscureText: true,
+          obscureText: true, //패스워드 입력시 문자열이 보이지 않게 해줌
         ),
         SizedBox(
           height: 40.0,
-        )
+        ),
+        ButtonTheme(
+          //로그인 성공시 홈화면으로 가게 해주는 네비게이터 버튼. 버튼클릭시
+          //클릭시 로그인 성공여부를 확인해줄 로직 추가예정.
+          minWidth: 80.0,
+          height: 30.0,
+          child: ElevatedButton(
+            //로그인 시도 버튼.
+            style: ElevatedButton.styleFrom(
+              primary: PRIMARY_COLOR,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0), //버튼모양 둥글게.
+              ),
+            ),
+            child: Icon(
+              Icons.arrow_forward,
+              color: Colors.white,
+              size: 35.0,
+            ),
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return HomeScreen(); //메인 홈스크린.
+              }));
+            },
+          ),
+        ),
       ],
     );
   }
@@ -103,30 +135,7 @@ class bottom_part extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ButtonTheme(
-          minWidth: 80.0,
-          height: 30.0,
-          child: ElevatedButton(
-            //로그인 시도 버튼.
-            style: ElevatedButton.styleFrom(
-              primary: PRIMARY_COLOR,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-            ),
-            child: Icon(
-              Icons.arrow_forward,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return HomeScreen();
-              }));
-            },
-          ),
-        ),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

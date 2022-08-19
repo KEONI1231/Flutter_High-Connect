@@ -11,6 +11,7 @@ class signUp extends StatefulWidget {
 }
 
 class _signUpState extends State<signUp> {
+  //각 텍스트 릴드의 값을 가지고 오기위한 텍스트컨트롤러 변수들
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final TextEditingController _idTextController = TextEditingController();
   final TextEditingController _pwTextController = TextEditingController();
@@ -20,17 +21,10 @@ class _signUpState extends State<signUp> {
   final TextEditingController _realNameTextController = TextEditingController();
   final TextEditingController _phoneNumberTextController =
       TextEditingController();
+  //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    final _decoration = InputDecoration(
-      //text 필드 데코레이션 정의 변수.
-      labelText: 'ID입력',
-      border: const OutlineInputBorder(
-        borderRadius: BorderRadius.all(Radius.circular(4.0)),
-      ),
-    );
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: BRIGHT_COLOR,
@@ -38,7 +32,7 @@ class _signUpState extends State<signUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AppBar(
+              AppBar( //걍 평볌한 앱바
                 backgroundColor: PRIMARY_COLOR,
                 title: Text('Sign Up'),
                 centerTitle: true,
@@ -50,13 +44,17 @@ class _signUpState extends State<signUp> {
                   child: Column(
                     children: [
                       Image.asset('asset/img/login_screen_logo.png'),
+                      /* CustomTextField는 Component파일에 account_textfield.dart에 정의해둠.
+                       텍스트 필드마다 입력시 조건들이 다르기때문에 account_textfield.dart파일에
+                       주석으로 달아두겠음.
+                       */
                       CustomTextField(
                         label: 'ID입력',
                         Controller: _idTextController,
                         textInputType: TextInputType.text,
                       ),
                       currentPageBtn(
-                        text: true,
+                        text: true, //text 변수가 true면 버튼안에 '중복확인'이 입력.
                         onPressed: onidCheckerPressed,
                       ),
                       const SizedBox(height: 16),
@@ -103,8 +101,8 @@ class _signUpState extends State<signUp> {
                       ),
                       const Text('● 이부분은 약관'),
                       currentPageBtn(
-                        text: false,
-                        onPressed: onSignUpPressed,
+                        text: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        onPressed: onSignUpPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 50),
                     ],
@@ -124,6 +122,7 @@ class _signUpState extends State<signUp> {
       return;
     }
     if (formKey.currentState!.validate()) {
+      //계정 생성버튼을 눌렀을때 이상이 없으면 파이어베이스 클라우드스토어에 유저 정보를 추가한다.
       firestore.collection('users').doc().set({
         'id': _idTextController.text,
         'pw': _pwTextController.text,
@@ -148,8 +147,9 @@ class _signUpState extends State<signUp> {
   }
 }
 
+//중복확인 버튼과 회원가입완료(화살표아이콘 버튼)을 정의한 stless 위젯.
 class currentPageBtn extends StatelessWidget {
-  final bool text;
+  final bool text; //버튼안에 들어갈 내용이 '중복확인' 텍스트인가 화살표아이콘인가를 결정해주는 변수임 164번줄에 이어서 주석달겠음.
   final VoidCallback onPressed;
   const currentPageBtn({required this.text, required this.onPressed, Key? key})
       : super(key: key);
@@ -162,7 +162,7 @@ class currentPageBtn extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
       onPressed: onPressed,
-      child: text == true
+      child: text == true  // 기본적인 삼항연산자임. text값이 true이면 버튼안의 텍스트가 중복확인으로, false이면 화살표 아이콘이 출력되게 함
           ? Text('중복확인')
           : Icon(
               Icons.arrow_forward,
