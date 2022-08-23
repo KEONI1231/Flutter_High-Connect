@@ -76,7 +76,8 @@ class _HomeMeal extends StatelessWidget {
                           (index) => MealInfo(
                             width: constraint.maxWidth / 3,
                             mealdate: '2022-08-20',
-                            meal: '돈가스',
+                            meal: index % 2 == 0 ? '스윙스' : '돈가스',
+
                           ),
                         ),
                       ),

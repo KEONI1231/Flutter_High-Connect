@@ -37,9 +37,11 @@ class _login_screenState extends State<login_screen> {
                   child: Column(
                     children: [
                       login_part(),
-                      bottom_part( //텍스트 버튼을 모아둔 봄
+                      bottom_part(
+                        //텍스트 버튼을 모아둔 봄
                         onPressed_signup: onPressed_signup_btn, //회원가입 버튼
-                        onPressed_findaccount: onPressed_findaccount_btn, //아이디 찾기 버튼
+                        onPressed_findaccount:
+                            onPressed_findaccount_btn, //아이디 찾기 버튼
                       ),
                     ],
                   ),
@@ -52,14 +54,16 @@ class _login_screenState extends State<login_screen> {
     );
   }
 
-  void onPressed_signup_btn() { //회원가입(signup.dart) 스크린으로 이동
+  void onPressed_signup_btn() {
+    //회원가입(signup.dart) 스크린으로 이동
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return signUp();
     }));
   }
 
-  void onPressed_findaccount_btn() { //계정찾기(find_account_screen.dart) 스크린으로 이동
+  void onPressed_findaccount_btn() {
+    //계정찾기(find_account_screen.dart) 스크린으로 이동
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
       return findaccount();
@@ -77,12 +81,14 @@ class login_part extends StatelessWidget {
     final TextEditingController _pwTextController = TextEditingController();
     return Column(
       children: [
-        TextField( //아이디 입력하는 텍스트 필드.
+        TextField(
+          //아이디 입력하는 텍스트 필드.
           controller: _idTextController, //입력값을 받아오기 위한 텍스트 컨트롤러
           decoration: InputDecoration(labelText: 'Enter "ID"'),
           keyboardType: TextInputType.text,
         ),
-        TextField( //패스워드 입력하는 택스트 필드
+        TextField(
+          //패스워드 입력하는 택스트 필드
           controller: _pwTextController,
           decoration: InputDecoration(labelText: 'Enter "Password"'),
           keyboardType: TextInputType.text,
@@ -110,10 +116,41 @@ class login_part extends StatelessWidget {
               size: 35.0,
             ),
             onPressed: () {
-              FirebaseFirestore.instance.collection('users').snapshots().listen((data) {
-                 data.docs.forEach((element) {print(element['id']);});
-              });
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return HomeScreen(); //메인 홈스크린.
+                  },
+                ),
+              );
 
+              
+              /*FirebaseFirestore.instance
+                  .collection('users')
+                  .snapshots()
+                  .listen((data) {
+                data.docs.forEach(
+                  (element) {
+
+                    if (element['id'] == _idTextController.text &&
+                        element['pw'] == _pwTextController.text) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return HomeScreen(); //메인 홈스크린.
+                          },
+                        ),
+                      );
+                    }
+                    else {
+                      //로그인 실패
+
+                    }
+                  },
+                );
+              });
+              로그인 기능 구현성공 // 개발에 쉽도록 나중에 추가하기로하자
+              */
 
               /*Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
@@ -141,7 +178,6 @@ class bottom_part extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
