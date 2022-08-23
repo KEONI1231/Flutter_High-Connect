@@ -62,14 +62,14 @@ class _signUpState extends State<signUp> {
                         label: 'password 입력',
                         Controller: _pwTextController,
                         textInputType: TextInputType.visiblePassword,
-                        passwordChecker: _pwTextController.text,
+                        //passwordChecker: _pwTextController.text,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
                         label: 'password 확인',
                         Controller: _repwTextController,
                         textInputType: TextInputType.visiblePassword,
-                        passwordChecker: _repwTextController.text,
+                        passwordChecker: _pwTextController,
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(

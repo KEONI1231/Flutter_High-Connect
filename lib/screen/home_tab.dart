@@ -11,13 +11,15 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _HomeMeal(),
-        _HomeWordCloud(),
-        _HomeBannerAd(),
-        _HomeBoard(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _HomeMeal(),
+          _HomeWordCloud(),
+          _HomeBannerAd(),
+          _HomeBoard(),
+        ],
+      ),
     );
   }
 }
@@ -152,7 +154,8 @@ class _HomeBoard extends StatelessWidget {
           SizedBox(
             height: 2.0,
           ),
-          GestureDetector( //워드클라우드게시판 누르면 워드클라우드 게시판으로 이동
+          GestureDetector(
+            //워드클라우드게시판 누르면 워드클라우드 게시판으로 이동
             onTap: () {
               DefaultTabController.of(context)?.animateTo(1);
             },

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/certified_screen.dart';
 import 'package:per_pro/screen/find_account_screen.dart';
 import 'package:per_pro/screen/signup_screen.dart';
@@ -109,10 +110,15 @@ class login_part extends StatelessWidget {
               size: 35.0,
             ),
             onPressed: () {
-              Navigator.of(context)
+              FirebaseFirestore.instance.collection('users').snapshots().listen((data) {
+                 data.docs.forEach((element) {print(element['id']);});
+              });
+
+
+              /*Navigator.of(context)
                   .push(MaterialPageRoute(builder: (BuildContext context) {
                 return HomeScreen(); //메인 홈스크린.
-              }));
+              }));*/
             },
           ),
         ),
