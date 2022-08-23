@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:per_pro/component/meal_info.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/screen/home_tab.dart';
 import 'package:per_pro/screen/settings_screen.dart';
+import 'package:per_pro/screen/word_cloud_board.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,26 +26,26 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Navi'),
             centerTitle: true,
             backgroundColor: PRIMARY_COLOR,
-            actions: [IconButton(onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return SettingScreen(); //로그인 화면으로 이동.
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return SettingScreen(); //세팅 화면으로 이동.
+                        },
+                      ),
+                    );
                   },
-                ),
-              );
-            }, icon: Icon(Icons.settings))],
+                  icon: Icon(Icons.settings))
+            ],
           ),
           body: TabBarView(
             children: [
+              HomeTab(),
+              WordCloudBoard(),
               Center(
-                child: Text("Home"),
-              ),
-              Center(
-                child: Text("Word Cloud"),
-              ),
-              Center(
-                child: Text("Borad"),
+                child: Text("Board"),
               ),
               Center(
                 child: Text("settings"),
@@ -97,3 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
