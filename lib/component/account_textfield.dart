@@ -19,7 +19,8 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _decoration = InputDecoration( //텍스트 필드를 통일화 하기위한 데코레이션,
+    final _decoration = InputDecoration(
+      //텍스트 필드를 통일화 하기위한 데코레이션,
       //text 필드 데코레이션 정의 변수.
       labelText: label,
       border: const OutlineInputBorder(
@@ -30,7 +31,8 @@ class CustomTextField extends StatelessWidget {
     );
     return TextFormField(
       controller: Controller,
-      validator: (String? val) { //이곳에서 조건에 따른 에러메시지를 출력,
+      validator: (String? val) {
+        //이곳에서 조건에 따른 에러메시지를 출력,
         //null이 리턴된다면 에러가 없는 상태.
         if (val == null || val.isEmpty) {
           return '해당 필드는 필수항복입니다.';
@@ -40,9 +42,10 @@ class CustomTextField extends StatelessWidget {
             TextInputType이 있는데 이 타입이 emailAddress이면 아래의 emailValid라고 하는
             bool값 변수를 활용하여 이메일 형식의 문자열인지 검사함.
           */
-          bool emailValid = RegExp( //아랫줄 정규식은 이메일 형식을 조사하기 위한 값인데 걍 구글에서 긁어온거임. 복잡해서 나도 굳이 읽어보진않음
+          bool emailValid = RegExp(
+                  //아랫줄 정규식은 이메일 형식을 조사하기 위한 값인데 걍 구글에서 긁어온거임. 복잡해서 나도 굳이 읽어보진않음
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-              .hasMatch(val);//이메일 형식이 맞으면 true를 반환.
+              .hasMatch(val); //이메일 형식이 맞으면 true를 반환.
           if (emailValid == false) {
             return '잘못된 이메일 형식입니다.';
           } else {
@@ -56,14 +59,13 @@ class CustomTextField extends StatelessWidget {
           그래서 password 입력값과 password 확인 값이 다르면 일치하지 않는다는 오류를 출력.
          */
         if (textInputType == TextInputType.visiblePassword) {
-
           if (Controller.text != passwordChecker) {
             return '비밀번호가 일치하지 않습니다.';
           }
         }
         if (textInputType == TextInputType.phone) {
           bool phoneNumberValid =
-          //전화번호 형식을 조사하기 위한 정규식임.
+              //전화번호 형식을 조사하기 위한 정규식임.
               RegExp(r'^010-?([0-9]{4})-?([0-9]{4})$').hasMatch(val);
           if (phoneNumberValid == false) {
             return '전화번호 형식이 잘못되었습니다';
@@ -72,7 +74,7 @@ class CustomTextField extends StatelessWidget {
         return null;
       },
       obscureText: //인풋타입이 패스워드이면 obscureText값을 true아니면 false를 반환해서
-      //입력한 값들이 보이게할거냐 말거냐를 결정.
+          //입력한 값들이 보이게할거냐 말거냐를 결정.
           textInputType == TextInputType.visiblePassword ? true : false,
       decoration: _decoration,
       keyboardType: textInputType,
