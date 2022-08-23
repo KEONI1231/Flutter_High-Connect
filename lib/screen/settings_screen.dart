@@ -37,75 +37,7 @@ class SettingScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Text('기타', style: ts),
               const SizedBox(height: 16),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.1,
-                height: MediaQuery.of(context).size.height / 4.3,
-                decoration: BoxDecoration(
-                  color: BRIGHT_COLOR,
-                  border: Border.all(width: 2, color: PRIMARY_COLOR),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 7,
-                        offset: Offset(0, 10))
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return certified_screen();
-                          }));
-                        },
-                        child: Text(
-                          '회원탈퇴',
-                          style: ts,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return certified_screen();
-                          }));
-                        },
-                        child: Text(
-                          '로그아웃',
-                          style: ts,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return certified_screen();
-                          }));
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '문의하기',
-                              style: ts,
-                            ),
-                            Text('forstudyhw2@gmail.com', style: ts.copyWith(fontSize: 13, color: Colors.grey)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              etcSetting(),
               const SizedBox(height: 40),
             ],
           ),
@@ -125,16 +57,17 @@ class ProfileCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 1.1,
       height: MediaQuery.of(context).size.height / 3,
       decoration: BoxDecoration(
-          color: BRIGHT_COLOR,
-          border: Border.all(width: 2, color: PRIMARY_COLOR),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 7,
-                offset: Offset(0, 10))
-          ]),
+        color: Colors.white,
+        //border: Border.all(width: 2, color: PRIMARY_COLOR),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, 10))
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
         child: Column(
@@ -147,7 +80,7 @@ class ProfileCard extends StatelessWidget {
                   height: 100,
                   decoration: BoxDecoration(
                       color: PRIMARY_COLOR,
-                      border: Border.all(width: 3, color: PRIMARY_COLOR),
+                      //border: Border.all(width: 3, color: PRIMARY_COLOR),
                       borderRadius: BorderRadius.circular(32)),
                 ),
                 Column(
@@ -160,7 +93,12 @@ class ProfileCard extends StatelessWidget {
                             color: PRIMARY_COLOR,
                             width: 1,
                           )),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return certified_screen();
+                        }));
+                      },
                       child: Text(
                         '학교 인증하기',
                         style: ts.copyWith(fontSize: 12),
@@ -246,8 +184,8 @@ class PersonalCardSetting extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 1.1,
       height: MediaQuery.of(context).size.height / 2.9,
       decoration: BoxDecoration(
-        color: BRIGHT_COLOR,
-        border: Border.all(width: 2, color: PRIMARY_COLOR),
+        color: Colors.white,
+        //border: Border.all(width: 2, color: PRIMARY_COLOR),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -345,8 +283,8 @@ class AppSetting extends StatelessWidget {
       width: MediaQuery.of(context).size.width / 1.1,
       height: MediaQuery.of(context).size.height / 4.3,
       decoration: BoxDecoration(
-        color: BRIGHT_COLOR,
-        border: Border.all(width: 2, color: PRIMARY_COLOR),
+        color: Colors.white,
+        //border: Border.all(width: 2, color: PRIMARY_COLOR),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -369,7 +307,8 @@ class AppSetting extends StatelessWidget {
                   '앱 버전',
                   style: ts,
                 ),
-                Text('V0.0.1', style: ts.copyWith(fontSize: 13, color: Colors.grey)),
+                Text('V0.0.1',
+                    style: ts.copyWith(fontSize: 13, color: Colors.grey)),
               ],
             ),
             const SizedBox(height: 16),
@@ -396,6 +335,86 @@ class AppSetting extends StatelessWidget {
               child: Text(
                 '알림 설정',
                 style: ts,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class etcSetting extends StatelessWidget {
+  const etcSetting({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ts = TextStyle(
+        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 18);
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.1,
+      height: MediaQuery.of(context).size.height / 4.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        //border: Border.all(width: 2, color: PRIMARY_COLOR),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: Offset(0, 10))
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return certified_screen();
+                }));
+              },
+              child: Text(
+                '회원탈퇴',
+                style: ts,
+              ),
+            ),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return certified_screen();
+                }));
+              },
+              child: Text(
+                '로그아웃',
+                style: ts,
+              ),
+            ),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return certified_screen();
+                }));
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '문의하기',
+                    style: ts,
+                  ),
+                  Text('forstudyhw2@gmail.com',
+                      style: ts.copyWith(fontSize: 13, color: Colors.grey)),
+                ],
               ),
             ),
           ],
