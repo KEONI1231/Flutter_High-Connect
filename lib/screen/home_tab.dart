@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/screen/settings_screen.dart';
-import 'package:per_pro/screen/word_cloud_board.dart';
+import 'package:per_pro/screen/free_board.dart';
+import 'package:per_pro/screen/love_board.dart';
+import 'package:per_pro/screen/meal_board.dart';
+import 'package:per_pro/screen/study_board.dart';
 
 import '../component/meal_info.dart';
-import 'home_screen.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({Key? key}) : super(key: key);
@@ -161,7 +162,15 @@ class _HomeBoard extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          HomeBoardGenerate('자유게시판', '자유게시판의 최근 올라온 게시글 내용'),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return FreeBoard(); //자유 게시판
+              }));
+            },
+            child: HomeBoardGenerate('자유게시판', '자유게시판의 최근 올라온 게시글 내용'),
+          ),
           SizedBox(
             height: 8.0,
           ),
@@ -175,15 +184,39 @@ class _HomeBoard extends StatelessWidget {
           SizedBox(
             height: 8.0,
           ),
-          HomeBoardGenerate('급식게시판', '급식게시판의 최근 올라온 게시글 내용'),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return MealBoard(); //급식 게시판
+              }));
+            },
+            child: HomeBoardGenerate('급식게시판', '급식게시판의 최근 올라온 게시글 내용'),
+          ),
           SizedBox(
             height: 8.0,
           ),
-          HomeBoardGenerate('입시게시판', '입시게시판의 최근 올라온 게시글 내용'),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return StudyBoard(); //입시게시판
+              }));
+            },
+            child: HomeBoardGenerate('입시게시판', '입시게시판의 최근 올라온 게시글 내용'),
+          ),
           SizedBox(
             height: 8.0,
           ),
-          HomeBoardGenerate('연애게시판', '연애게시판의 최근 올라온 게시글 내용'),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return LoveBoard(); //연애 게시판
+              }));
+            },
+            child: HomeBoardGenerate('연애게시판', '연애게시판의 최근 올라온 게시글 내용'),
+          ),
         ],
       ),
     );
