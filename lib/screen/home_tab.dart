@@ -12,13 +12,19 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _HomeMeal(),
-        _HomeWordCloud(),
-        _HomeBannerAd(),
-        _HomeBoard(),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _HomeMeal(),
+          Column(
+            children: [
+              _HomeWordCloud(),
+              _HomeBannerAd(),
+              _HomeBoard(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -74,8 +80,15 @@ class _HomeMeal extends StatelessWidget {
                           20,
                           (index) => MealInfo(
                             width: constraint.maxWidth / 3,
-                            mealdate: '2022-08-20',
-                            meal: '돈가스',
+                            mealdate: (DateTime.now().year.toString()) +
+                                '-' +
+                                DateTime.now()
+                                    .month
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                '-' +
+                                DateTime.now().day.toString().padLeft(2, '0'),
+                            meal: index % 2 == 0 ? '스윙스' : '돈가스',
                           ),
                         ),
                       ),
@@ -159,7 +172,7 @@ class _HomeBoard extends StatelessWidget {
             child: HomeBoardGenerate('자유게시판', '자유게시판의 최근 올라온 게시글 내용'),
           ),
           SizedBox(
-            height: 2.0,
+            height: 8.0,
           ),
           GestureDetector(
             //워드클라우드게시판 누르면 워드클라우드 게시판으로 이동
@@ -169,7 +182,7 @@ class _HomeBoard extends StatelessWidget {
             child: HomeBoardGenerate('워드클라우드게시판', '워드클라우드게시판의 최근 올라온 게시글 내용'),
           ),
           SizedBox(
-            height: 2.0,
+            height: 8.0,
           ),
           GestureDetector(
             onTap: () {
@@ -181,7 +194,7 @@ class _HomeBoard extends StatelessWidget {
             child: HomeBoardGenerate('급식게시판', '급식게시판의 최근 올라온 게시글 내용'),
           ),
           SizedBox(
-            height: 2.0,
+            height: 8.0,
           ),
           GestureDetector(
             onTap: () {
@@ -193,7 +206,7 @@ class _HomeBoard extends StatelessWidget {
             child: HomeBoardGenerate('입시게시판', '입시게시판의 최근 올라온 게시글 내용'),
           ),
           SizedBox(
-            height: 2.0,
+            height: 8.0,
           ),
           GestureDetector(
             onTap: () {

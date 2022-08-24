@@ -5,7 +5,7 @@ class CustomTextField extends StatelessWidget {
   final String label;
   //'비밀번호 입력' 필드와 '비밀번호 확인'필드의 값을 비교하여 일치한지 아닌지를 판단하기 위한변수
   //다른 텍스트필드엔 필요한 변수가 아니기 때문에 null값이 허용되도록 ?를 사용함.
-  final String? passwordChecker;
+  final TextEditingController? passwordChecker;
   final TextEditingController Controller;
   //각 텍스트 필드들의 조건을 확인하기 위한 변수. 이 변수를 이용해서 validator에 의한 에러메시지를 출력해주는 판단 지표역할.
   final TextInputType textInputType;
@@ -58,8 +58,8 @@ class CustomTextField extends StatelessWidget {
           이때 사용하기 위해서 null값이 가능한 변수로 선언해둔거임.
           그래서 password 입력값과 password 확인 값이 다르면 일치하지 않는다는 오류를 출력.
          */
-        if (textInputType == TextInputType.visiblePassword) {
-          if (Controller.text != passwordChecker) {
+        if (label == 'password 확인') {
+          if (Controller.text != passwordChecker?.text) {
             return '비밀번호가 일치하지 않습니다.';
           }
         }

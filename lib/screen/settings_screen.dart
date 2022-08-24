@@ -52,7 +52,7 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = TextStyle(fontWeight: FontWeight.w700, color: PRIMARY_COLOR);
+    final ts = TextStyle(fontWeight: FontWeight.w700, color: PRIMARY_COLOR, fontSize: 12);
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
       height: MediaQuery.of(context).size.height / 3,
@@ -179,10 +179,10 @@ class PersonalCardSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
-        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 18);
+        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 14);
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
-      height: MediaQuery.of(context).size.height / 2.9,
+      height: MediaQuery.of(context).size.height / 3.4,
       decoration: BoxDecoration(
         color: Colors.white,
         //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -278,10 +278,10 @@ class AppSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
-        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 18);
+        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 14);
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
-      height: MediaQuery.of(context).size.height / 4.3,
+      height: MediaQuery.of(context).size.height / 5,
       decoration: BoxDecoration(
         color: Colors.white,
         //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -350,10 +350,10 @@ class etcSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
-        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 18);
+        fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 14);
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
-      height: MediaQuery.of(context).size.height / 4.3,
+      height: MediaQuery.of(context).size.height / 5,
       decoration: BoxDecoration(
         color: Colors.white,
         //border: Border.all(width: 2, color: PRIMARY_COLOR),
