@@ -48,6 +48,7 @@ class _signUpState extends State<signUp> {
                        텍스트 필드마다 입력시 조건들이 다르기때문에 account_textfield.dart파일에
                        주석으로 달아두겠음.
                        */
+                      const SizedBox(height: 16),
                       CustomTextField(
                         label: 'ID입력',
                         Controller: _idTextController,

@@ -124,7 +124,6 @@ class login_part extends StatelessWidget {
                 ),
               );
 
-              
               /*FirebaseFirestore.instance
                   .collection('users')
                   .snapshots()
@@ -151,11 +150,6 @@ class login_part extends StatelessWidget {
               });
               로그인 기능 구현성공 // 개발에 쉽도록 나중에 추가하기로하자
               */
-
-              /*Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return HomeScreen(); //메인 홈스크린.
-              }));*/
             },
           ),
         ),
