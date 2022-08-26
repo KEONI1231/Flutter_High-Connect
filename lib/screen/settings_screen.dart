@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:per_pro/screen/certified_screen.dart';
+import 'package:per_pro/screen/change_email_screen.dart';
 import 'package:per_pro/screen/find_pw_screen.dart';
 import 'package:per_pro/screen/signup_screen.dart';
 
@@ -54,7 +56,8 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ts = TextStyle(fontWeight: FontWeight.w700, color: PRIMARY_COLOR, fontSize: 12);
+    final ts = TextStyle(
+        fontWeight: FontWeight.w700, color: PRIMARY_COLOR, fontSize: 12);
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
       height: MediaQuery.of(context).size.height / 3,
@@ -233,7 +236,7 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return signUp();
+                  return changeEmail();
                 }));
               },
               child: Text(
@@ -389,10 +392,7 @@ class etcSetting extends StatelessWidget {
             const SizedBox(height: 16),
             GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return certified_screen();
-                }));
+                _onPowerKey(context, ts);
               },
               child: Text(
                 '로그아웃',
@@ -423,5 +423,32 @@ class etcSetting extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future _onPowerKey(context, ts) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: BRIGHT_COLOR,
+            title: Text('알림',style: ts),
+            content: Text('종료하시겠습니까?',style: ts),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  SystemChannels.platform
+                      .invokeListMethod('SystemNavigator.pop');
+                },
+                child: Text('예', style: ts),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('아니요', style: ts),
+              ),
+            ],
+          );
+        });
   }
 }
