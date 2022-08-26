@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/meal_info.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
 import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/word_cloud_board.dart';
@@ -44,9 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               HomeTab(),
               WordCloudBoard(),
-              Center(
-                child: Text("Board"),
-              ),
+              BoardScreen(),
               Center(
                 child: Text("settings"),
               ),
