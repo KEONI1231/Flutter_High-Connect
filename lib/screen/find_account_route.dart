@@ -6,14 +6,14 @@ import 'find_id_screen.dart';
 import 'login_screen.dart';
 
 //이화면은 id를 찾을 건지 pw를 찾을지를 물어보는 라우팅화면임. 별로 볼거 없음.
-class findaccount extends StatefulWidget {
-  const findaccount({Key? key}) : super(key: key);
+class findAccount extends StatefulWidget {
+  const findAccount({Key? key}) : super(key: key);
 
   @override
-  State<findaccount> createState() => _findaccountState();
+  State<findAccount> createState() => _findAccountState();
 }
 
-class _findaccountState extends State<findaccount> {
+class _findAccountState extends State<findAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

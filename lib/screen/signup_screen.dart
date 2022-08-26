@@ -38,7 +38,7 @@ class _signUpState extends State<signUp> {
                 centerTitle: true,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 40, 40.0, 40),
+                padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
                 child: Form(
                   key: formKey,
                   child: Column(

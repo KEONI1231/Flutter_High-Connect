@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/screen/certified_screen.dart';
+import 'package:per_pro/screen/find_pw_screen.dart';
 import 'package:per_pro/screen/signup_screen.dart';
 
 import '../constant/color.dart';
+import 'change_pw_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -218,7 +220,7 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return signUp();
+                  return ChangePassword();
                 }));
               },
               child: Text(

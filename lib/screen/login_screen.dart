@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/certified_screen.dart';
-import 'package:per_pro/screen/find_account_screen.dart';
+import 'package:per_pro/screen/find_account_route.dart';
 import 'package:per_pro/screen/signup_screen.dart';
 
 import 'home_screen.dart';
@@ -20,6 +20,7 @@ class _login_screenState extends State<login_screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: BRIGHT_COLOR,
           body: SingleChildScrollView(
         child: Column(
           children: [
@@ -27,6 +28,7 @@ class _login_screenState extends State<login_screen> {
               backgroundColor: PRIMARY_COLOR,
               title: Text('로그인'),
               centerTitle: true,
+
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,10 +65,10 @@ class _login_screenState extends State<login_screen> {
   }
 
   void onPressed_findaccount_btn() {
-    //계정찾기(find_account_screen.dart) 스크린으로 이동
+    //계정찾기(find_account_route.dart) 스크린으로 이동
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) {
-      return findaccount();
+      return findAccount();
     }));
   }
 }
