@@ -20,6 +20,8 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _decoration = InputDecoration(
+      fillColor: Colors.grey[200],
+      filled: true,
       //텍스트 필드를 통일화 하기위한 데코레이션,
       //text 필드 데코레이션 정의 변수.
       labelText: label,
@@ -29,6 +31,7 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
     );
+
     return TextFormField(
       controller: Controller,
       validator: (String? val) {

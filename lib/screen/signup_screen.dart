@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:per_pro/component/alert_dialog.dart';
 import '../constant/color.dart';
 
 class signUp extends StatefulWidget {
@@ -55,8 +58,8 @@ class _signUpState extends State<signUp> {
                         textInputType: TextInputType.text,
                       ),
                       currentPageBtn(
-                        text: true, //text 변수가 true면 버튼안에 '중복확인'이 입력.
-                        onPressed: onidCheckerPressed,
+                        text: true, //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        onPressed: onCheckPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
@@ -101,6 +104,8 @@ class _signUpState extends State<signUp> {
                       const SizedBox(
                         height: 50,
                       ),
+
+
                       const Text('● 이부분은 약관'),
                       currentPageBtn(
                         text: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
@@ -117,9 +122,45 @@ class _signUpState extends State<signUp> {
       ),
     );
   }
+  int _duplicationIdCheck = 0;
+  int _duplbtnchecker = 0;
+  void onCheckPressed(){
+    _duplbtnchecker = 1;
+    FirebaseFirestore.instance
+        .collection('users')
+        .snapshots()
+        .listen((data) {
+      data.docs.forEach(
+            (element) {
+          if (element['id'] == _idTextController.text) {
+            _duplicationIdCheck+=1;
 
-  void onidCheckerPressed() {}
+            print('중복된 아이디 발견$_duplicationIdCheck');
+          }
+
+        },
+      );
+    });
+  }
   void onSignUpPressed() {
+    print(_duplbtnchecker);
+    if(_duplbtnchecker == 0) {
+      DialogShow(context,'중복체크해라');
+    }
+    else {
+      //_duplicationIdCheck = 0;
+      if (_duplicationIdCheck < 1 && _duplbtnchecker == 1) {
+        createAccount();
+      }
+      else {
+        DialogShow(context, '중복된 아이디가 존재합니다.');
+        _duplicationIdCheck = 0;
+        _duplbtnchecker = 0;
+      }
+    }
+  }
+void createAccount() {
+
     if (formKey.currentState == null) {
       return;
     }
@@ -142,11 +183,12 @@ class _signUpState extends State<signUp> {
         'bool Admin': 1,
         'bool certificated': 1,
       });
-    } else {
-
-
+      Navigator.pop(context);
+      DialogShow(context, '회원가입이 완료되었습니다.');
     }
   }
+
+
 }
 
 //중복확인 버튼과 회원가입완료(화살표아이콘 버튼)을 정의한 stless 위젯.
@@ -164,13 +206,11 @@ class currentPageBtn extends StatelessWidget {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
       onPressed: onPressed,
-      child: text == true  // 기본적인 삼항연산자임. text값이 true이면 버튼안의 텍스트가 중복확인으로, false이면 화살표 아이콘이 출력되게 함
-          ? Text('중복확인')
-          : Icon(
+      child: text == false ? Icon(
               Icons.arrow_forward,
               color: Colors.white,
               size: 35.0,
-            ),
+            ) : Text('중복체크'),
     );
   }
 }

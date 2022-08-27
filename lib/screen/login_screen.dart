@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/certified_screen.dart';
@@ -72,7 +76,7 @@ class _login_screenState extends State<login_screen> {
     }));
   }
 }
-
+bool login_succ = false;
 class login_part extends StatelessWidget {
   const login_part({Key? key}) : super(key: key);
 
@@ -118,46 +122,41 @@ class login_part extends StatelessWidget {
               size: 35.0,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return HomeScreen(); //메인 홈스크린.
-                  },
-                ),
-              );
 
-              /*FirebaseFirestore.instance
+              FirebaseFirestore.instance
                   .collection('users')
                   .snapshots()
                   .listen((data) {
                 data.docs.forEach(
-                  (element) {
-
+                      (element) {
                     if (element['id'] == _idTextController.text &&
                         element['pw'] == _pwTextController.text) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (BuildContext context) {
+                            login_succ = true;
                             return HomeScreen(); //메인 홈스크린.
                           },
                         ),
                       );
                     }
-                    else {
-                      //로그인 실패
 
-                    }
                   },
                 );
               });
-              로그인 기능 구현성공 // 개발에 쉽도록 나중에 추가하기로하자
-              */
+              if(login_succ == false) {
+                DialogShow(context, '회원정보가 잘못되었습니다.');
+              }
+
+
+
             },
           ),
         ),
       ],
     );
   }
+
 }
 
 class bottom_part extends StatelessWidget {
