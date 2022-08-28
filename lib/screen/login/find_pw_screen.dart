@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../component/account_textfield.dart';
-import '../constant/color.dart';
+import '../../component/account_textfield.dart';
+import '../../constant/color.dart';
 
 class findPw extends StatefulWidget {
   const findPw({Key? key}) : super(key: key);

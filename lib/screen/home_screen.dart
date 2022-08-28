@@ -3,7 +3,7 @@ import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
 import 'package:per_pro/screen/settings_screen.dart';
-import 'package:per_pro/screen/word_cloud_board.dart';
+import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

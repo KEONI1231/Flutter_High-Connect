@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:per_pro/screen/certified_screen.dart';
-import 'package:per_pro/screen/change_email_screen.dart';
-import 'package:per_pro/screen/find_pw_screen.dart';
-import 'package:per_pro/screen/signup_screen.dart';
+import 'package:per_pro/screen/setting/certified_screen.dart';
+import 'package:per_pro/screen/setting/change_email_screen.dart';
+import 'package:per_pro/screen/login/find_pw_screen.dart';
+import 'package:per_pro/screen/login/signup_screen.dart';
 
 import '../constant/color.dart';
-import 'change_pw_screen.dart';
+import 'setting/change_pw_screen.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);

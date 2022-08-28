@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/screen/free_board.dart';
-import 'package:per_pro/screen/love_board.dart';
-import 'package:per_pro/screen/meal_board.dart';
-import 'package:per_pro/screen/study_board.dart';
+import 'package:per_pro/screen/boards/free_board.dart';
+import 'package:per_pro/screen/boards/love_board.dart';
+import 'package:per_pro/screen/boards/meal_board.dart';
+import 'package:per_pro/screen/boards/study_board.dart';
 
 import '../component/meal_info.dart';
 
