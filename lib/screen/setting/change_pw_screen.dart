@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
+import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/constant/color.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -22,11 +23,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              AppBar(
-                title: Text('비밀번호 변경'),
-                backgroundColor: PRIMARY_COLOR,
-                centerTitle: true,
-              ),
+              CustomAppBar(titleText: '비밀번호 찾기'),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 40, 24, 24),
                 child: Column(

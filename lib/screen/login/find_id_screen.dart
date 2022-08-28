@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
+import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/constant/color.dart';
 
 class findId extends StatefulWidget {
@@ -20,11 +21,7 @@ class _findIdState extends State<findId> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBar(
-              title: Text('ID 찾기'),
-              centerTitle: true,
-              backgroundColor: PRIMARY_COLOR,
-            ),
+            CustomAppBar(titleText: 'ID 찾기'),
             Padding(
               padding: const EdgeInsets.fromLTRB(40.0, 40, 40, 40),
               child: Column(

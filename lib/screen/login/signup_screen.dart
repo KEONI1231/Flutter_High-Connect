@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
+import 'package:per_pro/component/appbar.dart';
 import '../../constant/color.dart';
 
 class signUp extends StatefulWidget {
@@ -34,11 +35,7 @@ class _signUpState extends State<signUp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              AppBar( //걍 평볌한 앱바
-                backgroundColor: PRIMARY_COLOR,
-                title: Text('Sign Up'),
-                centerTitle: true,
-              ),
+              CustomAppBar(titleText: 'Sign UP'),
               Padding(
                 padding: const EdgeInsets.fromLTRB(24, 40, 24, 40),
                 child: Form(
@@ -133,13 +130,14 @@ class _signUpState extends State<signUp> {
             (element) {
           if (element['id'] == _idTextController.text) {
             _duplicationIdCheck+=1;
-
-            print('중복된 아이디 발견$_duplicationIdCheck');
+            DialogShow(context, '아이디가 중복되었습니다.');
           }
-
         },
       );
     });
+    if(_duplicationIdCheck < 1) {
+      DialogShow(context, '사용가능한 아이디 입니다.');
+    }
   }
   void onSignUpPressed() {
     print(_duplbtnchecker);
@@ -159,7 +157,6 @@ class _signUpState extends State<signUp> {
     }
   }
 void createAccount() {
-
     if (formKey.currentState == null) {
       return;
     }
@@ -186,8 +183,6 @@ void createAccount() {
       DialogShow(context, '회원가입이 완료되었습니다.');
     }
   }
-
-
 }
 
 //중복확인 버튼과 회원가입완료(화살표아이콘 버튼)을 정의한 stless 위젯.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:per_pro/component/appbar.dart';
 
 import '../../component/account_textfield.dart';
 import '../../constant/color.dart';
@@ -20,11 +21,7 @@ class _findPwState extends State<findPw> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBar(
-              title: Text('PW 찾기'),
-              centerTitle: true,
-              backgroundColor: PRIMARY_COLOR,
-            ),
+            CustomAppBar(titleText: 'PW 찾기'),
             Padding(
               padding: const EdgeInsets.fromLTRB(40.0, 40, 40, 40),
               child: Column(

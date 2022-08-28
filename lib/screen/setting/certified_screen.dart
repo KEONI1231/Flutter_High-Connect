@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:per_pro/component/appbar.dart';
 
 import '../../constant/color.dart';
 
@@ -18,11 +19,7 @@ class _certified_screenState extends State<certified_screen> {
       body: SafeArea(
         child: Column(
           children: [
-            AppBar(
-              title: Text('학교 인증'),
-              centerTitle: true,
-              backgroundColor: PRIMARY_COLOR,
-            ),
+            CustomAppBar(titleText: '학교인증'),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

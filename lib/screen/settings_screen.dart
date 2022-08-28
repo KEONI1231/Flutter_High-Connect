@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/screen/setting/certified_screen.dart';
-import 'package:per_pro/screen/setting/change_email_screen.dart';
+
 import 'package:per_pro/screen/login/find_pw_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
+import 'package:per_pro/screen/setting/change_email_beforlogin.dart';
 
 import '../constant/color.dart';
 import 'setting/change_pw_screen.dart';
@@ -21,11 +23,7 @@ class SettingScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              AppBar(
-                title: Text('설정'),
-                backgroundColor: PRIMARY_COLOR,
-                centerTitle: true,
-              ),
+              CustomAppBar(titleText: '설정'),
               const SizedBox(height: 24),
               Text('프로필수정', style: ts),
               const SizedBox(height: 16),
@@ -236,7 +234,7 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return changeEmail();
+                  return ChangeEmailLogin();
                 }));
               },
               child: Text(
