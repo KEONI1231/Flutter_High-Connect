@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/screen/find_pw_screen.dart';
+import 'package:per_pro/screen/login/find_pw_screen.dart';
 
 import 'find_id_screen.dart';
 import 'login_screen.dart';

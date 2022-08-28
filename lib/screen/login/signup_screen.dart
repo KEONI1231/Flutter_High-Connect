@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
-import '../constant/color.dart';
+import '../../constant/color.dart';
 
 class signUp extends StatefulWidget {
   const signUp({Key? key}) : super(key: key);
@@ -22,8 +22,7 @@ class _signUpState extends State<signUp> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _nicknameTextController = TextEditingController();
   final TextEditingController _realNameTextController = TextEditingController();
-  final TextEditingController _phoneNumberTextController =
-      TextEditingController();
+  final TextEditingController _phoneNumberTextController = TextEditingController();
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
   @override

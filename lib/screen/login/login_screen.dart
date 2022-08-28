@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/certified_screen.dart';
-import 'package:per_pro/screen/find_account_route.dart';
-import 'package:per_pro/screen/signup_screen.dart';
+import 'package:per_pro/screen/setting/certified_screen.dart';
+import 'package:per_pro/screen/login/find_account_route.dart';
+import 'package:per_pro/screen/login/signup_screen.dart';
 
-import 'home_screen.dart';
+import '../home_screen.dart';
 
 class login_screen extends StatefulWidget {
   const login_screen({Key? key}) : super(key: key);
