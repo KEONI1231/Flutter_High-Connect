@@ -140,7 +140,6 @@ class login_part extends StatelessWidget {
                   },
                 );
               });
-
               if(login_succ != true) {
                 DialogShow(context, '회원정보가 잘못되었습니다.');
               }

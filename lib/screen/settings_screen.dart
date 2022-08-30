@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/screen/setting/certified_screen.dart';
-
-import 'package:per_pro/screen/login/find_pw_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
 import 'package:per_pro/screen/setting/change_email_beforlogin.dart';
-
 import '../constant/color.dart';
 import 'setting/change_pw_screen.dart';
 
@@ -447,6 +444,7 @@ class etcSetting extends StatelessWidget {
               ),
             ],
           );
-        });
+        },
+    );
   }
 }

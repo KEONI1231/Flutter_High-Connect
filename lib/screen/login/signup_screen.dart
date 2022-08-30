@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
+import '../../component/custom_button.dart';
 import '../../constant/color.dart';
 
 class signUp extends StatefulWidget {
@@ -54,7 +53,8 @@ class _signUpState extends State<signUp> {
                         textInputType: TextInputType.text,
                       ),
                       currentPageBtn(
-                        text: true, //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        istext: true,
+                        text : '중복체크',//text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onCheckPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 16),
@@ -104,7 +104,8 @@ class _signUpState extends State<signUp> {
 
                       const Text('● 이부분은 약관'),
                       currentPageBtn(
-                        text: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        text : '',
+                        istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onSignUpPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 50),
@@ -140,7 +141,6 @@ class _signUpState extends State<signUp> {
     }
   }
   void onSignUpPressed() {
-    print(_duplbtnchecker);
     if(_duplbtnchecker == 0) {
       DialogShow(context,'중복체크해라');
     }
@@ -162,7 +162,7 @@ void createAccount() {
     }
     if (formKey.currentState!.validate()) {
       //계정 생성버튼을 눌렀을때 이상이 없으면 파이어베이스 클라우드스토어에 유저 정보를 추가한다.
-      firestore.collection('users').doc().set({
+      firestore.collection('users').doc(_idTextController.text).set({
         'id': _idTextController.text,
         'pw': _pwTextController.text,
         'real name': _realNameTextController.text,
@@ -186,25 +186,3 @@ void createAccount() {
 }
 
 //중복확인 버튼과 회원가입완료(화살표아이콘 버튼)을 정의한 stless 위젯.
-class currentPageBtn extends StatelessWidget {
-  final bool text; //버튼안에 들어갈 내용이 '중복확인' 텍스트인가 화살표아이콘인가를 결정해주는 변수임 164번줄에 이어서 주석달겠음.
-  final VoidCallback onPressed;
-  const currentPageBtn({required this.text, required this.onPressed, Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          primary: PRIMARY_COLOR,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
-      onPressed: onPressed,
-      child: text == false ? Icon(
-              Icons.arrow_forward,
-              color: Colors.white,
-              size: 35.0,
-            ) : Text('중복체크'),
-    );
-  }
-}

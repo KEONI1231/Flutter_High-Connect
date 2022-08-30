@@ -60,8 +60,15 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
       ),
     );
   }
-  void onChangeEmail() {
-    bool login_succ;
+  void onChangeEmail() async{
+    /*
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SecondRoute(appbarTitle:'SecondRoute_Delivered')), '
+         //버튼이 눌리는 이벤트 발생 시, 다음 페이지에서 전달 받을 string 변수와 value('SecondRoute_Delivered')값을 직접 전달
+            );
+                     */
+    String userEmail = '';
     FirebaseFirestore.instance
         .collection('users')
         .snapshots()
@@ -73,8 +80,13 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  login_succ = true;
-                  return ChangeEmail();
+                  FirebaseFirestore.instance.
+                  collection('users')
+                      .doc(_idTextController.text).get().then((DocumentSnapshot ds){
+                      userEmail = ds.get('email').toString();
+                      print(userEmail);
+                  });
+                  return test(id: _idTextController.text, pw: _passwordTextController.text,email: userEmail);
                   //메인 홈스크린.
                 },
               ),
