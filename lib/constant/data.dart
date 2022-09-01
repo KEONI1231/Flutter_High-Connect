@@ -1,0 +1,1 @@
+const serviceKey = '0d960196e753488987b073f58c1ecfb4';
