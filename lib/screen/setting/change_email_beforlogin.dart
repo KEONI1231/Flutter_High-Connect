@@ -68,44 +68,35 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
          //버튼이 눌리는 이벤트 발생 시, 다음 페이지에서 전달 받을 string 변수와 value('SecondRoute_Delivered')값을 직접 전달
             );
                      */
-    String userEmail = '';
-    FirebaseFirestore.instance
-        .collection('users')
-        .snapshots()
-        .listen((data) async {
-      data.docs.forEach(
-            (element) {
-          if (element['id'] == _idTextController.text &&
-              element['pw'] == _passwordTextController.text) {
-
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) {
-                  FirebaseFirestore.instance.
-                  collection('users')
-                      .doc(_idTextController.text).get().then((DocumentSnapshot ds){
-                      userEmail = ds.get('email').toString();
-                      print(userEmail);
-                  });
-                  return test(id: _idTextController.text, pw: _passwordTextController.text,email: userEmail);
-                  //메인 홈스크린.
-                },
-              ),
-            );
-          }
-        },
-      );
-    });
+    String id;
+    String pw;
+    String email;
+    DocumentSnapshot userData;
+    try {
+      userData= await firestore.collection('users').doc(_idTextController.text).get();
+      id = userData['id'];
+      pw = userData['pw'];
+      email = userData['email'];
+      if (id == _idTextController.text &&
+          pw == _passwordTextController.text) {
+        Navigator.of(context)
+            .push(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return test(id: id, pw: pw, email:email);
+            }));
+      }
+      else {
+        DialogShow(context, '회원정보가 잘못되었습니다.');
+      }
+    }
+    catch (e){
+      DialogShow(context, '회원정보가 잘못되었습니다.');
+    }
 
 
 
 
-    /*
-    FirebaseFirestore.instance.
-    collection('users')
-        .doc('Seoul')
-        .update({'name': 'Seoul'});
-  */
+
   }
 }
 class ChangeEmailBtn extends StatelessWidget {

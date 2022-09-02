@@ -52,7 +52,7 @@ class _signUpState extends State<signUp> {
                         Controller: _idTextController,
                         textInputType: TextInputType.text,
                       ),
-                      currentPageBtn(
+                      CustomButton(
                         istext: true,
                         text : '중복체크',//text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onCheckPressed, //계정생성 버튼.
@@ -101,7 +101,7 @@ class _signUpState extends State<signUp> {
                         height: 50,
                       ),
                       const Text('● 이부분은 약관'),
-                      currentPageBtn(
+                      CustomButton(
                         text : '',
                         istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onSignUpPressed, //계정생성 버튼.

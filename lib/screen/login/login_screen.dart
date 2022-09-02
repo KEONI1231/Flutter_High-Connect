@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/constant/color.dart';
@@ -89,19 +90,9 @@ class _login_partState extends State<login_part> {
     bool? login_succ;
     return Column(
       children: [
-        TextField(
-          //아이디 입력하는 텍스트 필드.
-          controller: _idTextController, //입력값을 받아오기 위한 텍스트 컨트롤러
-          decoration: InputDecoration(labelText: 'Enter "ID"'),
-          keyboardType: TextInputType.text,
-        ),
-        TextField(
-          //패스워드 입력하는 택스트 필드
-          controller: _pwTextController,
-          decoration: InputDecoration(labelText: 'Enter "Password"'),
-          keyboardType: TextInputType.text,
-          obscureText: true, //패스워드 입력시 문자열이 보이지 않게 해줌
-        ),
+        CustomTextField(textInputType: TextInputType.text, Controller: _idTextController, label: 'ID입력'),
+        SizedBox(height: 16.0),
+        CustomTextField(textInputType: TextInputType.visiblePassword, Controller: _pwTextController, label: 'PASSWORD 입력'),
         SizedBox(
           height: 40.0,
         ),
