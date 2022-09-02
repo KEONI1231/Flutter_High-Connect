@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
-
 import '../constant/data.dart';
 import '../model/meal.model.dart';
 
@@ -19,9 +17,7 @@ class MealRepository {
         'MLSV_YMD': '202208',
       },
     );
-
     Map<String, dynamic> meal = jsonDecode(response.data);
-
     return meal['mealServiceDietInfo'][1]['row']
         .map<MealModel>(
           (item) => MealModel.fromJson(json: item),

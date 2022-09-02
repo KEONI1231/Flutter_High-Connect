@@ -72,11 +72,12 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
     FirebaseFirestore.instance
         .collection('users')
         .snapshots()
-        .listen((data) {
+        .listen((data) async {
       data.docs.forEach(
             (element) {
           if (element['id'] == _idTextController.text &&
               element['pw'] == _passwordTextController.text) {
+
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
@@ -95,6 +96,10 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
         },
       );
     });
+
+
+
+
     /*
     FirebaseFirestore.instance.
     collection('users')

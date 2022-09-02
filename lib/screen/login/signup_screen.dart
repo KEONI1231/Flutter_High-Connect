@@ -100,8 +100,6 @@ class _signUpState extends State<signUp> {
                       const SizedBox(
                         height: 50,
                       ),
-
-
                       const Text('● 이부분은 약관'),
                       currentPageBtn(
                         text : '',
@@ -121,38 +119,30 @@ class _signUpState extends State<signUp> {
   }
   int _duplicationIdCheck = 0;
   int _duplbtnchecker = 0;
-  void onCheckPressed(){
-    _duplbtnchecker = 1;
-    FirebaseFirestore.instance
-        .collection('users')
-        .snapshots()
-        .listen((data) {
-      data.docs.forEach(
-            (element) {
-          if (element['id'] == _idTextController.text) {
-            _duplicationIdCheck+=1;
-            DialogShow(context, '아이디가 중복되었습니다.');
-          }
-        },
-      );
-    });
-    if(_duplicationIdCheck < 1) {
-      DialogShow(context, '사용가능한 아이디 입니다.');
+  void onCheckPressed() async{
+    DocumentSnapshot userData;
+    try {
+      userData= await firestore.collection('users').doc(_idTextController.text).get();
+      if (_idTextController.text == userData['id']) {
+        DialogShow(context, '중복된 아이디가 존재합니다.');
+      }
+    }
+    catch (e){
+      DialogShow(context, '사용 가능한 ID입니다.');
+      _duplicationIdCheck = 1;
+      _duplbtnchecker = 1;
     }
   }
   void onSignUpPressed() {
     if(_duplbtnchecker == 0) {
-      DialogShow(context,'중복체크해라');
+      _duplicationIdCheck = 0;
+      _duplbtnchecker = 0;
+      DialogShow(context,'ID 중복체크를 진행해주세요.');
     }
     else {
       //_duplicationIdCheck = 0;
-      if (_duplicationIdCheck < 1 && _duplbtnchecker == 1) {
+      if (_duplicationIdCheck == 1 && _duplbtnchecker == 1) {
         createAccount();
-      }
-      else {
-        DialogShow(context, '중복된 아이디가 존재합니다.');
-        _duplicationIdCheck = 0;
-        _duplbtnchecker = 0;
       }
     }
   }

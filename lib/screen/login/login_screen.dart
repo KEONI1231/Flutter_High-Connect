@@ -73,9 +73,14 @@ class _login_screenState extends State<login_screen> {
   }
 }
 
-class login_part extends StatelessWidget {
+class login_part extends StatefulWidget {
   const login_part({Key? key}) : super(key: key);
 
+  @override
+  State<login_part> createState() => _login_partState();
+}
+
+class _login_partState extends State<login_part> {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -118,29 +123,27 @@ class login_part extends StatelessWidget {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: () {
-              FirebaseFirestore.instance
-                  .collection('users')
-                  .snapshots()
-                  .listen((data) {
-                data.docs.forEach(
-                      (element) {
-                    if (element['id'] == _idTextController.text &&
-                        element['pw'] == _pwTextController.text) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            login_succ = true;
-                            return HomeScreen();
-                            //메인 홈스크린.
-                          },
-                        ),
-                      );
-                    }
-                  },
-                );
-              });
-              if(login_succ != true) {
+            onPressed: () async {
+              String id;
+              String pw;
+              DocumentSnapshot userData;
+              try {
+                userData= await firestore.collection('users').doc(_idTextController.text).get();
+                id = userData['id'];
+                pw = userData['pw'];
+                if (id == _idTextController.text &&
+                    pw == _pwTextController.text) {
+                  Navigator.of(context)
+                      .push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        return HomeScreen();
+                      }));
+                }
+                else {
+                  DialogShow(context, '회원정보가 잘못되었습니다.');
+                }
+              }
+              catch (e){
                 DialogShow(context, '회원정보가 잘못되었습니다.');
               }
             },
@@ -149,7 +152,6 @@ class login_part extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class bottom_part extends StatelessWidget {
@@ -184,3 +186,4 @@ class bottom_part extends StatelessWidget {
     );
   }
 }
+
