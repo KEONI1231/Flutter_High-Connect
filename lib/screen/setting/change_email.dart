@@ -91,27 +91,26 @@ class _ChangeEmailState extends State<ChangeEmail> {
     );
   }
   void onemailChangeBtn() async{
-    FirebaseFirestore firestore;
     if (formKey.currentState == null) {
       return;
     }
     if (formKey.currentState!.validate()) {
-
       try {
-        print(widget.id);
+        //CustomCircular(context, '이메일 변경중...');
         await FirebaseFirestore.instance.
         collection('users')
             .doc(widget.id)
             .update({'email' : _newEmailController.text});
-        Navigator.pop(context);
+        //Navigator.pop(context);
+        for (int i = 0; i < 2; i++) {
+          Navigator.pop(context); //계정확인 화면에서
+        }
         DialogShow(context, '이메일 변경을 완료하였습니다.');
       }catch(e) {
+        //Navigator.pop(context);
         Navigator.pop(context);
         DialogShow(context, '이메일 변경을 실패하였습니다.');
       }
     }
-
-
   }
-
 }

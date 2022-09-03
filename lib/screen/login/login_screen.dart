@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/setting/certified_screen.dart';
@@ -96,6 +97,7 @@ class _login_partState extends State<login_part> {
         SizedBox(
           height: 40.0,
         ),
+
         ButtonTheme(
           //로그인 성공시 홈화면으로 가게 해주는 네비게이터 버튼. 버튼클릭시
           //클릭시 로그인 성공여부를 확인해줄 로직 추가예정.
@@ -119,11 +121,14 @@ class _login_partState extends State<login_part> {
               String pw;
               DocumentSnapshot userData;
               try {
+
+                CustomCircular(context, '로그인 중...');
                 userData= await firestore.collection('users').doc(_idTextController.text).get();
                 id = userData['id'];
                 pw = userData['pw'];
                 if (id == _idTextController.text &&
                     pw == _pwTextController.text) {
+                  Navigator.pop(context);
                   Navigator.of(context)
                       .push(
                       MaterialPageRoute(builder: (BuildContext context) {
@@ -131,10 +136,12 @@ class _login_partState extends State<login_part> {
                       }));
                 }
                 else {
+                  Navigator.pop(context);
                   DialogShow(context, '회원정보가 잘못되었습니다.');
                 }
               }
               catch (e){
+                Navigator.pop(context);
                 DialogShow(context, '회원정보가 잘못되었습니다.');
               }
             },

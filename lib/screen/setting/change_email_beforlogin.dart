@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/screen/setting/change_email.dart';
@@ -73,12 +74,14 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
     String email;
     DocumentSnapshot userData;
     try {
+      CustomCircular(context, '로그인 중...');
       userData= await firestore.collection('users').doc(_idTextController.text).get();
       id = userData['id'];
       pw = userData['pw'];
       email = userData['email'];
       if (id == _idTextController.text &&
           pw == _passwordTextController.text) {
+        Navigator.pop(context);
         Navigator.of(context)
             .push(
             MaterialPageRoute(builder: (BuildContext context) {
@@ -86,17 +89,14 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
             }));
       }
       else {
+        Navigator.pop(context);
         DialogShow(context, '회원정보가 잘못되었습니다.');
       }
     }
     catch (e){
+      Navigator.pop(context);
       DialogShow(context, '회원정보가 잘못되었습니다.');
     }
-
-
-
-
-
   }
 }
 class ChangeEmailBtn extends StatelessWidget {
