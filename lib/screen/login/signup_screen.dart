@@ -18,12 +18,14 @@ class _signUpState extends State<signUp> {
   //각 텍스트 릴드의 값을 가지고 오기위한 텍스트컨트롤러 변수들
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   final TextEditingController _idTextController = TextEditingController();
+  final TextEditingController _schoolTextController = TextEditingController();
   final TextEditingController _pwTextController = TextEditingController();
   final TextEditingController _repwTextController = TextEditingController();
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _nicknameTextController = TextEditingController();
   final TextEditingController _realNameTextController = TextEditingController();
-  final TextEditingController _phoneNumberTextController = TextEditingController();
+  final TextEditingController _phoneNumberTextController =
+      TextEditingController();
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
@@ -55,8 +57,8 @@ class _signUpState extends State<signUp> {
                       ),
                       CustomButton(
                         istext: true,
-                        text : '중복체크',//text 가 false 면 버튼안에 내용이 화살표아이콘
-                        onPressed: onCheckPressed, //계정생성 버튼.
+                        text: '중복체크', //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        onPressed: onCheckIdPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 16),
                       CustomTextField(
@@ -84,15 +86,23 @@ class _signUpState extends State<signUp> {
                         Controller: _nicknameTextController,
                         textInputType: TextInputType.text,
                       ),
+                      CustomButton(
+                          text: '중복체크',
+                          istext: true,
+                          onPressed: onCheckNickNamePressed),
                       const SizedBox(height: 16),
                       CustomTextField(
                         label: '실명', // 학교인증용
                         Controller: _realNameTextController,
                         textInputType: TextInputType.text,
                       ),
-                      const SizedBox(
-                        height: 16,
+                      const SizedBox(height: 16),
+                      CustomTextField(
+                        label: '학교', // 학교인증용
+                        Controller: _schoolTextController,
+                        textInputType: TextInputType.text,
                       ),
+                      const SizedBox(height: 16),
                       CustomTextField(
                         label: 'Phone Number',
                         Controller: _phoneNumberTextController,
@@ -103,7 +113,7 @@ class _signUpState extends State<signUp> {
                       ),
                       const Text('● 이부분은 약관'),
                       CustomButton(
-                        text : '',
+                        text: '',
                         istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onSignUpPressed, //계정생성 버튼.
                       ),
@@ -118,51 +128,89 @@ class _signUpState extends State<signUp> {
       ),
     );
   }
+
   int _duplicationIdCheck = 0;
-  int _duplbtnchecker = 0;
-  void onCheckPressed() async{
+  int _duplbtnidchecker = 0;
+  int _duplicationNickCheck = 0;
+  int _duplbtnnickchecker = 0;
+  void onCheckIdPressed() async {
     DocumentSnapshot userData;
     try {
       CustomCircular(context, '중복 확인 중...');
-      userData= await firestore.collection('users').doc(_idTextController.text).get();
+      userData =
+          await firestore.collection('users').doc(_idTextController.text).get();
       if (_idTextController.text == userData['id']) {
         Navigator.pop(context);
         DialogShow(context, '중복된 아이디가 존재합니다.');
       }
-    }
-    catch (e){
+    } catch (e) {
       Navigator.pop(context);
       DialogShow(context, '사용 가능한 ID입니다.');
       _duplicationIdCheck = 1;
-      _duplbtnchecker = 1;
+      _duplbtnidchecker = 1;
     }
   }
-  void onSignUpPressed() {
-    if(_duplbtnchecker == 0) {
-      _duplicationIdCheck = 0;
-      _duplbtnchecker = 0;
-      DialogShow(context,'ID 중복체크를 진행해주세요.');
+
+  void onCheckNickNamePressed() async {
+    try {
+      CustomCircular(context, '중복 확인 중...');
+      await firestore.collection('users').snapshots().listen((data) {
+        data.docs.forEach((element) {
+          if (element['nick name'] == _nicknameTextController.text) {
+            Navigator.pop(context);
+            DialogShow(context, '중복된 닉네임이 존재합니다.');
+          }
+        });
+      });
+      Navigator.pop(context);
+      DialogShow(context, '사용 가능한 닉네임입니다.');
+      _duplicationNickCheck = 1;
+      _duplbtnnickchecker = 1;
+      /*if (_nicknameTextController.text == usernickCheck['nick name']) {
+        Navigator.pop(context);
+        DialogShow(context, '중복된 닉네임이 존재합니다.');
+      }*/
+    } catch (e) {
+      Navigator.pop(context);
+      DialogShow(context, '사용 가능한 닉네임입니다.');
+      _duplicationNickCheck = 1;
+      _duplbtnnickchecker = 1;
     }
-    else {
+  }
+
+  void onSignUpPressed() {
+    if (_duplbtnidchecker == 0) {
+      _duplicationIdCheck = 0;
+      _duplbtnidchecker = 0;
+      _duplicationNickCheck = 0;
+      _duplbtnnickchecker = 0;
+      print('여긴가');
+      DialogShow(context, '중복체크를 진행해주세요.');
+    } else {
       //_duplicationIdCheck = 0;
-      if (_duplicationIdCheck == 1 && _duplbtnchecker == 1) {
+      if (_duplicationIdCheck == 1 &&
+          _duplbtnidchecker == 1 &&
+          _duplicationNickCheck == 1 &&
+          _duplbtnnickchecker == 1) {
         createAccount();
       }
     }
   }
-void createAccount() {
+
+  void createAccount() async{
     if (formKey.currentState == null) {
       return;
     }
     if (formKey.currentState!.validate()) {
       //계정 생성버튼을 눌렀을때 이상이 없으면 파이어베이스 클라우드스토어에 유저 정보를 추가한다.
-      firestore.collection('users').doc(_idTextController.text).set({
+      CustomCircular(context, '회원가입 진행중...');
+      await firestore.collection('users').doc(_idTextController.text).set({
         'id': _idTextController.text,
         'pw': _pwTextController.text,
         'real name': _realNameTextController.text,
         'nick name': _nicknameTextController.text,
         'created Time': DateTime.now().toString(),
-        'my school': '',
+        'my school': _schoolTextController.text,
         'email': _emailTextController.text,
         'phone number': _phoneNumberTextController.text,
         'my post': [''],
@@ -178,5 +226,3 @@ void createAccount() {
     }
   }
 }
-
-//중복확인 버튼과 회원가입완료(화살표아이콘 버튼)을 정의한 stless 위젯.

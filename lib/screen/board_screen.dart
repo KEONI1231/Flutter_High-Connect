@@ -26,7 +26,7 @@ class BoardScreen extends StatelessWidget {
           SizedBox(
             height: 5.0,
           ),
-          Homestyle('B  EST 게시판'),
+          Homestyle('BEST 게시판'),
         ],
       ),
     ));
@@ -51,7 +51,8 @@ Widget Homestyle(String BoardName) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          BoardName, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+          BoardName,
+          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
         ),
       ],
     ),
