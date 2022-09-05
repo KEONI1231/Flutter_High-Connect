@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/setting/certified_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
 import 'package:per_pro/screen/setting/change_email_beforlogin.dart';
+import 'package:per_pro/screen/setting/change_nickname_beforeLogin.dart';
 import '../constant/color.dart';
 import 'setting/change_pw_screen.dart';
 
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  final User user;
+  const SettingScreen({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class SettingScreen extends StatelessWidget {
               const SizedBox(height: 32),
               Text('개인/계정 설정', style: ts),
               const SizedBox(height: 16),
-              PersonalCardSetting(),
+              PersonalAccountSetting(user: user),
               const SizedBox(height: 32),
               Text('앱 설정', style: ts),
               const SizedBox(height: 16),
@@ -173,8 +179,12 @@ class ProfileCard extends StatelessWidget {
   }
 }
 
-class PersonalCardSetting extends StatelessWidget {
-  const PersonalCardSetting({Key? key}) : super(key: key);
+class PersonalAccountSetting extends StatelessWidget {
+  final User user;
+  const PersonalAccountSetting({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +228,7 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ChangePassword();
+                  return ChangePassword(user: user);
                 }));
               },
               child: Text(
@@ -231,7 +241,7 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return ChangeEmailLogin();
+                  return ChangeEmailLogin(user: user);
                 }));
               },
               child: Text(
@@ -244,11 +254,11 @@ class PersonalCardSetting extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
-                  return signUp();
+                  return ChangeNickbeforLogin(user: user);
                 }));
               },
               child: Text(
-                '닉네임 설정',
+                '닉네임 변경',
                 style: ts,
               ),
             ),
@@ -422,29 +432,28 @@ class etcSetting extends StatelessWidget {
 
   Future _onPowerKey(context, ts) async {
     return await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: BRIGHT_COLOR,
-            title: Text('알림',style: ts),
-            content: Text('종료하시겠습니까?',style: ts),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  SystemChannels.platform
-                      .invokeListMethod('SystemNavigator.pop');
-                },
-                child: Text('예', style: ts),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('아니요', style: ts),
-              ),
-            ],
-          );
-        },
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: BRIGHT_COLOR,
+          title: Text('알림', style: ts),
+          content: Text('종료하시겠습니까?', style: ts),
+          actions: [
+            TextButton(
+              onPressed: () {
+                SystemChannels.platform.invokeListMethod('SystemNavigator.pop');
+              },
+              child: Text('예', style: ts),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('아니요', style: ts),
+            ),
+          ],
+        );
+      },
     );
   }
 }

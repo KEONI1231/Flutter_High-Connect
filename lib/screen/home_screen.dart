@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/constant/data.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/repository/meal_repository.dart';
 import 'package:per_pro/screen/board_screen.dart';
@@ -13,7 +13,11 @@ import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final User user;
+  const HomeScreen({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -32,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   fetchData() async {
     final mealModels = await MealRepository.fetchData();
-    
+
     print(mealModels);
   }
 
@@ -53,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return SettingScreen(); //세팅 화면으로 이동.
+                          return SettingScreen(user: widget.user); //세팅 화면으로 이동.
                         },
                       ),
                     );
@@ -73,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           extendBodyBehindAppBar: true, // add this line
-
           bottomNavigationBar: Container(
             color: BRIGHT_COLOR, //색상
             child: Container(

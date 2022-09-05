@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,34 +25,34 @@ class _login_screenState extends State<login_screen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: BRIGHT_COLOR,
+          backgroundColor: BRIGHT_COLOR,
           body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomAppBar(titleText: '로그인'),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Image.asset('asset/img/login_screen_logo.png'),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(48.0, 0, 48.0, 0),
-                  child: Column(
-                    children: [
-                      login_part(),
-                      bottom_part(
-                        //텍스트 버튼을 모아둔 봄
-                        onPressed_signup: onPressed_signup_btn, //회원가입 버튼
-                        onPressed_findaccount:
-                            onPressed_findaccount_btn, //아이디 찾기 버튼
+                CustomAppBar(titleText: '로그인'),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('asset/img/login_screen_logo.png'),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(48.0, 0, 48.0, 0),
+                      child: Column(
+                        children: [
+                          login_part(),
+                          bottom_part(
+                            //텍스트 버튼을 모아둔 봄
+                            onPressed_signup: onPressed_signup_btn, //회원가입 버튼
+                            onPressed_findaccount:
+                                onPressed_findaccount_btn, //아이디 찾기 버튼
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 
@@ -91,13 +89,18 @@ class _login_partState extends State<login_part> {
     bool? login_succ;
     return Column(
       children: [
-        CustomTextField(textInputType: TextInputType.text, Controller: _idTextController, label: 'ID입력'),
+        CustomTextField(
+            textInputType: TextInputType.text,
+            Controller: _idTextController,
+            label: 'ID입력'),
         SizedBox(height: 16.0),
-        CustomTextField(textInputType: TextInputType.visiblePassword, Controller: _pwTextController, label: 'PASSWORD 입력'),
+        CustomTextField(
+            textInputType: TextInputType.visiblePassword,
+            Controller: _pwTextController,
+            label: 'PASSWORD 입력'),
         SizedBox(
           height: 40.0,
         ),
-
         ButtonTheme(
           //로그인 성공시 홈화면으로 가게 해주는 네비게이터 버튼. 버튼클릭시
           //클릭시 로그인 성공여부를 확인해줄 로직 추가예정.
@@ -119,30 +122,71 @@ class _login_partState extends State<login_part> {
             onPressed: () async {
               String id;
               String pw;
+              List<String> myScrap = [];
+              List<String> myHeart = [];
+              List<String> myPost = [];
+              List<String> myRepl = [];
+              List<String> anonyMessage = [];
+              String nickName;
+              String realName;
+              String mySchool;
+              String email;
+              String phoneNumber;
+              int boolAdmin;
+              int boolCertificated;
+              String createdTime;
               DocumentSnapshot userData;
               try {
-
                 CustomCircular(context, '로그인 중...');
-                userData= await firestore.collection('users').doc(_idTextController.text).get();
+                userData = await firestore
+                    .collection('users')
+                    .doc(_idTextController.text)
+                    .get();
                 id = userData['id'];
                 pw = userData['pw'];
                 if (id == _idTextController.text &&
                     pw == _pwTextController.text) {
+                  nickName = userData['nick name'];
+                  realName = userData['real name'];
+                  mySchool = userData['my school'];
+                  email = userData['email'];
+                  phoneNumber = userData['phone number'];
+                  boolAdmin = userData['bool Admin'];
+                  boolCertificated = userData['bool certificated'];
+                  createdTime = userData['created Time'];
+                  myScrap.addAll((List.from(userData['my scrap'])));
+                  myHeart.addAll((List.from(userData['my heart'])));
+                  myPost.addAll((List.from(userData['my post'])));
+                  myRepl.addAll((List.from(userData['my repl'])));
+                  anonyMessage.addAll((List.from(userData['anony message'])));
+                  User user = new User(
+                      id,
+                      nickName,
+                      pw,
+                      realName,
+                      myScrap,
+                      myHeart,
+                      mySchool,
+                      email,
+                      phoneNumber,
+                      myPost,
+                      anonyMessage,
+                      boolAdmin,
+                      boolCertificated,
+                      createdTime,
+                      myRepl);
                   Navigator.pop(context);
                   Navigator.of(context)
-                      .push(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return HomeScreen();
-                      }));
-                }
-                else {
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return HomeScreen(user: user);
+                  }));
+                } else {
                   Navigator.pop(context);
                   DialogShow(context, '회원정보가 잘못되었습니다.');
                 }
-              }
-              catch (e){
+              } catch (e) {
                 Navigator.pop(context);
-                DialogShow(context, '회원정보가 잘못되었습니다.');
+                DialogShow(context, '시스템 에러');
               }
             },
           ),
@@ -184,4 +228,3 @@ class bottom_part extends StatelessWidget {
     );
   }
 }
-

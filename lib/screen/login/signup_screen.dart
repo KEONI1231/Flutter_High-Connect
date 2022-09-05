@@ -3,6 +3,7 @@ import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import '../../component/custom_button.dart';
 import '../../constant/color.dart';
 
@@ -122,12 +123,15 @@ class _signUpState extends State<signUp> {
   void onCheckPressed() async{
     DocumentSnapshot userData;
     try {
+      CustomCircular(context, '중복 확인 중...');
       userData= await firestore.collection('users').doc(_idTextController.text).get();
       if (_idTextController.text == userData['id']) {
+        Navigator.pop(context);
         DialogShow(context, '중복된 아이디가 존재합니다.');
       }
     }
     catch (e){
+      Navigator.pop(context);
       DialogShow(context, '사용 가능한 ID입니다.');
       _duplicationIdCheck = 1;
       _duplbtnchecker = 1;
@@ -161,11 +165,11 @@ void createAccount() {
         'my school': '',
         'email': _emailTextController.text,
         'phone number': _phoneNumberTextController.text,
-        'my post': '',
-        'my scrap': '',
-        'my heart': '',
-        'my repl': '',
-        'anony message': '',
+        'my post': [''],
+        'my scrap': [''],
+        'my heart': [''],
+        'my repl': [''],
+        'anony message': [''],
         'bool Admin': 1,
         'bool certificated': 1,
       });

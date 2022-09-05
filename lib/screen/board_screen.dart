@@ -26,7 +26,7 @@ class BoardScreen extends StatelessWidget {
           SizedBox(
             height: 5.0,
           ),
-          Homestyle('BEST 게시판'),
+          Homestyle('B  EST 게시판'),
         ],
       ),
     ));

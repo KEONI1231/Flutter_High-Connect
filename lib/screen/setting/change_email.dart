@@ -4,29 +4,28 @@ import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 
+import '../../component/circular_progress_indicator_dialog.dart';
 import '../../component/custom_button.dart';
 
-class test extends StatelessWidget {
-  final String id;
-  final String pw;
-  final String email;
-  const test({
-    required this.id,
-    required this.pw,
-    required this.email,
-    Key? key}) : super(key: key);
+class ChangeEmailScreen extends StatelessWidget {
+  final User user;
+  const ChangeEmailScreen({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(color: PRIMARY_COLOR, fontSize: 16);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children : [
-            CustomAppBar(titleText: '이메일 변경'),
-            const SizedBox(height: 24),
-            Container(
+        body: SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomAppBar(titleText: '이메일 변경'),
+          const SizedBox(height: 24),
+          Container(
               width: MediaQuery.of(context).size.width / 1.1,
               height: MediaQuery.of(context).size.height / 5,
               decoration: BoxDecoration(
@@ -41,24 +40,21 @@ class test extends StatelessWidget {
                 ],
               ),
               child: Center(
-                child: Text('현재 이메일 : $email',style : ts),
-              )
-            ),
-            ChangeEmail(id : id,email : email),
-          ],
-        ),
-      )
-    );
+                child: Text('현재 이메일 : ${user.email}', style: ts),
+              )),
+          ChangeEmail(user: user),
+        ],
+      ),
+    ));
   }
 }
 
 class ChangeEmail extends StatefulWidget {
-  final String email;
-  final String id;
+  final User user;
   const ChangeEmail({
-    required this.id,
-    required this.email,
-  Key? key}) : super(key: key);
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ChangeEmail> createState() => _ChangeEmailState();
@@ -82,7 +78,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   Controller: _newEmailController,
                   label: '새 이메일',
                 ),
-                CustomButton(text: '변경', istext: false, onPressed: onemailChangeBtn)
+                CustomButton(
+                    text: '변경', istext: false, onPressed: onmailChangeBtn)
               ],
             ),
           ),
@@ -90,23 +87,25 @@ class _ChangeEmailState extends State<ChangeEmail> {
       ],
     );
   }
-  void onemailChangeBtn() async{
+
+  void onmailChangeBtn() async {
     if (formKey.currentState == null) {
       return;
     }
     if (formKey.currentState!.validate()) {
       try {
-        //CustomCircular(context, '이메일 변경중...');
-        await FirebaseFirestore.instance.
-        collection('users')
-            .doc(widget.id)
-            .update({'email' : _newEmailController.text});
-        //Navigator.pop(context);
+        CustomCircular(context, '이메일 변경중...');
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.user.ID)
+            .update({'email': _newEmailController.text});
+        Navigator.pop(context);
         for (int i = 0; i < 2; i++) {
           Navigator.pop(context); //계정확인 화면에서
         }
+        widget.user.email = _newEmailController.text;
         DialogShow(context, '이메일 변경을 완료하였습니다.');
-      }catch(e) {
+      } catch (e) {
         //Navigator.pop(context);
         Navigator.pop(context);
         DialogShow(context, '이메일 변경을 실패하였습니다.');

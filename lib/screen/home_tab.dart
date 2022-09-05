@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/boards/free_board.dart';
 import 'package:per_pro/screen/boards/love_board.dart';
 import 'package:per_pro/screen/boards/meal_board.dart';
@@ -8,7 +9,9 @@ import 'package:per_pro/screen/boards/study_board.dart';
 import '../component/meal_info.dart';
 
 class HomeTab extends StatelessWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
