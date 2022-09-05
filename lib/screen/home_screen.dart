@@ -8,6 +8,7 @@ import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/repository/meal_repository.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
+import 'package:per_pro/screen/setting/alarm_screen.dart';
 import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
@@ -65,9 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
               HomeTab(),
               WordCloudBoard(),
               BoardScreen(),
-              Center(
-                child: Text("settings"),
-              ),
+              alarmscreen(),
               Center(
                 child: Text("Letter/Notification"),
               ),
