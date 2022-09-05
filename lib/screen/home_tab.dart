@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/firebase_database_model/user.dart';
+import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/screen/boards/free_board.dart';
 import 'package:per_pro/screen/boards/love_board.dart';
 import 'package:per_pro/screen/boards/meal_board.dart';
@@ -9,16 +9,16 @@ import 'package:per_pro/screen/boards/study_board.dart';
 import '../component/meal_info.dart';
 
 class HomeTab extends StatelessWidget {
-  const HomeTab({
-    Key? key,
-  }) : super(key: key);
+  final MealModel meal;
+
+  const HomeTab({required this.meal, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _HomeMeal(),
+          _HomeMeal(meal: meal,),
           Column(
             children: [
               _HomeWordCloud(),
@@ -33,7 +33,9 @@ class HomeTab extends StatelessWidget {
 }
 
 class _HomeMeal extends StatelessWidget {
-  const _HomeMeal({Key? key}) : super(key: key);
+  final MealModel meal;
+
+  const _HomeMeal({required this.meal, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _HomeMeal extends StatelessWidget {
       children: [
         SafeArea(
           child: SizedBox(
-            height: 80,
+            height: 240,
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -91,7 +93,7 @@ class _HomeMeal extends StatelessWidget {
                                     .padLeft(2, '0') +
                                 '-' +
                                 DateTime.now().day.toString().padLeft(2, '0'),
-                            meal: index % 2 == 0 ? '스윙스' : '돈가스',
+                            meal: meal.DDISH_NM
                           ),
                         ),
                       ),
@@ -164,6 +166,7 @@ class _HomeBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           GestureDetector(
             onTap: () {

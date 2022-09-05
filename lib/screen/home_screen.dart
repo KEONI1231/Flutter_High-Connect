@@ -26,18 +26,11 @@ class HomeScreen extends StatefulWidget {
 // 이 스크린이 메인 우리가 구현해야할 화면들임. 스와이프하면 옆 화면으로 이동함.
 // 하단 네브바에 메뉴 6개넣으니까 너무 좁아 보여서 설정창은 앱바의 우측으로 뺐음.
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    fetchData();
-  }
-
-  fetchData() async {
+  Future<List<MealModel>> fetchData() async {
     final mealModels = await MealRepository.fetchData();
 
-    print(mealModels);
+    return mealModels;
+
   }
 
   @override
@@ -65,16 +58,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(Icons.settings))
             ],
           ),
-          body: TabBarView(
-            children: [
-              HomeTab(),
-              WordCloudBoard(),
-              BoardScreen(),
-              alarmscreen(),
-              Center(
-                child: Text("Letter/Notification"),
-              ),
-            ],
+          body: FutureBuilder<List<MealModel>>(
+              future: fetchData(),
+              builder: (context, snapshot) {
+                if(snapshot.hasError){
+                  return Center(
+                    child: Text('에러가 있습니다'),
+                  );
+                }
+
+                if(!snapshot.hasData){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                List<MealModel> meals = snapshot.data!;
+                MealModel recentMeal = meals[0];
+                print(recentMeal.DDISH_NM);
+
+                return TabBarView(
+                  children: [
+                    HomeTab(
+                      meal: recentMeal,
+                    ),
+                    WordCloudBoard(),
+                    BoardScreen(),
+                    Center(
+                      child: Text("settings"),
+                    ),
+                    Center(
+                      child: Text("Letter/Notification"),
+                    ),
+                  ],
+                );
+              }
           ),
           extendBodyBehindAppBar: true, // add this line
           bottomNavigationBar: Container(
