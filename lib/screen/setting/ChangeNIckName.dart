@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-
 import '../../component/account_textfield.dart';
 import '../../component/alert_dialog.dart';
 import '../../component/appbar.dart';
@@ -50,7 +49,8 @@ class _ChangeNickNameState extends State<ChangeNickName> {
               ChangeEmail(user: widget.user),
             ],
           ),
-        ));
+        ),
+    );
   }
 }
 
