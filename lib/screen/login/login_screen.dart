@@ -119,7 +119,7 @@ class _login_partState extends State<login_part> {
               color: Colors.white,
               size: 35.0,
             ),
-            onPressed: () async {
+            onPressed: () async { // 1. 전체 다 읽어오기, 2. 특정 필요한 부분만 읽어오기.
               String id;
               String pw;
               List<String> myScrap = [];
@@ -136,7 +136,7 @@ class _login_partState extends State<login_part> {
               int boolCertificated;
               String createdTime;
               DocumentSnapshot userData;
-              try {
+              try {  // try catch.
                 CustomCircular(context, '로그인 중...');
                 userData = await firestore
                     .collection('users')
@@ -178,6 +178,7 @@ class _login_partState extends State<login_part> {
                   Navigator.pop(context);
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
+                        print(user.mySchool);
                     return HomeScreen(user: user);
                   }));
                 } else {

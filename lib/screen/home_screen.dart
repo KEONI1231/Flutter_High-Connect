@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: TabBarView(
             children: [
-              HomeTab(),
+              HomeTab(user: widget.user),
               WordCloudBoard(),
               BoardScreen(),
               alarmscreen(),

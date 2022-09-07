@@ -9,7 +9,9 @@ import 'package:per_pro/screen/boards/study_board.dart';
 import '../component/meal_info.dart';
 
 class HomeTab extends StatelessWidget {
+  final User user;
   const HomeTab({
+    required this.user,
     Key? key,
   }) : super(key: key);
 
@@ -18,7 +20,7 @@ class HomeTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _HomeMeal(),
+          _HomeMeal(user: user),
           Column(
             children: [
               _HomeWordCloud(),
@@ -33,7 +35,11 @@ class HomeTab extends StatelessWidget {
 }
 
 class _HomeMeal extends StatelessWidget {
-  const _HomeMeal({Key? key}) : super(key: key);
+  final User user;
+  const _HomeMeal({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +72,7 @@ class _HomeMeal extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          '급식',
+                          user.mySchool,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
