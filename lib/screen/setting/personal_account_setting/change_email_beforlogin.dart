@@ -1,25 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
+import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/setting/ChangeNIckName.dart';
-import 'package:per_pro/screen/setting/change_email.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_email.dart';
 
-import '../../component/account_textfield.dart';
-import '../../component/alert_dialog.dart';
-import '../../constant/color.dart';
+import '../../../component/alert_dialog.dart';
 
-class ChangeNickbeforLogin extends StatefulWidget {
+class ChangeEmailLogin extends StatefulWidget {
   final User user;
-  const ChangeNickbeforLogin({
+  const ChangeEmailLogin({
     required this.user,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ChangeNickbeforLogin> createState() => _ChangeNickbeforLoginState();
+  State<ChangeEmailLogin> createState() => _ChangeEmailLoginState();
 }
 
-class _ChangeNickbeforLoginState extends State<ChangeNickbeforLogin> {
+class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
   final TextEditingController _idTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   @override
@@ -50,7 +51,10 @@ class _ChangeNickbeforLoginState extends State<ChangeNickbeforLogin> {
                       label: '계정 비밀번호',
                     ),
                     const SizedBox(height: 24),
-                    ChangeEmailBtn(text: '계정 확인', onChangeEmail: onChangeNickName),
+                    ChangeEmailBtn(
+                      text: '계정 확인',
+                      onChangeEmail: onChangeEmail,
+                    ),
                   ],
                 ),
               )
@@ -61,7 +65,7 @@ class _ChangeNickbeforLoginState extends State<ChangeNickbeforLogin> {
     );
   }
 
-  void onChangeNickName() async {
+  void onChangeEmail() async {
     String id;
     String pw;
     try {
@@ -71,7 +75,7 @@ class _ChangeNickbeforLoginState extends State<ChangeNickbeforLogin> {
         Navigator.pop(context);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return ChangeNickName(user:  widget.user);
+          return ChangeEmailScreen(user:  widget.user);
         }));
       } else {
         Navigator.pop(context);
@@ -83,7 +87,6 @@ class _ChangeNickbeforLoginState extends State<ChangeNickbeforLogin> {
     }
   }
 }
-
 
 class ChangeEmailBtn extends StatelessWidget {
   final VoidCallback onChangeEmail;

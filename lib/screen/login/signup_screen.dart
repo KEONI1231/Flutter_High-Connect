@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
@@ -80,6 +81,7 @@ class _signUpState extends State<signUp> {
                         Controller: _emailTextController,
                         textInputType: TextInputType.emailAddress,
                       ),
+                      CustomButton(text: '이메일 인증', istext: false, onPressed: onEmailSend),
                       const SizedBox(height: 16),
                       CustomTextField(
                         label: '닉네임',
@@ -133,6 +135,7 @@ class _signUpState extends State<signUp> {
   int _duplbtnidchecker = 0;
   int _duplicationNickCheck = 1;
   int _duplbtnnickchecker = 0;
+  String userEmail = '';
   void onCheckIdPressed() async {
     DocumentSnapshot userData;
     try {
@@ -186,6 +189,9 @@ class _signUpState extends State<signUp> {
     }
   }
 
+//  c  r   u   d
+
+
   void createAccount() async {
     if (formKey.currentState == null) {
       return;
@@ -210,9 +216,19 @@ class _signUpState extends State<signUp> {
         'bool Admin': 1,
         'bool certificated': 1,
       });
+      userEmail = _emailTextController.text;
       Navigator.pop(context);
       Navigator.pop(context);
       DialogShow(context, '회원가입이 완료되었습니다.');
     }
+  }
+  void onEmailSend() async {
+    final Email email = Email(
+      body: 'email body1',
+      subject: 'email subject',
+      recipients: [userEmail],
+      isHTML: false,
+    );
+    await FlutterEmailSender.send(email);
   }
 }

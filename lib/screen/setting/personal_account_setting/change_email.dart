@@ -6,8 +6,8 @@ import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 
-import '../../component/circular_progress_indicator_dialog.dart';
-import '../../component/custom_button.dart';
+import '../../../component/circular_progress_indicator_dialog.dart';
+import '../../../component/custom_button.dart';
 
 class ChangeEmailScreen extends StatelessWidget {
   final User user;
