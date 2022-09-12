@@ -55,7 +55,7 @@ class _HomeMeal extends StatelessWidget {
       children: [
         SafeArea(
           child: SizedBox(
-            height: 240,
+            height: 250,
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -105,7 +105,10 @@ class _HomeMeal extends StatelessWidget {
                                       .padLeft(2, '0') +
                                   '-' +
                                   DateTime.now().day.toString().padLeft(2, '0'),
-                              meal: meal.DDISH_NM),
+                              meal: meal.DDISH_NM
+                                  .replaceAll(RegExp('<br/>'), '')
+                                  .replaceAll(RegExp('[0-9.()*]'), '')
+                                  .replaceAll(RegExp(' '), '\n')),
                         ),
                       ),
                     ),
@@ -219,7 +222,7 @@ class HomeBoard extends StatelessWidget {
                       child: Text(
                         '자유 게시판에 올라온 최근 게시물',
                         style: tsContent,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -235,7 +238,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '워드클라우드 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       //softWrap: true,
                     ),
@@ -251,7 +254,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -266,7 +269,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '급식 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -281,7 +284,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
