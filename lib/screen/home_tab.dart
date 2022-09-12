@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/firebase_database_model/user.dart';
+import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/screen/boards/free_board.dart';
 import 'package:per_pro/screen/boards/love_board.dart';
 import 'package:per_pro/screen/boards/meal_board.dart';
 import 'package:per_pro/screen/boards/study_board.dart';
 
 import '../component/meal_info.dart';
+import '../firebase_database_model/user.dart';
 
 class HomeTab extends StatelessWidget {
+  final MealModel meal;
   final loginUser user;
+
   const HomeTab({
+    required this.meal,
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -20,7 +24,10 @@ class HomeTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _HomeMeal(user: user),
+          _HomeMeal(
+            meal: meal,
+            user: user,
+          ),
           Column(
             children: [
               _HomeWordCloud(),
@@ -35,8 +42,11 @@ class HomeTab extends StatelessWidget {
 }
 
 class _HomeMeal extends StatelessWidget {
+  final MealModel meal;
   final loginUser user;
+
   const _HomeMeal({
+    required this.meal,
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -47,7 +57,7 @@ class _HomeMeal extends StatelessWidget {
       children: [
         SafeArea(
           child: SizedBox(
-            height: 80,
+            height: 240,
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -72,7 +82,7 @@ class _HomeMeal extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          user.mySchool,
+                          user.mySchool + ' 급식',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -88,17 +98,16 @@ class _HomeMeal extends StatelessWidget {
                         children: List.generate(
                           20,
                           (index) => MealInfo(
-                            width: constraint.maxWidth / 3,
-                            mealdate: (DateTime.now().year.toString()) +
-                                '-' +
-                                DateTime.now()
-                                    .month
-                                    .toString()
-                                    .padLeft(2, '0') +
-                                '-' +
-                                DateTime.now().day.toString().padLeft(2, '0'),
-                            meal: index % 2 == 0 ? '스윙스' : '돈가스',
-                          ),
+                              width: constraint.maxWidth / 3,
+                              mealdate: (DateTime.now().year.toString()) +
+                                  '-' +
+                                  DateTime.now()
+                                      .month
+                                      .toString()
+                                      .padLeft(2, '0') +
+                                  '-' +
+                                  DateTime.now().day.toString().padLeft(2, '0'),
+                              meal: meal.DDISH_NM),
                         ),
                       ),
                     ),
@@ -170,6 +179,7 @@ class _HomeBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           GestureDetector(
             onTap: () {
