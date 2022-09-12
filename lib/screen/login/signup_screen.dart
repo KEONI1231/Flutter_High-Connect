@@ -57,7 +57,7 @@ class _signUpState extends State<signUp> {
                       ),
                       CustomButton(
                         istext: true,
-                        text: '중복체크', //text 가 false 면 버튼안에 내용이 화살표아이콘
+                        text: 'ID 중복체크', //text 가 false 면 버튼안에 내용이 화살표아이콘
                         onPressed: onCheckIdPressed, //계정생성 버튼.
                       ),
                       const SizedBox(height: 16),
@@ -87,7 +87,7 @@ class _signUpState extends State<signUp> {
                         textInputType: TextInputType.text,
                       ),
                       CustomButton(
-                          text: '중복체크',
+                          text: '닉네임 중복체크',
                           istext: true,
                           onPressed: onCheckNickNamePressed),
                       const SizedBox(height: 16),
@@ -131,7 +131,7 @@ class _signUpState extends State<signUp> {
 
   int _duplicationIdCheck = 0;
   int _duplbtnidchecker = 0;
-  int _duplicationNickCheck = 0;
+  int _duplicationNickCheck = 1;
   int _duplbtnnickchecker = 0;
   void onCheckIdPressed() async {
     DocumentSnapshot userData;
@@ -151,26 +151,22 @@ class _signUpState extends State<signUp> {
     }
   }
 
+  int checker = 0;
   void onCheckNickNamePressed() async {
-    try {
-      CustomCircular(context, '중복 확인 중...');
-      await firestore.collection('users').snapshots().listen((data) {
-        data.docs.forEach((element) {
-          if (element['nick name'] == _nicknameTextController.text) {
-            Navigator.pop(context);
-            DialogShow(context, '중복된 닉네임이 존재합니다.');
-          }
-        });
+    CustomCircular(context, '중복 확인 중...');
+    await firestore.collection('users').snapshots().listen((data) {
+      data.docs.forEach((element) {
+        if (element['nick name'] == _nicknameTextController.text) {
+          _duplicationNickCheck = 0;
+          _duplbtnnickchecker = 0;
+          Navigator.pop(context);
+          DialogShow(context, '중복된 닉네임이 존재합니다.');
+          return;
+        } else
+          _duplicationNickCheck = 1;
       });
-      Navigator.pop(context);
-      DialogShow(context, '사용 가능한 닉네임입니다.');
-      _duplicationNickCheck = 1;
-      _duplbtnnickchecker = 1;
-      /*if (_nicknameTextController.text == usernickCheck['nick name']) {
-        Navigator.pop(context);
-        DialogShow(context, '중복된 닉네임이 존재합니다.');
-      }*/
-    } catch (e) {
+    });
+    if (_duplicationNickCheck != 0) {
       Navigator.pop(context);
       DialogShow(context, '사용 가능한 닉네임입니다.');
       _duplicationNickCheck = 1;
@@ -179,25 +175,18 @@ class _signUpState extends State<signUp> {
   }
 
   void onSignUpPressed() {
-    if (_duplbtnidchecker == 0) {
-      _duplicationIdCheck = 0;
-      _duplbtnidchecker = 0;
-      _duplicationNickCheck = 0;
-      _duplbtnnickchecker = 0;
-      print('여긴가');
-      DialogShow(context, '중복체크를 진행해주세요.');
+    //_duplicationIdCheck = 0;
+    if (_duplicationIdCheck == 1 &&
+        _duplbtnidchecker == 1 &&
+        _duplicationNickCheck == 1 &&
+        _duplbtnnickchecker == 1) {
+      createAccount();
     } else {
-      //_duplicationIdCheck = 0;
-      if (_duplicationIdCheck == 1 &&
-          _duplbtnidchecker == 1 &&
-          _duplicationNickCheck == 1 &&
-          _duplbtnnickchecker == 1) {
-        createAccount();
-      }
+      DialogShow(context, '중복체크를 진행해주세요.');
     }
   }
 
-  void createAccount() async{
+  void createAccount() async {
     if (formKey.currentState == null) {
       return;
     }
@@ -221,6 +210,7 @@ class _signUpState extends State<signUp> {
         'bool Admin': 1,
         'bool certificated': 1,
       });
+      Navigator.pop(context);
       Navigator.pop(context);
       DialogShow(context, '회원가입이 완료되었습니다.');
     }

@@ -81,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     HomeTab(
                       meal: recentMeal,
+                      user: widget.user,
                     ),
                     WordCloudBoard(),
                     BoardScreen(),

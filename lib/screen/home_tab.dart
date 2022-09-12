@@ -7,18 +7,27 @@ import 'package:per_pro/screen/boards/meal_board.dart';
 import 'package:per_pro/screen/boards/study_board.dart';
 
 import '../component/meal_info.dart';
+import '../firebase_database_model/user.dart';
 
 class HomeTab extends StatelessWidget {
   final MealModel meal;
+  final User user;
 
-  const HomeTab({required this.meal, Key? key}) : super(key: key);
+  const HomeTab({
+    required this.meal,
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          _HomeMeal(meal: meal,),
+          _HomeMeal(
+            meal: meal,
+            user: user,
+          ),
           Column(
             children: [
               _HomeWordCloud(),
@@ -34,8 +43,13 @@ class HomeTab extends StatelessWidget {
 
 class _HomeMeal extends StatelessWidget {
   final MealModel meal;
+  final User user;
 
-  const _HomeMeal({required this.meal, Key? key}) : super(key: key);
+  const _HomeMeal({
+    required this.meal,
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +82,7 @@ class _HomeMeal extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          '급식',
+                          user.mySchool + ' 급식',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
@@ -84,17 +98,16 @@ class _HomeMeal extends StatelessWidget {
                         children: List.generate(
                           20,
                           (index) => MealInfo(
-                            width: constraint.maxWidth / 3,
-                            mealdate: (DateTime.now().year.toString()) +
-                                '-' +
-                                DateTime.now()
-                                    .month
-                                    .toString()
-                                    .padLeft(2, '0') +
-                                '-' +
-                                DateTime.now().day.toString().padLeft(2, '0'),
-                            meal: meal.DDISH_NM
-                          ),
+                              width: constraint.maxWidth / 3,
+                              mealdate: (DateTime.now().year.toString()) +
+                                  '-' +
+                                  DateTime.now()
+                                      .month
+                                      .toString()
+                                      .padLeft(2, '0') +
+                                  '-' +
+                                  DateTime.now().day.toString().padLeft(2, '0'),
+                              meal: meal.DDISH_NM),
                         ),
                       ),
                     ),
