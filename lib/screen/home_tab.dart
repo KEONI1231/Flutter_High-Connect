@@ -209,7 +209,6 @@ class HomeBoard extends StatelessWidget {
                   Text('자유 게시판', style: ts),
                   SizedBox(width: 24),
                   Flexible(
-                    flex: 1,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -249,7 +248,6 @@ class HomeBoard extends StatelessWidget {
                   Text('연애 게시판', style: ts),
                   SizedBox(width: 24),
                   Flexible(
-                    flex: 1,
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,
@@ -265,7 +263,6 @@ class HomeBoard extends StatelessWidget {
                   Text('급식 게시판', style: ts),
                   SizedBox(width: 24),
                   Flexible(
-                    flex: 1,
                     child: Text(
                       '급식 게시판에 올라온 최근 게시물',
                       style: tsContent,
@@ -281,7 +278,6 @@ class HomeBoard extends StatelessWidget {
                   Text('연애 게시판', style: ts),
                   SizedBox(width: 24),
                   Flexible(
-                    flex: 1,
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,

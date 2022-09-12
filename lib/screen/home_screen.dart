@@ -8,6 +8,8 @@ import 'package:per_pro/screen/home_tab.dart';
 import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
+import 'boards/alarm_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   final loginUser user;
   const HomeScreen({
@@ -84,9 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Center(
                       child: Text("settings"),
                     ),
-                    Center(
-                      child: Text("Letter/Notification"),
-                    ),
+                    alarmscreen(),
                   ],
                 );
               }
