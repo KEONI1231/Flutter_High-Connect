@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -6,6 +7,7 @@ import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
+import 'package:per_pro/component/custom_button.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/main.dart';
@@ -158,7 +160,7 @@ class _login_partState extends State<login_part> {
                     myPost.addAll((List.from(userData['my post'])));
                     myRepl.addAll((List.from(userData['my repl'])));
                     anonyMessage.addAll((List.from(userData['anony message'])));
-                    User user = new User(
+                    loginUser user = new loginUser(
                         id,
                         nickName,
                         pw,
@@ -230,4 +232,5 @@ class bottom_part extends StatelessWidget {
       ],
     );
   }
+
 }

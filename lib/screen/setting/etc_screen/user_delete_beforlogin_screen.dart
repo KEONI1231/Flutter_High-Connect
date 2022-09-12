@@ -1,31 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
-import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
+import 'package:per_pro/component/custom_button.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/setting/personal_account_setting/change_email.dart';
+import 'package:per_pro/screen/setting/etc_screen/user_delete_screen.dart';
 
+import '../../../component/account_textfield.dart';
 import '../../../component/alert_dialog.dart';
+import '../personal_account_setting/change_email_beforlogin.dart';
 
-class ChangeEmailLogin extends StatefulWidget {
+class DeleteAccount extends StatefulWidget {
   final loginUser user;
-  const ChangeEmailLogin({
+  const DeleteAccount({
     required this.user,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ChangeEmailLogin> createState() => _ChangeEmailLoginState();
+  State<DeleteAccount> createState() => _DeleteAccountState();
 }
 
-class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
+class _DeleteAccountState extends State<DeleteAccount> {
   final TextEditingController _idTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final ts = TextStyle(color: PRIMARY_COLOR);
     return Scaffold(
       backgroundColor: BRIGHT_COLOR,
       body: SafeArea(
@@ -53,7 +53,7 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
                     const SizedBox(height: 24),
                     ChangeEmailBtn(
                       text: '계정 확인',
-                      onChangeEmail: onChangeEmail,
+                      onChangeEmail: DeleteAccountBtn,
                     ),
                   ],
                 ),
@@ -65,17 +65,14 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
     );
   }
 
-  void onChangeEmail() async {
-    String id;
-    String pw;
+  void DeleteAccountBtn() {
     try {
-      id = _idTextController.text;
-      pw = _idTextController.text;
-      if (widget.user.ID == _idTextController.text && widget.user.PW == _passwordTextController.text) {
+      if (widget.user.ID == _idTextController.text &&
+          widget.user.PW == _passwordTextController.text) {
         Navigator.pop(context);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return ChangeEmailScreen(user:  widget.user);
+          return UserDelete(user: widget.user);
         }));
       } else {
         Navigator.pop(context);
@@ -85,32 +82,5 @@ class _ChangeEmailLoginState extends State<ChangeEmailLogin> {
       Navigator.pop(context);
       DialogShow(context, '시스템 에러');
     }
-  }
-}
-
-class ChangeEmailBtn extends StatelessWidget {
-  final VoidCallback onChangeEmail;
-  final String text;
-  const ChangeEmailBtn({
-    required this.text,
-    required this.onChangeEmail,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton(
-        onPressed: onChangeEmail,
-        child: Text(text),
-        style: ElevatedButton.styleFrom(
-          primary: PRIMARY_COLOR,
-          minimumSize: Size(150, 40),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-      ),
-    );
   }
 }

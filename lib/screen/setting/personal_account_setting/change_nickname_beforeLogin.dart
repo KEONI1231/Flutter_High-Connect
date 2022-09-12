@@ -9,7 +9,7 @@ import '../../../component/alert_dialog.dart';
 import '../../../constant/color.dart';
 
 class ChangeNickbeforLogin extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeNickbeforLogin({
     required this.user,
     Key? key,

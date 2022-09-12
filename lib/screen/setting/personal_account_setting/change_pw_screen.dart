@@ -9,7 +9,7 @@ import 'package:per_pro/constant/color.dart';
 import '../../../firebase_database_model/user.dart';
 
 class ChangePassword extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangePassword({
     required this.user,
     Key? key,

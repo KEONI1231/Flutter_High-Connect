@@ -9,7 +9,7 @@ import 'package:per_pro/screen/boards/study_board.dart';
 import '../component/meal_info.dart';
 
 class HomeTab extends StatelessWidget {
-  final User user;
+  final loginUser user;
   const HomeTab({
     required this.user,
     Key? key,
@@ -35,7 +35,7 @@ class HomeTab extends StatelessWidget {
 }
 
 class _HomeMeal extends StatelessWidget {
-  final User user;
+  final loginUser user;
   const _HomeMeal({
     required this.user,
     Key? key,

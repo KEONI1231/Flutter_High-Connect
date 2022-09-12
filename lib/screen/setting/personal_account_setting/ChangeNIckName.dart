@@ -9,7 +9,7 @@ import '../../../component/custom_button.dart';
 import '../../../constant/color.dart';
 
 class ChangeNickName extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeNickName({
     required this.user,
     Key? key,
@@ -55,7 +55,7 @@ class _ChangeNickNameState extends State<ChangeNickName> {
 }
 
 class ChangeEmail extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeEmail({
     required this.user,
     Key? key,

@@ -8,7 +8,7 @@ import '../../../component/send_mail_custom_textfield.dart';
 import '../../../constant/color.dart';
 
 class Inquiry extends StatefulWidget {
-  final User user;
+  final loginUser user;
   final BoxDecoration ContainerDecoration;
 
   const Inquiry({

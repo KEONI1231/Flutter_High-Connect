@@ -13,7 +13,7 @@ import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const HomeScreen({
     required this.user,
     Key? key,
