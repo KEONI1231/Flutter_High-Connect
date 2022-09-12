@@ -8,12 +8,12 @@ import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/repository/meal_repository.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
-import 'package:per_pro/screen/setting/alarm_screen.dart';
+import 'package:per_pro/screen/boards/alarm_screen.dart';
 import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 
 class HomeScreen extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const HomeScreen({
     required this.user,
     Key? key,

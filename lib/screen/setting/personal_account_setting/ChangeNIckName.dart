@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import '../../component/account_textfield.dart';
-import '../../component/alert_dialog.dart';
-import '../../component/appbar.dart';
-import '../../component/circular_progress_indicator_dialog.dart';
-import '../../component/custom_button.dart';
-import '../../constant/color.dart';
+import '../../../component/account_textfield.dart';
+import '../../../component/alert_dialog.dart';
+import '../../../component/appbar.dart';
+import '../../../component/circular_progress_indicator_dialog.dart';
+import '../../../component/custom_button.dart';
+import '../../../constant/color.dart';
 
 class ChangeNickName extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeNickName({
     required this.user,
     Key? key,
@@ -55,7 +55,7 @@ class _ChangeNickNameState extends State<ChangeNickName> {
 }
 
 class ChangeEmail extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeEmail({
     required this.user,
     Key? key,

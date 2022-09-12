@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class User {
+class loginUser {
   String ID;
   String PW;
   String realName;
@@ -20,7 +20,7 @@ class User {
   int boolAdmin;
   int boolCertificated;
 
-  User(
+  loginUser(
     this.ID,
     this.nickName,
     this.PW,
@@ -38,7 +38,7 @@ class User {
     this.myRepl, //15
   );
 
-  User.fromSnapshot(DataSnapshot snapshot)
+  loginUser.fromSnapshot(DataSnapshot snapshot)
       : ID = (snapshot.value! as Map<String, dynamic>)['ID'],
         PW = (snapshot.value! as Map<String, dynamic>)['PW'],
         realName = (snapshot.value! as Map<String, dynamic>)['realName'],

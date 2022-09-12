@@ -11,7 +11,7 @@ import '../firebase_database_model/user.dart';
 
 class HomeTab extends StatelessWidget {
   final MealModel meal;
-  final User user;
+  final loginUser user;
 
   const HomeTab({
     required this.meal,
@@ -43,7 +43,7 @@ class HomeTab extends StatelessWidget {
 
 class _HomeMeal extends StatelessWidget {
   final MealModel meal;
-  final User user;
+  final loginUser user;
 
   const _HomeMeal({
     required this.meal,

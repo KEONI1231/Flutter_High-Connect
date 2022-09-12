@@ -5,12 +5,12 @@ import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/setting/change_email.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_email.dart';
 
-import '../../component/alert_dialog.dart';
+import '../../../component/alert_dialog.dart';
 
 class ChangeEmailLogin extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeEmailLogin({
     required this.user,
     Key? key,

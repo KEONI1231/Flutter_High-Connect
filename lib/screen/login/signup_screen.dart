@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:per_pro/component/alert_dialog.dart';
@@ -26,8 +28,10 @@ class _signUpState extends State<signUp> {
   final TextEditingController _realNameTextController = TextEditingController();
   final TextEditingController _phoneNumberTextController =
       TextEditingController();
+
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -133,6 +137,8 @@ class _signUpState extends State<signUp> {
   int _duplbtnidchecker = 0;
   int _duplicationNickCheck = 1;
   int _duplbtnnickchecker = 0;
+  String userEmail = '';
+
   void onCheckIdPressed() async {
     DocumentSnapshot userData;
     try {
@@ -152,18 +158,18 @@ class _signUpState extends State<signUp> {
   }
 
   int checker = 0;
+
   void onCheckNickNamePressed() async {
-    CustomCircular(context, '중복 확인 중...');
-    await firestore.collection('users').snapshots().listen((data) {
+    /*await firestore.collection('users').snapshots().listen((data) {
       data.docs.forEach((element) {
+        print(element['nick name']);
         if (element['nick name'] == _nicknameTextController.text) {
           _duplicationNickCheck = 0;
           _duplbtnnickchecker = 0;
           Navigator.pop(context);
           DialogShow(context, '중복된 닉네임이 존재합니다.');
-          return;
-        } else
-          _duplicationNickCheck = 1;
+          print(element['nick name']);
+        }
       });
     });
     if (_duplicationNickCheck != 0) {
@@ -171,11 +177,36 @@ class _signUpState extends State<signUp> {
       DialogShow(context, '사용 가능한 닉네임입니다.');
       _duplicationNickCheck = 1;
       _duplbtnnickchecker = 1;
+    }*/
+    String nickName = '';
+    try {
+      CustomCircular(context, '중복 확인 중...');
+      await firestore
+          .collection('users')
+          .where('nick name', isEqualTo: _nicknameTextController.text)
+          .get()
+          .then((QuerySnapshot data) {
+        data.docs.forEach((element) {
+          nickName = element['nick name'];
+        });
+      });
+      Navigator.pop(context);
+      if (nickName == _nicknameTextController.text) {
+        DialogShow(context, '중복된 닉네임이 존재합니다.');
+        _duplicationNickCheck = 0;
+        _duplbtnnickchecker = 0;
+      } else {
+        DialogShow(context, '사용가능한 닉네임입니다.');
+        _duplicationNickCheck = 1;
+        _duplbtnnickchecker = 1;
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      DialogShow(context, '에러발생');
     }
   }
 
   void onSignUpPressed() {
-    //_duplicationIdCheck = 0;
     if (_duplicationIdCheck == 1 &&
         _duplbtnidchecker == 1 &&
         _duplicationNickCheck == 1 &&
@@ -211,8 +242,26 @@ class _signUpState extends State<signUp> {
         'bool certificated': 1,
       });
       Navigator.pop(context);
-      Navigator.pop(context);
-      DialogShow(context, '회원가입이 완료되었습니다.');
+      //Navigator.pop(context);
+      //DialogShow(context, '회원가입이 완료되었습니다.');
+      try {
+        CustomCircular(context, '이메일 가입을 진행 중 입니다...'); // ---- 1번
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailTextController.text,
+            password:
+                _pwTextController.text); //이메일 회원가입(authentication 이메일 계정생성)
+        Navigator.pop(context); // 1번 circularIndicator제거
+        CustomCircular(context, '이메일 인증 문서를 전송중입니다...'); //---- 2번
+        await FirebaseAuth.instance.currentUser!
+            .sendEmailVerification(); // 가입한 메일로 메일인증 보냄
+        Navigator.pop(context); // 2번 서큘러인디케이터 제거
+        Navigator.pop(context);
+        DialogShow(context, '이메일 인증 문서를 전송했습니다. 수신된 메일이 없다면 스펨메일함을 확인해보세요!');
+        DialogShow(context, '회원가입이 완료되었습니다.');
+      } catch (e) {
+        Navigator.pop(context);
+        DialogShow(context, '이미 가입한 이메일이거나 서버 에러가 발생하였습니다.');
+      }
     }
   }
 }

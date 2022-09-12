@@ -1,17 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/circle_button.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/setting/certified_screen.dart';
+import 'package:per_pro/screen/setting/ProfileCard/certified_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
-import 'package:per_pro/screen/setting/change_email_beforlogin.dart';
-import 'package:per_pro/screen/setting/change_nickname_beforeLogin.dart';
+import 'package:per_pro/screen/setting/ProfileCard/mypost.dart';
+import 'package:per_pro/screen/setting/etc_screen/inquiry_screen.dart';
+import 'package:per_pro/screen/setting/etc_screen/user_delete_beforlogin_screen.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_email_beforlogin.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_nickname_beforeLogin.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_pw_screen.dart';
 import '../constant/color.dart';
-import 'setting/change_pw_screen.dart';
 
 class SettingScreen extends StatelessWidget {
-  final User user;
+  final loginUser user;
+
   const SettingScreen({
     required this.user,
     Key? key,
@@ -19,6 +23,18 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ContainerDecoration = BoxDecoration(
+      color: Colors.white,
+      //border: Border.all(width: 2, color: PRIMARY_COLOR),
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 7,
+            offset: Offset(0, 10))
+      ],
+    );
     final ts = TextStyle(
         fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 18);
     return SafeArea(
@@ -31,19 +47,20 @@ class SettingScreen extends StatelessWidget {
               const SizedBox(height: 24),
               Text('프로필수정', style: ts),
               const SizedBox(height: 16),
-              ProfileCard(),
+              ProfileCard(user: user, ContainerDecoration: ContainerDecoration),
               const SizedBox(height: 32),
               Text('개인/계정 설정', style: ts),
               const SizedBox(height: 16),
-              PersonalAccountSetting(user: user),
+              PersonalAccountSetting(
+                  user: user, ContainerDecoration: ContainerDecoration),
               const SizedBox(height: 32),
               Text('앱 설정', style: ts),
               const SizedBox(height: 16),
-              AppSetting(),
+              AppSetting(ContainerDecoration: ContainerDecoration),
               const SizedBox(height: 24),
               Text('기타', style: ts),
               const SizedBox(height: 16),
-              etcSetting(),
+              EtcSetting(user: user, ContainerDecoration: ContainerDecoration),
               const SizedBox(height: 40),
             ],
           ),
@@ -53,15 +70,27 @@ class SettingScreen extends StatelessWidget {
   }
 }
 
-class ProfileCard extends StatelessWidget {
-  const ProfileCard({Key? key}) : super(key: key);
+class ProfileCard extends StatefulWidget {
+  final loginUser user;
+  final BoxDecoration ContainerDecoration;
 
+  const ProfileCard({
+    required this.ContainerDecoration,
+    required this.user,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<ProfileCard> createState() => _ProfileCardState();
+}
+
+class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
         fontWeight: FontWeight.w700, color: PRIMARY_COLOR, fontSize: 12);
     return Padding(
-      padding: const EdgeInsets.only(left : 16.0, right: 16, bottom: 16),
+      padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 16),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -79,111 +108,87 @@ class ProfileCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
           child: Column(
             children: [
+              //const SizedBox(width: 24),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        color: PRIMARY_COLOR,
-                        //border: Border.all(width: 3, color: PRIMARY_COLOR),
-                        borderRadius: BorderRadius.circular(32)),
-                  ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            primary: PRIMARY_COLOR,
-                            minimumSize: Size(80, 30),
-                            side: BorderSide(
-                              color: PRIMARY_COLOR,
-                              width: 1,
-                            )),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
-                            return certified_screen();
-                          }));
-                        },
-                        child: Text(
-                          '학교 인증하기',
-                          style: ts.copyWith(fontSize: 12),
-                        ),
-                      ),
+                      const SizedBox(height:8),
                       Text(
-                        '김건휘',
-                        style: ts,
+                        '이름 : ${widget.user.realName}',
+                        style: ts.copyWith(fontSize: 15),
                       ),
-                      Text(
-                        '디지몬 미쿠쨩 고등학교',
-                        style: ts.copyWith(fontSize: 10),
-                      )
+                      const SizedBox(height: 8),
+                      Text('닉네임 : ${widget.user.nickName}',
+                          style: ts.copyWith(fontSize: 15)),
+                      const SizedBox(height: 8),
+                      Text('학교 : ${widget.user.mySchool}',
+                          style: ts.copyWith(fontSize: 15))
                     ],
-                  )
+                  ),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        primary: PRIMARY_COLOR,
+                        minimumSize: Size(80, 30),
+                        side: BorderSide(
+                          color: PRIMARY_COLOR,
+                          width: 1,
+                        )),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return certified_screen();
+                      }));
+                    },
+                    child: Text(
+                      '학교 인증하기',
+                      style: ts.copyWith(fontSize: 12),
+                    ),
+                  ),
                 ],
               ),
+
               SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(''),
-                    style: ElevatedButton.styleFrom(
-                        primary: GREY_COLOR,
-                        minimumSize: Size(30, 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(''),
-                    style: ElevatedButton.styleFrom(
-                        primary: GREY_COLOR,
-                        minimumSize: Size(30, 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32))),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(''),
-                    style: ElevatedButton.styleFrom(
-                        primary: GREY_COLOR,
-                        minimumSize: Size(30, 30),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32))),
-                  ),
+                  CircleButton(
+                      buttonText: '내가 쓴 내용', ts: ts, onPressed: onMyPost),
+                  CircleButton(
+                      buttonText: '내가 쓴 댓글', ts: ts, onPressed: onMyRepl),
+                  CircleButton(
+                      buttonText: '모은  스크랩', ts: ts, onPressed: onMyScrap)
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    '내가 쓴 내용',
-                    style: ts,
-                  ),
-                  Text(
-                    '내가 쓴 댓글',
-                    style: ts,
-                  ),
-                  Text(
-                    '모은 스크랩 ',
-                    style: ts,
-                  ),
-                ],
-              )
             ],
           ),
         ),
       ),
     );
   }
+
+  void onMyPost() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return myPost(
+        ContainerDecoration: widget.ContainerDecoration,
+      );
+    }));
+  }
+
+  void onMyRepl() {}
+
+  void onMyScrap() {}
 }
 
 class PersonalAccountSetting extends StatelessWidget {
-  final User user;
+  final loginUser user;
+  final BoxDecoration ContainerDecoration;
+
   const PersonalAccountSetting({
+    required this.ContainerDecoration,
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -192,22 +197,12 @@ class PersonalAccountSetting extends StatelessWidget {
   Widget build(BuildContext context) {
     final ts = TextStyle(
         fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 14);
+
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
       child: Container(
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          //border: Border.all(width: 2, color: PRIMARY_COLOR),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 7,
-                offset: Offset(0, 10))
-          ],
-        ),
+        decoration: ContainerDecoration,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 0, 16),
           child: Column(
@@ -266,18 +261,6 @@ class PersonalAccountSetting extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return signUp();
-                  }));
-                },
-                child: Text(
-                  '프로필 사진 변경',
-                  style: ts,
-                ),
-              ),
             ],
           ),
         ),
@@ -287,7 +270,12 @@ class PersonalAccountSetting extends StatelessWidget {
 }
 
 class AppSetting extends StatelessWidget {
-  const AppSetting({Key? key}) : super(key: key);
+  final BoxDecoration ContainerDecoration;
+
+  const AppSetting({
+    required this.ContainerDecoration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -297,18 +285,7 @@ class AppSetting extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
       child: Container(
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          //border: Border.all(width: 2, color: PRIMARY_COLOR),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 7,
-                offset: Offset(0, 10))
-          ],
-        ),
+        decoration: ContainerDecoration,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
           child: Column(
@@ -360,29 +337,25 @@ class AppSetting extends StatelessWidget {
   }
 }
 
-class etcSetting extends StatelessWidget {
-  const etcSetting({Key? key}) : super(key: key);
+class EtcSetting extends StatelessWidget {
+  final loginUser user;
+  final BoxDecoration ContainerDecoration;
+
+  const EtcSetting({
+    required this.user,
+    required this.ContainerDecoration,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
         fontWeight: FontWeight.w900, color: PRIMARY_COLOR, fontSize: 14);
     return Padding(
-      padding: const EdgeInsets.only(left : 8.0, right: 8.0, bottom: 8.0),
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
       child: Container(
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          //border: Border.all(width: 2, color: PRIMARY_COLOR),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 7,
-                offset: Offset(0, 10))
-          ],
-        ),
+        decoration: ContainerDecoration,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
           child: Column(
@@ -393,7 +366,7 @@ class etcSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return certified_screen();
+                    return DeleteAccount(user : user);
                   }));
                 },
                 child: Text(
@@ -416,7 +389,8 @@ class etcSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return certified_screen();
+                    return Inquiry(
+                        user: user, ContainerDecoration: ContainerDecoration);
                   }));
                 },
                 child: Row(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
 
-import '../../constant/color.dart';
+import '../../../constant/color.dart';
 
 class certified_screen extends StatefulWidget {
   const certified_screen({Key? key}) : super(key: key);

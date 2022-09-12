@@ -6,10 +6,10 @@ import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/constant/color.dart';
 
-import '../../firebase_database_model/user.dart';
+import '../../../firebase_database_model/user.dart';
 
 class ChangePassword extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangePassword({
     required this.user,
     Key? key,

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/setting/ChangeNIckName.dart';
-import 'package:per_pro/screen/setting/change_email.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/ChangeNIckName.dart';
+import 'package:per_pro/screen/setting/personal_account_setting/change_email.dart';
 
-import '../../component/account_textfield.dart';
-import '../../component/alert_dialog.dart';
-import '../../constant/color.dart';
+import '../../../component/account_textfield.dart';
+import '../../../component/alert_dialog.dart';
+import '../../../constant/color.dart';
 
 class ChangeNickbeforLogin extends StatefulWidget {
-  final User user;
+  final loginUser user;
   const ChangeNickbeforLogin({
     required this.user,
     Key? key,
