@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/screen/boards/free_board.dart';
-import 'package:per_pro/screen/boards/love_board.dart';
-import 'package:per_pro/screen/boards/meal_board.dart';
-import 'package:per_pro/screen/boards/study_board.dart';
-
 import '../component/meal_info.dart';
 import '../firebase_database_model/user.dart';
 
@@ -32,7 +28,9 @@ class HomeTab extends StatelessWidget {
             children: [
               _HomeWordCloud(),
               _HomeBannerAd(),
-              _HomeBoard(),
+              const SizedBox(height: 16),
+              HomeBoard(),
+              const SizedBox(height: 16),
             ],
           ),
         ],
@@ -172,91 +170,132 @@ class _HomeBannerAd extends StatelessWidget {
   }
 }
 
-class _HomeBoard extends StatelessWidget {
-  const _HomeBoard({Key? key}) : super(key: key);
+class HomeBoard extends StatelessWidget {
+  const HomeBoard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return FreeBoard(); //자유 게시판
-              }));
-            },
-            child: HomeBoardGenerate('자유게시판', '자유게시판의 최근 올라온 게시글 내용'),
+    final ContainerDecoration = BoxDecoration(
+      color: Colors.white,
+      //border: Border.all(width: 2, color: PRIMARY_COLOR),
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [
+        BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 7,
+            offset: Offset(0, 10))
+      ],
+    );
+    final ts = TextStyle(
+        fontSize: 18, fontWeight: FontWeight.w700, color: PRIMARY_COLOR);
+    final tsContent = TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        color: PRIMARY_COLOR,
+        overflow: TextOverflow.ellipsis);
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.1,
+      decoration: ContainerDecoration,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text('자유 게시판', style: ts),
+                  SizedBox(width: 24),
+                  Flexible(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return FreeBoard();
+                        }));
+                      },
+                      child: Text(
+                        '자유 게시판에 올라온 최근 게시물',
+                        style: tsContent,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text('워드클라우드', style: ts),
+                  SizedBox(width: 24),
+                  Flexible(
+                    child: Text(
+                      '워드클라우드 게시판에 올라온 최근 게시물',
+                      style: tsContent,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      //softWrap: true,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text('연애 게시판', style: ts),
+                  SizedBox(width: 24),
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      '연애 게시판에 올라온 최근 게시물',
+                      style: tsContent,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text('급식 게시판', style: ts),
+                  SizedBox(width: 24),
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      '급식 게시판에 올라온 최근 게시물',
+                      style: tsContent,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  Text('연애 게시판', style: ts),
+                  SizedBox(width: 24),
+                  Flexible(
+                    flex: 1,
+                    child: Text(
+                      '연애 게시판에 올라온 최근 게시물',
+                      style: tsContent,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+            ],
           ),
-          SizedBox(
-            height: 8.0,
-          ),
-          GestureDetector(
-            //워드클라우드게시판 누르면 워드클라우드 게시판으로 이동
-            onTap: () {
-              DefaultTabController.of(context)?.animateTo(1);
-            },
-            child: HomeBoardGenerate('워드클라우드게시판', '워드클라우드게시판의 최근 올라온 게시글 내용'),
-          ),
-          SizedBox(
-            height: 8.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return MealBoard(); //급식 게시판
-              }));
-            },
-            child: HomeBoardGenerate('급식게시판', '급식게시판의 최근 올라온 게시글 내용'),
-          ),
-          SizedBox(
-            height: 8.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return StudyBoard(); //입시게시판
-              }));
-            },
-            child: HomeBoardGenerate('입시게시판', '입시게시판의 최근 올라온 게시글 내용'),
-          ),
-          SizedBox(
-            height: 8.0,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return LoveBoard(); //연애 게시판
-              }));
-            },
-            child: HomeBoardGenerate('연애게시판', '연애게시판의 최근 올라온 게시글 내용'),
-          ),
-        ],
+        ),
       ),
     );
   }
-}
-
-Widget HomeBoardGenerate(String BoardName, String BoardContent) {
-  return Container(
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text(
-          BoardName,
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          BoardContent,
-        ),
-      ],
-    ),
-  );
 }

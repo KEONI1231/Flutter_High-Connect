@@ -179,7 +179,6 @@ class _login_partState extends State<login_part> {
                     Navigator.pop(context);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {
-                      print(user.mySchool);
                       return HomeScreen(user: user);
                     }));
                   } else {

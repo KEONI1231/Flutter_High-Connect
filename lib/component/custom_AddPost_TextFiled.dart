@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class CustomSendMailTextField extends StatelessWidget {
-  final bool isMailTtile;
+
+class CustomAddPostTextField extends StatelessWidget {
+  final bool isPostTtile;
   final TextEditingController controller;
-  const CustomSendMailTextField({
+  const CustomAddPostTextField({
     required this.controller,
-    required this.isMailTtile,
+    required this.isPostTtile,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _decoration = InputDecoration(
-      hintText: isMailTtile == true ? '이메일 제목' : '[ 이메일 내용 ]\n\n: ID를 기재하시면 더 빠르게 \n 문의를 처리해 드릴수 있어요!!',
+      hintText: isPostTtile == true ? '게시글 제목' : '게시글 내용',
       fillColor: Colors.grey[200],
       filled: true,
       border: const OutlineInputBorder(
@@ -23,12 +24,12 @@ class CustomSendMailTextField extends StatelessWidget {
     );
 
     return Container(
-      height: isMailTtile == true ? 75 : 250,
+      height: isPostTtile == true ? 75 : 250,
       child: TextFormField(
         controller: controller,
         expands: true,
 
-        keyboardType: TextInputType.multiline,
+        keyboardType: isPostTtile == true ? TextInputType.text : TextInputType.multiline,
         maxLines: null,
         validator: (String? val) {
           if (val == null || val.isEmpty) {

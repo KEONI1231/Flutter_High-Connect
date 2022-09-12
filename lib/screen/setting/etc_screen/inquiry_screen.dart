@@ -67,18 +67,17 @@ class _InquiryState extends State<Inquiry> {
                 children: [
                   Text("제목", style: ts.copyWith(fontSize: 24)),
                   const SizedBox(height: 24),
-                  SendMailCustomTextField(
+                  CustomSendMailTextField(
                       controller: _mailTitleTextController, isMailTtile: true),
                   const SizedBox(height: 24),
                   Row(
                     children: [
                       Text("내용", style: ts.copyWith(fontSize: 24)),
                       const SizedBox(width:  8,),
-                      Text("(ID기재 필수)", style: ts.copyWith(fontSize: 16)),
                     ],
                   ),
                   const SizedBox(height: 24),
-                  SendMailCustomTextField(
+                  CustomSendMailTextField(
                       controller: _mailContentTextController,
                       isMailTtile: false),
                 ],
