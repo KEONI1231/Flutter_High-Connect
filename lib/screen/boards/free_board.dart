@@ -17,6 +17,7 @@ class _FreeBoardState extends State<FreeBoard> {
     return Scaffold(
       backgroundColor: BRIGHT_COLOR,
       floatingActionButton: renderFloatingActionButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
