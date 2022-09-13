@@ -95,7 +95,7 @@ class _HomeMeal extends StatelessWidget {
                         physics: PageScrollPhysics(),
                         children: List.generate(
                           20,
-                              (index) => MealInfo(
+                          (index) => MealInfo(
                               width: constraint.maxWidth / 3,
                               mealdate: (DateTime.now().year.toString()) +
                                   '-' +
@@ -105,7 +105,10 @@ class _HomeMeal extends StatelessWidget {
                                       .padLeft(2, '0') +
                                   '-' +
                                   DateTime.now().day.toString().padLeft(2, '0'),
-                              meal: meal.DDISH_NM),
+                              meal: meal.DDISH_NM
+                                  .replaceAll(RegExp('<br/>'), '')
+                                  .replaceAll(RegExp('[0-9.()*]'), '')
+                                  .replaceAll(RegExp(' '), '\n')),
                         ),
                       ),
                     ),
@@ -213,8 +216,8 @@ class HomeBoard extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                              return FreeBoard();
-                            }));
+                          return FreeBoard();
+                        }));
                       },
                       child: Text(
                         '자유 게시판에 올라온 최근 게시물',
