@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/model/meal.model.dart';
-import 'package:per_pro/screen/boards/free_board.dart';
+import 'package:per_pro/screen/boards/free_borad/free_board.dart';
 import '../component/meal_info.dart';
 import '../firebase_database_model/user.dart';
 
@@ -226,6 +226,7 @@ class HomeBoard extends StatelessWidget {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return FreeBoard(
+                            postID: 'post-free-board',
                             user: user,
                           );
                         }));
@@ -233,7 +234,7 @@ class HomeBoard extends StatelessWidget {
                       child: Text(
                         '자유 게시판에 올라온 최근 게시물',
                         style: tsContent,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -249,7 +250,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '워드클라우드 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       //softWrap: true,
                     ),
@@ -265,7 +266,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -280,7 +281,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '급식 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -295,7 +296,7 @@ class HomeBoard extends StatelessWidget {
                     child: Text(
                       '연애 게시판에 올라온 최근 게시물',
                       style: tsContent,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

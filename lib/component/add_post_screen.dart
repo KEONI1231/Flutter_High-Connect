@@ -125,6 +125,7 @@ class _AddPostState extends State<AddPost> {
             .doc()
             .set({});
         Navigator.pop(context);
+        Navigator.pop(context);
       }
     }
   }

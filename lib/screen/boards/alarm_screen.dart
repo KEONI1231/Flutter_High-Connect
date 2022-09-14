@@ -11,9 +11,10 @@ class alarmscreen extends StatelessWidget {
       body: Container(
         child: Row(
           children: [
+            const SizedBox(width: 16),
             TextButton(
               onPressed: () {},
-              child: Text('   알림',
+              child: Text('알림',
                   style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 24,
