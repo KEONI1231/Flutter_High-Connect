@@ -19,6 +19,7 @@ class loginUser {
   List<String>? anonyMessage;
   int boolAdmin;
   int boolCertificated;
+  int postCount;
 
   loginUser(
     this.ID,
@@ -35,7 +36,8 @@ class loginUser {
     this.boolAdmin,
     this.boolCertificated,
     this.createdTime,
-    this.myRepl, //15
+    this.myRepl, //15t
+    this.postCount,
   );
 
   loginUser.fromSnapshot(DataSnapshot snapshot)
@@ -43,18 +45,28 @@ class loginUser {
         PW = (snapshot.value! as Map<String, dynamic>)['PW'],
         realName = (snapshot.value! as Map<String, dynamic>)['realName'],
         nickName = (snapshot.value! as Map<String, dynamic>)['nickName'],
-        myScrap = (snapshot.value! as Map<List<String>, dynamic>?)?['myScrap'] ?? '',
-        myHeart = (snapshot.value! as Map<List<String>, dynamic>?)?['myHeart'] ?? '',
+        myScrap =
+            (snapshot.value! as Map<List<String>, dynamic>?)?['myScrap'] ?? '',
+        myHeart =
+            (snapshot.value! as Map<List<String>, dynamic>?)?['myHeart'] ?? '',
         mySchool = (snapshot.value! as Map<String, dynamic>)['myschool'],
         email = (snapshot.value! as Map<String, dynamic>)['email'],
         phoneNumber = (snapshot.value! as Map<String, dynamic>)['phoneNumber'],
-        myPost = (snapshot.value! as Map<List<String>, dynamic>?)?['myPost'] ?? '',
-        anonyMessage = (snapshot.value! as Map<List<String>, dynamic>?)?['anonyMessage'] ?? '',
-        boolAdmin = (snapshot.value! as Map<List<String>, dynamic>)['boolAdmin'],
-        createdTime = (snapshot.value! as Map<List<String>, dynamic>)['createTime'],
-        myRepl = (snapshot.value! as Map<List<String>, dynamic>?)?['myRepl'] ?? '',
-        boolCertificated = (snapshot.value! as Map<List<String>, dynamic>)['boolCertificated']; //15
-
+        myPost =
+            (snapshot.value! as Map<List<String>, dynamic>?)?['myPost'] ?? '',
+        anonyMessage =
+            (snapshot.value! as Map<List<String>, dynamic>?)?['anonyMessage'] ??
+                '',
+        boolAdmin =
+            (snapshot.value! as Map<List<String>, dynamic>)['boolAdmin'],
+        createdTime =
+            (snapshot.value! as Map<List<String>, dynamic>)['createTime'],
+        myRepl =
+            (snapshot.value! as Map<List<String>, dynamic>?)?['myRepl'] ?? '',
+        boolCertificated = (snapshot.value!
+            as Map<List<String>, dynamic>)['boolCertificated'],
+  postCount = (snapshot.value!
+  as Map<List<String>, dynamic>)['postCount'];
 
   toJson() {
     return {
@@ -73,7 +85,7 @@ class loginUser {
       'createdTime': createdTime,
       'myRepl': myRepl,
       'boolCertificated': boolCertificated,
-
+      'postCount' : postCount,
     };
   }
 }

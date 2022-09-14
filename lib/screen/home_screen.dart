@@ -28,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     final mealModels = await MealRepository.fetchData();
 
     return mealModels;
-
   }
 
   @override
@@ -57,39 +56,38 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           body: FutureBuilder<List<MealModel>>(
-              future: fetchData(),
-              builder: (context, snapshot) {
-                if(snapshot.hasError){
-                  return Center(
-                    child: Text('에러가 있습니다'),
-                  );
-                }
-
-                if(!snapshot.hasData){
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                List<MealModel> meals = snapshot.data!;
-                MealModel recentMeal = meals[0];
-                print(recentMeal.DDISH_NM);
-
-                return TabBarView(
-                  children: [
-                    HomeTab(
-                      meal: recentMeal,
-                      user: widget.user,
-                    ),
-                    WordCloudBoard(),
-                    BoardScreen(),
-                    Center(
-                      child: Text("settings"),
-                    ),
-                    alarmscreen(),
-                  ],
+            future: fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('에러가 있습니다'),
                 );
               }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              List<MealModel> meals = snapshot.data!;
+              MealModel recentMeal = meals[0];
+              print(recentMeal.DDISH_NM);
+
+              return TabBarView(
+                children: [
+                  HomeTab(
+                    meal: recentMeal,
+                    user: widget.user,
+                  ),
+                  WordCloudBoard(),
+                  BoardScreen(),
+                  Center(
+                    child: Text("시간표"),
+                  ),
+                  alarmscreen(),
+                ],
+              );
+            },
           ),
           extendBodyBehindAppBar: true, // add this line
           bottomNavigationBar: Container(

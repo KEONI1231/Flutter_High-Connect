@@ -29,7 +29,7 @@ class HomeTab extends StatelessWidget {
               _HomeWordCloud(),
               _HomeBannerAd(),
               const SizedBox(height: 16),
-              HomeBoard(),
+              HomeBoard(user: user),
               const SizedBox(height: 16),
             ],
           ),
@@ -55,7 +55,7 @@ class _HomeMeal extends StatelessWidget {
       children: [
         SafeArea(
           child: SizedBox(
-            height: 240,
+            height: 300,
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -89,6 +89,9 @@ class _HomeMeal extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Expanded(
                       child: ListView(
                         scrollDirection: Axis.horizontal,
@@ -96,19 +99,21 @@ class _HomeMeal extends StatelessWidget {
                         children: List.generate(
                           20,
                           (index) => MealInfo(
-                              width: constraint.maxWidth / 3,
-                              mealdate: (DateTime.now().year.toString()) +
-                                  '-' +
-                                  DateTime.now()
-                                      .month
-                                      .toString()
-                                      .padLeft(2, '0') +
-                                  '-' +
-                                  DateTime.now().day.toString().padLeft(2, '0'),
-                              meal: meal.DDISH_NM
-                                  .replaceAll(RegExp('<br/>'), '')
-                                  .replaceAll(RegExp('[0-9.()*]'), '')
-                                  .replaceAll(RegExp(' '), '\n')),
+                            width: constraint.maxWidth / 3,
+                            mealdate: (DateTime.now().year.toString()) +
+                                '-' +
+                                DateTime.now()
+                                    .month
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                '-' +
+                                DateTime.now().day.toString().padLeft(2, '0') +
+                                '\n',
+                            meal: meal.DDISH_NM
+                                .replaceAll(RegExp('<br/>'), '')
+                                .replaceAll(RegExp('[0-9.()*]'), '')
+                                .replaceAll(RegExp(' '), '\n'),
+                          ),
                         ),
                       ),
                     ),
@@ -174,7 +179,11 @@ class _HomeBannerAd extends StatelessWidget {
 }
 
 class HomeBoard extends StatelessWidget {
-  const HomeBoard({Key? key}) : super(key: key);
+  final loginUser user;
+  const HomeBoard({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -216,7 +225,9 @@ class HomeBoard extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return FreeBoard();
+                          return FreeBoard(
+                            user: user,
+                          );
                         }));
                       },
                       child: Text(

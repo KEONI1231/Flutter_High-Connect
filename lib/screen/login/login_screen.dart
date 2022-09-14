@@ -134,6 +134,7 @@ class _login_partState extends State<login_part> {
                 String phoneNumber;
                 int boolAdmin;
                 int boolCertificated;
+                int postCount;
                 String createdTime;
                 DocumentSnapshot userData;
                 try {
@@ -159,6 +160,7 @@ class _login_partState extends State<login_part> {
                     myHeart.addAll((List.from(userData['my heart'])));
                     myPost.addAll((List.from(userData['my post'])));
                     myRepl.addAll((List.from(userData['my repl'])));
+                    postCount = userData['post count'];
                     anonyMessage.addAll((List.from(userData['anony message'])));
                     loginUser user = new loginUser(
                         id,
@@ -175,7 +177,9 @@ class _login_partState extends State<login_part> {
                         boolAdmin,
                         boolCertificated,
                         createdTime,
-                        myRepl);
+                        myRepl,
+                        postCount
+                    );
                     Navigator.pop(context);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (BuildContext context) {

@@ -69,6 +69,7 @@ flutter:
     - asset/img/logo.png
     - asset/img/main_img.png
     - asset/img/word_cloud.png
+    - asset/img/ad_test.png
 
 
   # To add assets to your application, add an assets section, like this:

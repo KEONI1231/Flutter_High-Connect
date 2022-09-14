@@ -115,7 +115,7 @@ class _signUpState extends State<signUp> {
                       const SizedBox(
                         height: 50,
                       ),
-                      const Text('● 이부분은 약관'),
+                      const Text('● 이부분은 약관 우하하'),
                       CustomButton(
                         text: '',
                         istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘

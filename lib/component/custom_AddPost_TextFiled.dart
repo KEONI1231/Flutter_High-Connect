@@ -14,8 +14,6 @@ class CustomAddPostTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final _decoration = InputDecoration(
       hintText: isPostTtile == true ? '게시글 제목' : '게시글 내용',
-      fillColor: Colors.grey[200],
-      filled: true,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(8.0),
