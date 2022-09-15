@@ -233,13 +233,11 @@ class _signUpState extends State<signUp> {
         'my school': _schoolTextController.text,
         'email': _emailTextController.text,
         'phone number': _phoneNumberTextController.text,
-        'my post': [''],
-        'my scrap': [''],
-        'my heart': [''],
-        'my repl': [''],
         'anony message': [''],
         'bool Admin': 1,
         'bool certificated': 1,
+        'repl count' : 0,
+        'post count' : 0,
       });
       Navigator.pop(context);
       //Navigator.pop(context);

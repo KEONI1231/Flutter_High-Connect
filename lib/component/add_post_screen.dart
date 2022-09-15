@@ -8,9 +8,9 @@ import 'package:per_pro/firebase_database_model/user.dart';
 
 class AddPost extends StatefulWidget {
   final loginUser user;
-  final String postID;
+  final String postValue;
   const AddPost({
-    required this.postID,
+    required this.postValue,
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -95,19 +95,19 @@ class _AddPostState extends State<AddPost> {
 
   void postfreeboard() async {
     print('함수 테스트');
-    if (widget.postID == 'post-free-board') {
+    if (widget.postValue == 'post-free-board') {
       if (formKey.currentState == null) {
         return;
       }
       if (formKey.currentState!.validate()) {
-        CustomCircular(context, '게시글 작성...');
+        CustomCircular(context, '게시글 작성중...');
         widget.user.postCount++;
         await firestore
             .collection('users')
             .doc(widget.user.ID)
             .update({'post count': widget.user.postCount});
         await firestore
-            .collection(widget.postID)
+            .collection(widget.postValue)
             .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
             .set({
           'writer id': widget.user.ID,
@@ -117,10 +117,15 @@ class _AddPostState extends State<AddPost> {
           'school': widget.user.mySchool,
           'posted time': DateTime.now().toString(),
           'anony check': setAnony,
+          'post id' : widget.user.ID + widget.user.postCount.toString() + '!@#',
+          'repl count' : 0,
+          'heart count' : 0,
+          'scrap count' : 0,
+          'heart userid' : [''],
         });
         await firestore
-            .collection(widget.postID)
-            .doc(widget.user.ID + widget.user.postCount.toString() + '@@')
+            .collection(widget.postValue)
+            .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
             .collection('repl')
             .doc()
             .set({});

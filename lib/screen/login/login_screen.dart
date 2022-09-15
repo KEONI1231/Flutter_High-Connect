@@ -122,10 +122,6 @@ class _login_partState extends State<login_part> {
               onPressed: () async {
                 String id;
                 String pw;
-                List<String> myScrap = [];
-                List<String> myHeart = [];
-                List<String> myPost = [];
-                List<String> myRepl = [];
                 List<String> anonyMessage = [];
                 String nickName;
                 String realName;
@@ -135,6 +131,7 @@ class _login_partState extends State<login_part> {
                 int boolAdmin;
                 int boolCertificated;
                 int postCount;
+                int replCount;
                 String createdTime;
                 DocumentSnapshot userData;
                 try {
@@ -156,29 +153,23 @@ class _login_partState extends State<login_part> {
                     boolAdmin = userData['bool Admin'];
                     boolCertificated = userData['bool certificated'];
                     createdTime = userData['created Time'];
-                    myScrap.addAll((List.from(userData['my scrap'])));
-                    myHeart.addAll((List.from(userData['my heart'])));
-                    myPost.addAll((List.from(userData['my post'])));
-                    myRepl.addAll((List.from(userData['my repl'])));
                     postCount = userData['post count'];
+                    replCount = userData['repl count'];
                     anonyMessage.addAll((List.from(userData['anony message'])));
                     loginUser user = new loginUser(
-                        id,
-                        nickName,
-                        pw,
-                        realName,
-                        myScrap,
-                        myHeart,
-                        mySchool,
-                        email,
-                        phoneNumber,
-                        myPost,
-                        anonyMessage,
-                        boolAdmin,
-                        boolCertificated,
-                        createdTime,
-                        myRepl,
-                        postCount
+                      id,
+                      nickName,
+                      pw,
+                      realName,
+                      mySchool,
+                      email,
+                      phoneNumber,
+                      anonyMessage,
+                      boolAdmin,
+                      boolCertificated,
+                      createdTime,
+                      postCount,
+                      replCount,
                     );
                     Navigator.pop(context);
                     Navigator.of(context).push(
@@ -200,8 +191,6 @@ class _login_partState extends State<login_part> {
       ),
     );
   }
-
-
 }
 
 class bottom_part extends StatelessWidget {
@@ -235,5 +224,4 @@ class bottom_part extends StatelessWidget {
       ],
     );
   }
-
 }
