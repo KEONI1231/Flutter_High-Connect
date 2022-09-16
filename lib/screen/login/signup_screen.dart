@@ -240,9 +240,12 @@ class _signUpState extends State<signUp> {
         'post count' : 0,
       });
       Navigator.pop(context);
-      //Navigator.pop(context);
-      //DialogShow(context, '회원가입이 완료되었습니다.');
-      try {
+      Navigator.pop(context);
+      DialogShow(context, '회원가입이 완료되었습니다.');
+
+      //이부분이 이메일 코드인데 일단 주석처리 해줌.
+
+      /*try {
         CustomCircular(context, '이메일 가입을 진행 중 입니다...'); // ---- 1번
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: _emailTextController.text,
@@ -259,7 +262,7 @@ class _signUpState extends State<signUp> {
       } catch (e) {
         Navigator.pop(context);
         DialogShow(context, '이미 가입한 이메일이거나 서버 에러가 발생하였습니다.');
-      }
+      }*/
     }
   }
 }
