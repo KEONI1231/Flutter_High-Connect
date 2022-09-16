@@ -121,7 +121,7 @@ class _AddPostState extends State<AddPost> {
           'repl count' : 0,
           'heart count' : 0,
           'scrap count' : 0,
-          'heart userid' : [''],
+          'heart user' : [''],
         });
         await firestore
             .collection(widget.postValue)

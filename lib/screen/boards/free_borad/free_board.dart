@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/add_post_screen.dart';
 import 'package:per_pro/component/appbar.dart';
-import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/main.dart';
 import 'package:per_pro/screen/boards/free_borad/free_board_detail.dart';
 import '../../../constant/color.dart';
 
@@ -68,7 +65,7 @@ class _FreeBoardState extends State<FreeBoard> {
                       replCount = snapshot.data?.docs[index]['repl count'];
                       scrapCount = snapshot.data?.docs[index]['scrap count'];
                       postID = snapshot.data?.docs[index]['post id'];
-                      return test(
+                      return PostContents(
                         postTime: postTime,
                         title: title,
                         content: content,
@@ -105,7 +102,7 @@ class _FreeBoardState extends State<FreeBoard> {
   }
 }
 
-class test extends StatelessWidget {
+class PostContents extends StatelessWidget {
   //final GestureTapCallback onTap;
   final String title;
   final String school;
@@ -116,7 +113,7 @@ class test extends StatelessWidget {
   final int heartCount;
   final String postID;
   final loginUser user;
-  const test({
+  const PostContents({
     required this.user,
     required this.school,
     required this.title,
@@ -179,7 +176,7 @@ class test extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Icon(Icons.favorite_border),
-                      Text(': 0개'),
+                      Text(': $heartCount개'),
                       SizedBox(
                         width: 8,
                       ),

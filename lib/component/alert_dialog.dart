@@ -14,8 +14,7 @@ Future DialogShow(context, String contentText) async {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(
-                    context); //이부분 에러가 있는거 같음. 확인 버튼을 왜4번이나 눌러야 되는지 모르겠
+                Navigator.pop(context);
               },
               child: Text('확인', style: ts),
             ),
