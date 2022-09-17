@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/model/meal.model.dart';
@@ -89,9 +90,7 @@ class _HomeMeal extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    const SizedBox(height: 8),
                     Expanded(
                       child: ListView(
                         scrollDirection: Axis.horizontal,
@@ -187,6 +186,8 @@ class HomeBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String latestFreePost='';
     final ContainerDecoration = BoxDecoration(
       color: Colors.white,
       //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -206,6 +207,7 @@ class HomeBoard extends StatelessWidget {
         fontWeight: FontWeight.w500,
         color: PRIMARY_COLOR,
         overflow: TextOverflow.ellipsis);
+
     return Container(
       width: MediaQuery.of(context).size.width / 1.1,
       decoration: ContainerDecoration,
@@ -216,31 +218,42 @@ class HomeBoard extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 16),
-              Row(
-                children: [
-                  Text('자유 게시판', style: ts),
-                  SizedBox(width: 24),
-                  Flexible(
-                    child: GestureDetector(
+              StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('post-free-board')
+                      .orderBy('posted time', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    latestFreePost = snapshot.data?.docs[0]['content'];
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(color: PRIMARY_COLOR);
+                    }
+                    return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return FreeBoard(
-                            postID: 'post-free-board',
+                            postValue: 'post-free-board',
                             user: user,
                           );
                         }));
                       },
-                      child: Text(
-                        '자유 게시판에 올라온 최근 게시물',
-                        style: tsContent,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      child: Row(
+                        children: [
+                          Text('자유 게시판', style: ts),
+                          SizedBox(width: 24),
+                          Flexible(
+                            child: Text(
+                              latestFreePost,
+                              style: tsContent,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
+                    );
+                  }),
               SizedBox(height: 16),
               Row(
                 children: [

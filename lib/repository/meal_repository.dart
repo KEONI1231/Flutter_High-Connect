@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import '../constant/data.dart';
 import '../model/meal.model.dart';
@@ -18,7 +19,9 @@ class MealRepository {
         'MLSV_YMD': date,
       },
     );
+
     Map<String, dynamic> meal = jsonDecode(response.data);
+
     return meal['mealServiceDietInfo'][1]['row']
         .map<MealModel>(
           (item) => MealModel.fromJson(json: item),

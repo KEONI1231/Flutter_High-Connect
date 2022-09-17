@@ -1,19 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:per_pro/component/account_textfield.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
-import 'package:per_pro/component/custom_button.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/main.dart';
 import 'package:per_pro/screen/login/find_account_route.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
 
+import '../../component/unFocus.dart';
 import '../home_screen.dart';
 
 class login_screen extends StatefulWidget {
@@ -26,28 +23,31 @@ class login_screen extends StatefulWidget {
 class _login_screenState extends State<login_screen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: BRIGHT_COLOR,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              CustomAppBar(titleText: '로그인'),
-              Center(
-                child: Column(
-                  children: [
-                    Image.asset('asset/img/login_screen_logo.png'),
-                    login_part(),
-                    bottom_part(
-                      //텍스트 버튼을 모아둔 봄
-                      onPressed_signup: onPressed_signup_btn, //회원가입 버튼
-                      onPressed_findaccount:
-                          onPressed_findaccount_btn, //아이디 찾기 버튼
-                    ),
-                  ],
+    return Scaffold(
+      backgroundColor: BRIGHT_COLOR,
+      body: GestureDetector(
+        onTap: unFocused,
+        child: SafeArea(
+          child:SingleChildScrollView(
+            child: Column(
+              children: [
+                CustomAppBar(titleText: '로그인'),
+                Center(
+                  child: Column(
+                    children: [
+                      Image.asset('asset/img/login_screen_logo.png'),
+                      login_part(),
+                      bottom_part(
+                        //텍스트 버튼을 모아둔 봄
+                        onPressed_signup: onPressed_signup_btn, //회원가입 버튼
+                        onPressed_findaccount:
+                            onPressed_findaccount_btn, //아이디 찾기 버튼
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

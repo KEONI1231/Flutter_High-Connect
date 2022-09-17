@@ -125,10 +125,16 @@ class _AddPostState extends State<AddPost> {
         });
         await firestore
             .collection(widget.postValue)
+            .doc('latest')
+            .update({'latest post': contentTextController.text});
+        await firestore
+            .collection(widget.postValue)
             .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
             .collection('repl')
-            .doc()
-            .set({});
+            .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
+            .set({
+          'repled time' : '0'
+        });
         Navigator.pop(context);
         Navigator.pop(context);
       }

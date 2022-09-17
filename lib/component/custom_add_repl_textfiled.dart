@@ -3,9 +3,10 @@ import 'package:flutter/services.dart';
 
 import '../constant/color.dart';
 
-class CustomAddReplTextField extends StatelessWidget {
+class CustomAddReplTextField extends StatefulWidget {
   final String label;
   final TextEditingController Controller;
+
   const CustomAddReplTextField({
     required this.Controller,
     required this.label,
@@ -13,9 +14,16 @@ class CustomAddReplTextField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CustomAddReplTextField> createState() => _CustomAddReplTextFieldState();
+}
+
+class _CustomAddReplTextFieldState extends State<CustomAddReplTextField> {
+
+
+  @override
   Widget build(BuildContext context) {
     final _decoration = InputDecoration(
-      labelText: label,
+      labelText: widget.label,
       border: const OutlineInputBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(8.0),
@@ -24,15 +32,14 @@ class CustomAddReplTextField extends StatelessWidget {
     );
 
     return TextFormField(
-        controller: Controller,
-        validator: (String? val) {
-          if (val == null || val.isEmpty) {
-            return '해당 필드는 필수항복입니다.';
-          }
-
-          return null;
-        },
-        decoration: _decoration,
-      );
+      controller: widget.Controller,
+      validator: (String? val) {
+        if (val == null || val.isEmpty) {
+          return '해당 필드는 필수항복입니다.';
+        }
+        return null;
+      },
+      decoration: _decoration,
+    );
   }
 }

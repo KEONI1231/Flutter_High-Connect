@@ -7,10 +7,13 @@ import 'package:per_pro/screen/boards/free_borad/free_board_detail.dart';
 import '../../../constant/color.dart';
 
 class FreeBoard extends StatefulWidget {
-  final String postID;
+  final String postValue;
+
   final loginUser user;
+
   const FreeBoard({
-    required this.postID,
+    required this.postValue,
+
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -44,7 +47,7 @@ class _FreeBoardState extends State<FreeBoard> {
             SizedBox(height: 8),
             StreamBuilder<QuerySnapshot>(
               stream: firestore
-                  .collection(widget.postID)
+                  .collection(widget.postValue)
                   .orderBy('posted time', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
@@ -75,6 +78,7 @@ class _FreeBoardState extends State<FreeBoard> {
                         heartCount: heartCount,
                         postID: postID,
                         user: widget.user,
+                        postValue: widget.postValue,
                         //onTap: onBoardTap,
                       );
                     },
@@ -112,8 +116,12 @@ class PostContents extends StatelessWidget {
   final int scrapCount;
   final int heartCount;
   final String postID;
+  final String postValue;
   final loginUser user;
+
+
   const PostContents({
+    required this.postValue,
     required this.user,
     required this.school,
     required this.title,
@@ -135,6 +143,7 @@ class PostContents extends StatelessWidget {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
           return FreeBoardDetail(
+            user: user,
             postID: postID,
             heartCount: heartCount,
             replCount: replCount,
@@ -143,7 +152,7 @@ class PostContents extends StatelessWidget {
             content: content,
             postTime: postTime,
             school: school,
-            user: user,
+            postValue: postValue,
           );
         }));
       },
@@ -181,7 +190,7 @@ class PostContents extends StatelessWidget {
                         width: 8,
                       ),
                       Icon(Icons.messenger_outline),
-                      Text(': 0개'),
+                      Text(': ${replCount}개'),
                     ],
                   )
                 ],
