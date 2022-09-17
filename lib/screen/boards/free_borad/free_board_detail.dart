@@ -307,8 +307,6 @@ class _ReplViewState extends State<ReplView> {
                                 Text(
                                   test,
                                   style: contentStyle,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 8),
                                 Row(

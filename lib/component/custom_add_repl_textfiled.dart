@@ -32,6 +32,7 @@ class _CustomAddReplTextFieldState extends State<CustomAddReplTextField> {
     );
 
     return TextFormField(
+      maxLines: null,
       controller: widget.Controller,
       validator: (String? val) {
         if (val == null || val.isEmpty) {
