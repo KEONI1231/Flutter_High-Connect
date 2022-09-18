@@ -128,6 +128,7 @@ class _login_partState extends State<login_part> {
                 String mySchool;
                 String email;
                 String phoneNumber;
+                String eduOfficeCode;
                 int boolAdmin;
                 int boolCertificated;
                 int postCount;
@@ -150,6 +151,7 @@ class _login_partState extends State<login_part> {
                     mySchool = userData['my school'];
                     email = userData['email'];
                     phoneNumber = userData['phone number'];
+                    eduOfficeCode = userData['edu office code'];
                     boolAdmin = userData['bool Admin'];
                     boolCertificated = userData['bool certificated'];
                     createdTime = userData['created Time'];
@@ -162,6 +164,7 @@ class _login_partState extends State<login_part> {
                       pw,
                       realName,
                       mySchool,
+                      eduOfficeCode,
                       email,
                       phoneNumber,
                       anonyMessage,

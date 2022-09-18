@@ -12,6 +12,7 @@ class loginUser {
   String mySchool;
   String email;
   String phoneNumber;
+  String eduOfficeCode;
   List<String>? anonyMessage;
   int boolAdmin;
   int boolCertificated;
@@ -26,6 +27,7 @@ class loginUser {
     this.mySchool,
     this.email,
     this.phoneNumber,
+    this.eduOfficeCode,
     this.anonyMessage,
     this.boolAdmin,
     this.boolCertificated,
@@ -42,6 +44,7 @@ class loginUser {
         mySchool = (snapshot.value! as Map<String, dynamic>)['myschool'],
         email = (snapshot.value! as Map<String, dynamic>)['email'],
         phoneNumber = (snapshot.value! as Map<String, dynamic>)['phoneNumber'],
+        eduOfficeCode = (snapshot.value! as Map<String, dynamic>)['eduOfficeCode'],
         anonyMessage =
             (snapshot.value! as Map<List<String>, dynamic>?)?['anonyMessage'] ??
                 '',
@@ -65,6 +68,7 @@ class loginUser {
       'mySchool': mySchool,
       'email': email,
       'phoneNumber': phoneNumber,
+      'eduOfficeCode' : eduOfficeCode,
       'anonyMessage': anonyMessage,
       'boolAdmin': boolAdmin,
       'createdTime': createdTime,
