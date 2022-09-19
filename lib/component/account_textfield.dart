@@ -38,7 +38,7 @@ class CustomTextField extends StatelessWidget {
         //이곳에서 조건에 따른 에러메시지를 출력,
         //null이 리턴된다면 에러가 없는 상태.
         if (val == null || val.isEmpty) {
-          return '해당 필드는 필수항복입니다.';
+          return '해당 필드는 필수항목입니다.';
         }
         if (textInputType == TextInputType.emailAddress) {
           /*signup_screen.dart에서 CustomTextField를 사용할때 매게변수로 넘겨준 값들중
