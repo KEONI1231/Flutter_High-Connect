@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/alert_dialog.dart';
-import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/component/custom_add_repl_textfiled.dart';
 import 'package:per_pro/component/unFocus.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
+import '../../../component/report_anonymessage/Custom_report_messeage_dialog.dart';
 import '../../../constant/color.dart';
 
 class FreeBoardDetail extends StatefulWidget {
@@ -14,6 +14,7 @@ class FreeBoardDetail extends StatefulWidget {
   final String content;
   final String postTime;
   final String school;
+  final String writerID;
   final int replCount;
   final int heartCount;
   final int scrapCount;
@@ -21,6 +22,7 @@ class FreeBoardDetail extends StatefulWidget {
   final String postValue;
 
   const FreeBoardDetail({
+    required this.writerID,
     required this.postValue,
     required this.postID,
     required this.user,
@@ -43,11 +45,11 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
   bool? _isChecked = false;
   final TextEditingController replContent = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
-  final titleStyle = TextStyle(
+  final titleStyle = const TextStyle(
       color: PRIMARY_COLOR, fontSize: 24, fontWeight: FontWeight.w700);
-  final contentStyle = TextStyle(
+  final contentStyle = const TextStyle(
       color: PRIMARY_COLOR, fontSize: 20, fontWeight: FontWeight.w500);
-  final defaultTs = TextStyle(color: PRIMARY_COLOR, fontSize: 16);
+  final defaultTs = const TextStyle(color: PRIMARY_COLOR, fontSize: 16);
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +143,7 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
         'repl id': widget.user.ID + widget.user.replCount.toString() + '!@#',
         'repl heart': 0,
         'repled time': DateTime.now().toString(),
+        'repl heartuser' : [''],
       });
       Navigator.pop(context);
       DialogShow(context, '댓글을 작성했습니다!');
@@ -180,9 +183,11 @@ class ReplView extends StatefulWidget {
 
 class _ReplViewState extends State<ReplView> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String test = '';
-  String test1 = '';
-
+  String replContent = '';
+  String repledTime = '';
+  String forPrintRepledTime = '';
+  String replID = '';
+  int replHeart = 0;
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 20);
@@ -193,14 +198,12 @@ class _ReplViewState extends State<ReplView> {
           .doc(widget.postID)
           .collection('repl')
           .where('repled time', isNotEqualTo: "0")
-          .orderBy('repled time', descending: true)
+          .orderBy('repled time')
           .snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator(color: PRIMARY_COLOR);
         }
-        //snapshot.data!.docs.length
-
         return Expanded(
           child: CustomScrollView(
             slivers: [
@@ -211,13 +214,17 @@ class _ReplViewState extends State<ReplView> {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  childCount: 1,
+                  (BuildContext context, int index) {
                     return Column(
+                      //본문
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                           child: Column(
+                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
+
                             children: [
                               const SizedBox(height: 8),
                               Row(
@@ -230,9 +237,9 @@ class _ReplViewState extends State<ReplView> {
                                   const SizedBox(width: 8),
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(widget.postTime),
+                                      Text(widget.postTime.substring(0, 16)),
                                       Text(widget.school),
                                     ],
                                   ),
@@ -246,18 +253,34 @@ class _ReplViewState extends State<ReplView> {
                               ),
                               const SizedBox(height: 32),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  GestureDetector(
-                                    onTap: onHeartClick,
-                                    child: Icon(Icons.favorite_border),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: onHeartClick,
+                                        child: Icon(Icons.favorite_border),
+                                      ),
+                                      Text(': ${widget.heartCount}개'),
+                                      const SizedBox(width: 8),
+                                      const Icon(Icons.messenger_outline),
+                                      Text(': ${widget.replCount}개'),
+                                      const SizedBox(width: 8),
+                                      const Icon(Icons.star_outline),
+                                      Text(': ${widget.scrapCount}개'),
+                                    ],
                                   ),
-                                  Text(': ${widget.heartCount}개'),
-                                  const SizedBox(width: 8),
-                                  const Icon(Icons.messenger_outline),
-                                  Text(': ${widget.replCount}개'),
-                                  const SizedBox(width: 8),
-                                  const Icon(Icons.star_outline),
-                                  Text(': ${widget.scrapCount}개'),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            ReportMessage(context);
+                                            //repl writer id 받아오기
+                                          },
+                                          child: Icon(Icons.more_vert)),
+                                    ],
+                                  ),
                                 ],
                               )
                             ],
@@ -269,19 +292,24 @@ class _ReplViewState extends State<ReplView> {
                       ],
                     );
                   },
-                  childCount: 1,
                 ),
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        if (snapshot.data!.docs.length != 0) {
-                          test = snapshot.data?.docs[index]['repl content'];
-                        }
+                  childCount: snapshot.data!.docs.length,
+                  (BuildContext context, int index) {
+                    if (snapshot.data!.docs.length != 0) {
+                      replContent = snapshot.data?.docs[index]['repl content'];
+                      repledTime = snapshot.data?.docs[index]['repled time'];
+                      replID = snapshot.data?.docs[index]['repl id'];
+                      replHeart = snapshot.data?.docs[index]['repl heart'];
+                      forPrintRepledTime = repledTime.substring(0, 16);
+                    }
                     return Column(
+                      //댓글들
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(16, 0, 16, 2),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             child: Column(
@@ -289,41 +317,72 @@ class _ReplViewState extends State<ReplView> {
                               children: [
                                 const SizedBox(height: 16),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(
-                                      Icons.account_circle,
-                                      color: PRIMARY_COLOR,
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.account_circle,
+                                          color: PRIMARY_COLOR,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          '익명',
+                                          style: titleStyle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          forPrintRepledTime,
+                                          style: contentStyle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      '익명',
-                                      style: titleStyle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () {
+                                              ReportMessage(context);
+                                            },
+                                            child: Icon(Icons.more_vert)),
+                                      ],
+                                    )
                                   ],
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 Text(
-                                  test,
+                                  replContent,
                                   style: contentStyle,
                                 ),
                                 const SizedBox(height: 8),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Icon(Icons.favorite_border),
-                                    Text(': 0개'),
+                                    GestureDetector(
+                                        onTap: replHeartClick,
+                                        child: Icon(Icons.favorite_border)),
+
+                                    Text(': ${replHeart}개'),
+
                                   ],
+
                                 ),
+
                               ],
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Liner(),
                       ],
                     );
                   },
-                  childCount: snapshot.data!.docs.length,
                 ),
               ),
             ],
@@ -333,11 +392,38 @@ class _ReplViewState extends State<ReplView> {
     );
   }
 
+  void replHeartClick() async {
+    DocumentSnapshot postData =
+        await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).get();
+    final List heartUserList = List<String>.from(postData['repl heartuser'] ?? []);
+    if (heartUserList.contains(widget.user.ID) == false) {
+      //좋아요를 달지 않은 상태일때
+      heartUserList.add(widget.user.ID);
+      CustomCircular(context, '좋아요 등록중...');
+      await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).update({
+        'repl heartuser': heartUserList,
+        'repl heart': heartUserList.length - 1,
+      });
+      Navigator.pop(context);
+      DialogShow(context, '좋아요를 달았습니다');
+    } else if (heartUserList.contains(widget.user.ID) == true) {
+      //좋아요를 달았을때와 좋아요 수가 0개 일때
+      heartUserList.remove(widget.user.ID);
+      CustomCircular(context, '좋아요 지우는 중...');
+      await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).update({
+        'repl heartuser': heartUserList,
+        'repl heart': heartUserList.length - 1,
+      });
+      Navigator.pop(context);
+      DialogShow(context, '좋아요를 지웠습니다');
+    }
+    print(replID);
+  }
 
   void onHeartClick() async {
     //좋아요 함수
     DocumentSnapshot postData =
-    await firestore.collection(widget.postValue).doc(widget.postID).get();
+        await firestore.collection(widget.postValue).doc(widget.postID).get();
     final List heartUserList = List<String>.from(postData['heart user'] ?? []);
     if (heartUserList.contains(widget.user.ID) == false) {
       //좋아요를 달지 않은 상태일때
@@ -360,7 +446,6 @@ class _ReplViewState extends State<ReplView> {
       Navigator.pop(context);
       DialogShow(context, '좋아요를 지웠습니다');
     }
-
     //print(heartUserList);
     //print(widget.user.ID);
   }

@@ -13,7 +13,6 @@ class FreeBoard extends StatefulWidget {
 
   const FreeBoard({
     required this.postValue,
-
     required this.user,
     Key? key,
   }) : super(key: key);
@@ -30,6 +29,7 @@ class _FreeBoardState extends State<FreeBoard> {
     String postTime = '';
     String school = '';
     String postID = '';
+    String writerID = '';
     int heartCount = 0;
     int replCount = 0;
     int scrapCount = 0;
@@ -68,7 +68,9 @@ class _FreeBoardState extends State<FreeBoard> {
                       replCount = snapshot.data?.docs[index]['repl count'];
                       scrapCount = snapshot.data?.docs[index]['scrap count'];
                       postID = snapshot.data?.docs[index]['post id'];
+                      writerID = snapshot.data?.docs[index]['writer id'];
                       return PostContents(
+                        writerID: writerID,
                         postTime: postTime,
                         title: title,
                         content: content,
@@ -112,6 +114,7 @@ class PostContents extends StatelessWidget {
   final String school;
   final String content;
   final String postTime;
+  final String writerID;
   final int replCount;
   final int scrapCount;
   final int heartCount;
@@ -119,8 +122,8 @@ class PostContents extends StatelessWidget {
   final String postValue;
   final loginUser user;
 
-
   const PostContents({
+    required this.writerID,
     required this.postValue,
     required this.user,
     required this.school,
@@ -136,25 +139,29 @@ class PostContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 24);
+    final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 21);
     final contentStyle = TextStyle(color: Colors.grey[600], fontSize: 18);
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) {
-          return FreeBoardDetail(
-            user: user,
-            postID: postID,
-            heartCount: heartCount,
-            replCount: replCount,
-            scrapCount: scrapCount,
-            title: title,
-            content: content,
-            postTime: postTime,
-            school: school,
-            postValue: postValue,
-          );
-        }));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return FreeBoardDetail(
+                user: user,
+                postID: postID,
+                heartCount: heartCount,
+                replCount: replCount,
+                scrapCount: scrapCount,
+                title: title,
+                content: content,
+                postTime: postTime,
+                school: school,
+                postValue: postValue,
+                writerID: writerID,
+              );
+            },
+          ),
+        );
       },
       child: Column(
         children: [

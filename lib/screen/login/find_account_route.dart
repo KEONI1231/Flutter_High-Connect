@@ -4,7 +4,6 @@ import 'package:per_pro/screen/login/find_pw_screen.dart';
 
 import '../../component/appbar.dart';
 import 'find_id_screen.dart';
-import 'login_screen.dart';
 
 //이화면은 id를 찾을 건지 pw를 찾을지를 물어보는 라우팅화면임. 별로 볼거 없음.
 class findAccount extends StatefulWidget {
