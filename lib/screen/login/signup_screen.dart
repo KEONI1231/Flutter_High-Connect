@@ -25,15 +25,31 @@ class _signUpState extends State<signUp> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _nicknameTextController = TextEditingController();
   final TextEditingController _realNameTextController = TextEditingController();
-  final TextEditingController _phoneNumberTextController = TextEditingController();
+  final TextEditingController _phoneNumberTextController =
+      TextEditingController();
 
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
   String? dropdownValue;
   String? eduOfficeCode;
-  List<String> items = ['강원도교육청', '경기도교육청', '경상남도교육청', '경상북도교육청', '광주광역시교육청', '대구광역시교육청'
-    , '대전광역시교육청', '부산광역시교육청', '서울특별시교육청', '세종특별자치시교육청', '울산광역시교육청', '인천광역시교육청'
-    , '전라남도교육청', '전라북도교육청', '제주특별자치도교육청', '충청남도교육청', '충청북도교육청',
+  List<String> items = [
+    '강원도교육청',
+    '경기도교육청',
+    '경상남도교육청',
+    '경상북도교육청',
+    '광주광역시교육청',
+    '대구광역시교육청',
+    '대전광역시교육청',
+    '부산광역시교육청',
+    '서울특별시교육청',
+    '세종특별자치시교육청',
+    '울산광역시교육청',
+    '인천광역시교육청',
+    '전라남도교육청',
+    '전라북도교육청',
+    '제주특별자치도교육청',
+    '충청남도교육청',
+    '충청북도교육청',
   ];
 
   @override
@@ -112,69 +128,86 @@ class _signUpState extends State<signUp> {
                           Controller: _schoolTextController,
                           textInputType: TextInputType.text,
                         ),
-                      DropdownButtonFormField<String>(
-                        validator: (String? val) {
-                          //이곳에서 조건에 따른 에러메시지를 출력,
-                          //null이 리턴된다면 에러가 없는 상태.
-                          if (val == null || val.isEmpty) {
-                            return '해당 필드는 필수항목입니다.';
-                          }
-                          return null;
-                        },
-                        hint: Text('교육청을 선택하세요'),
-                        value: dropdownValue,
-                        icon: const Icon(Icons.arrow_downward),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.black),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!;
-                            if(dropdownValue == '강원도교육청'){
-                              eduOfficeCode = 'K10';
-                            }if(dropdownValue == '경기도교육청'){
-                              eduOfficeCode = 'J10';
-                            }if(dropdownValue == '경상남도교육청'){
-                              eduOfficeCode = 'S10';
-                            }if(dropdownValue == '경상북도교육청'){
-                              eduOfficeCode = 'R10';
-                            }if(dropdownValue == '광주광역시교육청'){
-                              eduOfficeCode = 'F10';
-                            }if(dropdownValue == '대구광역시교육청'){
-                              eduOfficeCode = 'D10';
-                            }if(dropdownValue == '대전광역시교육청'){
-                              eduOfficeCode = 'G10';
-                            }if(dropdownValue == '부산광역시교육청'){
-                              eduOfficeCode = 'C10';
-                            }if(dropdownValue == '서울특별시교육청'){
-                              eduOfficeCode = 'B10';
-                            }if(dropdownValue == '세종특별자치시교육청'){
-                              eduOfficeCode = 'I10';
-                            }if(dropdownValue == '울산광역시교육청'){
-                              eduOfficeCode = 'H10';
-                            }if(dropdownValue == '인천광역시교육청'){
-                              eduOfficeCode = 'E10';
-                            }if(dropdownValue == '전라남도교육청'){
-                              eduOfficeCode = 'Q10';
-                            }if(dropdownValue == '전라북도교육청'){
-                              eduOfficeCode = 'P10';
-                            }if(dropdownValue == '제주특별자치도교육청'){
-                              eduOfficeCode = 'T10';
-                            }if(dropdownValue == '충청남도교육청'){
-                              eduOfficeCode = 'N10';
-                            }if(dropdownValue == '충청북도교육청'){
-                              eduOfficeCode = 'M10';
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<String>(
+                          validator: (String? val) {
+                            //이곳에서 조건에 따른 에러메시지를 출력,
+                            //null이 리턴된다면 에러가 없는 상태.
+                            if (val == null || val.isEmpty) {
+                              return '해당 필드는 필수항목입니다.';
                             }
-                          });
-                        },
-                        items: items
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
+                            return null;
+                          },
+                          hint: Text('교육청을 선택하세요'),
+                          value: dropdownValue,
+                          icon: const Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          style: const TextStyle(color: Colors.black),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropdownValue = newValue!;
+                              if (dropdownValue == '강원도교육청') {
+                                eduOfficeCode = 'K10';
+                              }
+                              if (dropdownValue == '경기도교육청') {
+                                eduOfficeCode = 'J10';
+                              }
+                              if (dropdownValue == '경상남도교육청') {
+                                eduOfficeCode = 'S10';
+                              }
+                              if (dropdownValue == '경상북도교육청') {
+                                eduOfficeCode = 'R10';
+                              }
+                              if (dropdownValue == '광주광역시교육청') {
+                                eduOfficeCode = 'F10';
+                              }
+                              if (dropdownValue == '대구광역시교육청') {
+                                eduOfficeCode = 'D10';
+                              }
+                              if (dropdownValue == '대전광역시교육청') {
+                                eduOfficeCode = 'G10';
+                              }
+                              if (dropdownValue == '부산광역시교육청') {
+                                eduOfficeCode = 'C10';
+                              }
+                              if (dropdownValue == '서울특별시교육청') {
+                                eduOfficeCode = 'B10';
+                              }
+                              if (dropdownValue == '세종특별자치시교육청') {
+                                eduOfficeCode = 'I10';
+                              }
+                              if (dropdownValue == '울산광역시교육청') {
+                                eduOfficeCode = 'H10';
+                              }
+                              if (dropdownValue == '인천광역시교육청') {
+                                eduOfficeCode = 'E10';
+                              }
+                              if (dropdownValue == '전라남도교육청') {
+                                eduOfficeCode = 'Q10';
+                              }
+                              if (dropdownValue == '전라북도교육청') {
+                                eduOfficeCode = 'P10';
+                              }
+                              if (dropdownValue == '제주특별자치도교육청') {
+                                eduOfficeCode = 'T10';
+                              }
+                              if (dropdownValue == '충청남도교육청') {
+                                eduOfficeCode = 'N10';
+                              }
+                              if (dropdownValue == '충청북도교육청') {
+                                eduOfficeCode = 'M10';
+                              }
+                            });
+                          },
+                          items: items
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                         const SizedBox(height: 16),
                         CustomTextField(
                           label: 'Phone Number',
@@ -303,13 +336,14 @@ class _signUpState extends State<signUp> {
         'my school': _schoolTextController.text,
         'email': _emailTextController.text,
         'phone number': _phoneNumberTextController.text,
-        'edu office code' : eduOfficeCode,
+        'edu office code': eduOfficeCode,
         'anony message': [''],
         'bool Admin': 1,
         'bool certificated': 1,
         'repl count': 0,
         'post count': 0,
       });
+      
       Navigator.pop(context);
       Navigator.pop(context);
       DialogShow(context, '회원가입이 완료되었습니다.');
@@ -321,7 +355,6 @@ class _signUpState extends State<signUp> {
       //       //계정 생성버튼을 눌렀을때 이상이 없으면 파이어베이스 클라우드스토어에 유저 정보를 추가한다.
       //       CustomCircular(context, '회원가입 진행중...');
       //       await firestore.co인데 일단 주석처리 해줌.
-
       /*try {
         CustomCircular(context, '이메일 가입을 진행 중 입니다...'); // ---- 1번
         await FirebaseAuth.instance.createUserWithEmailAndPassword(

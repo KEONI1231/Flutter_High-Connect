@@ -157,7 +157,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   CircleButton(
                       buttonText: '내가 쓴 내용', ts: ts, onPressed: onMyPost),
                   CircleButton(
-                      buttonText: '내가 쓴 댓글', ts: ts, onPressed: onMyRepl),
+                      buttonText: '댓글 단 글들', ts: ts, onPressed: onMyRepl),
                   CircleButton(
                       buttonText: '모은  스크랩', ts: ts, onPressed: onMyScrap)
                 ],

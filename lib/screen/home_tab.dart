@@ -187,7 +187,7 @@ class HomeBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String latestFreePost='';
+    String latestFreePost= '';
     final ContainerDecoration = BoxDecoration(
       color: Colors.white,
       //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -253,7 +253,7 @@ class HomeBoard extends StatelessWidget {
                         ],
                       ),
                     );
-                  }),
+                  },),
               SizedBox(height: 16),
               Row(
                 children: [
