@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import '../constant/data.dart';
 import '../model/meal.model.dart';
 
-class MealRepository {
+class MealRepository{
+
   static Future<List<MealModel>> fetchData() async {
     final date = DateTime.now().year.toString() + DateTime.now().month.toString().padLeft(2, '0');
+
     final response = await Dio().get(
       'https://open.neis.go.kr/hub/mealServiceDietInfo',
       queryParameters: {
