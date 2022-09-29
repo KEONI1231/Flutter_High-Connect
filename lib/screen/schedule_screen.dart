@@ -6,12 +6,12 @@ class Schedule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: siganpyo(),
+      home: ScheduleTimeTalble(),
     );
   }
 }
 
-class siganpyo extends StatelessWidget {
+class ScheduleTimeTalble extends StatelessWidget {
   final List<List<int>> tableData = [
     [1, 1, 1, 1, 1],
     [2, 2, 2, 2, 2],
@@ -61,11 +61,15 @@ class siganpyo extends StatelessWidget {
                                                                     .white))),
                                                   ))
                                               .toList()),
-                                    ))
-                                .toList())),
+                                    ),
+                            ).toList(),
+                        ),
+                    ),
                   ],
                 ),
-              ))),
+              ),
+          ),
+      ),
     );
   }
 }
