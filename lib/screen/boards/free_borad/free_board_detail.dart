@@ -144,6 +144,8 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
         'repl heart': 0,
         'repled time': DateTime.now().toString(),
         'repl heartuser': [''],
+        'is reported': false,
+        'report content': ''
       });
       Navigator.pop(context);
       DialogShow(context, '댓글을 작성했습니다!');
@@ -188,6 +190,7 @@ class _ReplViewState extends State<ReplView> {
   String forPrintRepledTime = '';
   String replID = '';
   int replHeart = 0;
+  bool isReported = false;
 
   @override
   Widget build(BuildContext context) {
@@ -276,7 +279,12 @@ class _ReplViewState extends State<ReplView> {
                                     children: [
                                       GestureDetector(
                                           onTap: () {
-                                            ReportMessage(context, true,widget.postValue, widget.postID);
+                                            ReportMessage(
+                                                context,
+                                                true,
+                                                widget.postValue,
+                                                widget.postID,
+                                                '');
                                             //post id, reported content 보내기
                                             //댓글은 어떻게 처리하지
                                             //댓글 신고인지 게시글 신고인지
@@ -306,6 +314,7 @@ class _ReplViewState extends State<ReplView> {
                       repledTime = snapshot.data?.docs[index]['repled time'];
                       replID = snapshot.data?.docs[index]['repl id'];
                       replHeart = snapshot.data?.docs[index]['repl heart'];
+                      isReported = snapshot.data?.docs[index]['is reported'];
                       forPrintRepledTime = repledTime.substring(0, 16);
                     }
                     return Column(
@@ -330,9 +339,14 @@ class _ReplViewState extends State<ReplView> {
                                           color: PRIMARY_COLOR,
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(
+                                        isReported == false ? Text(
                                           '익명',
                                           style: titleStyle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ) : Text(
+                                          '신고',
+                                          style:titleStyle,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -349,7 +363,12 @@ class _ReplViewState extends State<ReplView> {
                                       children: [
                                         GestureDetector(
                                             onTap: () {
-                                              ReportMessage(context, false,widget.postValue, replID); //여기에 변수들을 넘겨서 처리해야함.
+                                              ReportMessage(
+                                                  context,
+                                                  false,
+                                                  widget.postValue,
+                                                  widget.postID,
+                                                  replID); //여기에 변수들을 넘겨서 처리해야함.
                                               // ex { post-value, post-id}
                                             },
                                             child: Icon(Icons.more_vert)),
@@ -358,10 +377,12 @@ class _ReplViewState extends State<ReplView> {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Text(
+                                isReported == false ? Text(
                                   replContent,
                                   style: contentStyle,
-                                ),
+                                ) : Text('신고된 댓글입니다.',
+                                  style: contentStyle.copyWith(color: Colors.red[400]),
+                                ) ,
                                 const SizedBox(height: 8),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
