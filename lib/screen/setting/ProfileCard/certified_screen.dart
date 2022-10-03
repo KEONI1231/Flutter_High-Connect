@@ -40,7 +40,7 @@ class _certified_screenState extends State<certified_screen> {
                   child: Text('첨부파일 업로드'),
                   style: ElevatedButton.styleFrom(
                       primary: PRIMARY_COLOR,
-                      minimumSize: Size(196, 40),
+                      minimumSize: const Size(196, 40),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15))),
                 ),

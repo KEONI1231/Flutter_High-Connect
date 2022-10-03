@@ -179,6 +179,7 @@ class _HomeBannerAd extends StatelessWidget {
 
 class HomeBoard extends StatelessWidget {
   final loginUser user;
+
   const HomeBoard({
     required this.user,
     Key? key,
@@ -187,7 +188,7 @@ class HomeBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String latestFreePost= '';
+    String latestFreePost = '';
     final ContainerDecoration = BoxDecoration(
       color: Colors.white,
       //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -219,41 +220,45 @@ class HomeBoard extends StatelessWidget {
             children: [
               SizedBox(height: 16),
               StreamBuilder<QuerySnapshot>(
-                  stream: firestore
-                      .collection('post-free-board')
-                      .orderBy('posted time', descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    latestFreePost = snapshot.data?.docs[0]['content'];
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(color: PRIMARY_COLOR);
-                    }
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return FreeBoard(
-                            postValue: 'post-free-board',
-                            user: user,
-                          );
-                        }));
-                      },
-                      child: Row(
-                        children: [
-                          Text('자유 게시판', style: ts),
-                          SizedBox(width: 24),
-                          Flexible(
-                            child: Text(
-                              latestFreePost,
-                              style: tsContent,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                stream: firestore
+                    .collection('post-free-board')
+                    .orderBy('posted time', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  //latestFreePost = snapshot.data?.docs[0]['content'];
+                  snapshot.data!.docs.length != 0
+                      ? latestFreePost = snapshot.data?.docs[0]['content']
+                      : latestFreePost = '최근 게시물이 없습니다.';
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(color: PRIMARY_COLOR);
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return FreeBoard(
+                          postValue: 'post-free-board',
+                          user: user,
+                        );
+                      }));
+                    },
+                    child: Row(
+                      children: [
+                        Text('자유 게시판', style: ts),
+                        SizedBox(width: 24),
+                        Flexible(
+                          child: Text(
+                            latestFreePost,
+                            style: tsContent,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                        ],
-                      ),
-                    );
-                  },),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
               SizedBox(height: 16),
               Row(
                 children: [

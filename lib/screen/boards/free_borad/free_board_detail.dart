@@ -61,7 +61,7 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ReplView(
-              postValue: 'post-free-board',
+              postValue: widget.postValue,
               user: widget.user,
               postTime: widget.postTime,
               replCount: widget.replCount,
@@ -143,7 +143,9 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
         'repl id': widget.user.ID + widget.user.replCount.toString() + '!@#',
         'repl heart': 0,
         'repled time': DateTime.now().toString(),
-        'repl heartuser' : [''],
+        'repl heartuser': [''],
+        'is reported': false,
+        'report content': ''
       });
       Navigator.pop(context);
       DialogShow(context, '댓글을 작성했습니다!');
@@ -188,6 +190,8 @@ class _ReplViewState extends State<ReplView> {
   String forPrintRepledTime = '';
   String replID = '';
   int replHeart = 0;
+  bool isReported = false;
+
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 20);
@@ -275,8 +279,15 @@ class _ReplViewState extends State<ReplView> {
                                     children: [
                                       GestureDetector(
                                           onTap: () {
-                                            ReportMessage(context);
-                                            //repl writer id 받아오기
+                                            ReportMessage(
+                                                context,
+                                                true,
+                                                widget.postValue,
+                                                widget.postID,
+                                                '');
+                                            //post id, reported content 보내기
+                                            //댓글은 어떻게 처리하지
+                                            //댓글 신고인지 게시글 신고인지
                                           },
                                           child: Icon(Icons.more_vert)),
                                     ],
@@ -303,6 +314,7 @@ class _ReplViewState extends State<ReplView> {
                       repledTime = snapshot.data?.docs[index]['repled time'];
                       replID = snapshot.data?.docs[index]['repl id'];
                       replHeart = snapshot.data?.docs[index]['repl heart'];
+                      isReported = snapshot.data?.docs[index]['is reported'];
                       forPrintRepledTime = repledTime.substring(0, 16);
                     }
                     return Column(
@@ -327,9 +339,14 @@ class _ReplViewState extends State<ReplView> {
                                           color: PRIMARY_COLOR,
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(
+                                        isReported == false ? Text(
                                           '익명',
                                           style: titleStyle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ) : Text(
+                                          '신고',
+                                          style:titleStyle,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -346,7 +363,13 @@ class _ReplViewState extends State<ReplView> {
                                       children: [
                                         GestureDetector(
                                             onTap: () {
-                                              ReportMessage(context);
+                                              ReportMessage(
+                                                  context,
+                                                  false,
+                                                  widget.postValue,
+                                                  widget.postID,
+                                                  replID); //여기에 변수들을 넘겨서 처리해야함.
+                                              // ex { post-value, post-id}
                                             },
                                             child: Icon(Icons.more_vert)),
                                       ],
@@ -354,10 +377,12 @@ class _ReplViewState extends State<ReplView> {
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                Text(
+                                isReported == false ? Text(
                                   replContent,
                                   style: contentStyle,
-                                ),
+                                ) : Text('신고된 댓글입니다.',
+                                  style: contentStyle.copyWith(color: Colors.red[400]),
+                                ) ,
                                 const SizedBox(height: 8),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -365,13 +390,9 @@ class _ReplViewState extends State<ReplView> {
                                     GestureDetector(
                                         onTap: replHeartClick,
                                         child: Icon(Icons.favorite_border)),
-
                                     Text(': ${replHeart}개'),
-
                                   ],
-
                                 ),
-
                               ],
                             ),
                           ),
@@ -393,14 +414,24 @@ class _ReplViewState extends State<ReplView> {
   }
 
   void replHeartClick() async {
-    DocumentSnapshot postData =
-        await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).get();
-    final List heartUserList = List<String>.from(postData['repl heartuser'] ?? []);
+    DocumentSnapshot postData = await firestore
+        .collection(widget.postValue)
+        .doc(widget.postID)
+        .collection('repl')
+        .doc(replID)
+        .get();
+    final List heartUserList =
+        List<String>.from(postData['repl heartuser'] ?? []);
     if (heartUserList.contains(widget.user.ID) == false) {
       //좋아요를 달지 않은 상태일때
       heartUserList.add(widget.user.ID);
       CustomCircular(context, '좋아요 등록중...');
-      await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).update({
+      await firestore
+          .collection(widget.postValue)
+          .doc(widget.postID)
+          .collection('repl')
+          .doc(replID)
+          .update({
         'repl heartuser': heartUserList,
         'repl heart': heartUserList.length - 1,
       });
@@ -410,7 +441,12 @@ class _ReplViewState extends State<ReplView> {
       //좋아요를 달았을때와 좋아요 수가 0개 일때
       heartUserList.remove(widget.user.ID);
       CustomCircular(context, '좋아요 지우는 중...');
-      await firestore.collection(widget.postValue).doc(widget.postID).collection('repl').doc(replID).update({
+      await firestore
+          .collection(widget.postValue)
+          .doc(widget.postID)
+          .collection('repl')
+          .doc(replID)
+          .update({
         'repl heartuser': heartUserList,
         'repl heart': heartUserList.length - 1,
       });

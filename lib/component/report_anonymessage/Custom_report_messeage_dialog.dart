@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:per_pro/component/report_anonymessage/report_screen.dart';
+import 'package:per_pro/component/report_anonymessage/report_post_screen.dart';
+import 'package:per_pro/component/report_anonymessage/report_repl_screen.dart';
 
 import '../../constant/color.dart';
 
-Future ReportMessage(context) async {
+Future ReportMessage(
+    context, bool isPost, String postValue, String postID, String replID) async {
   final ts = TextStyle(color: PRIMARY_COLOR);
   return await showDialog(
     context: context,
@@ -20,7 +22,9 @@ Future ReportMessage(context) async {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return ReportPost();
+                      return isPost == true
+                          ? ReportPost(postId: postID, postValue: postValue)
+                          : ReportRepl(postValue: postValue,replID: replID,postID: postID); //받은 변수값을 RepotPost() 에도 넘겨주자.
                     },
                   ),
                 );

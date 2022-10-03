@@ -30,6 +30,7 @@ class _FreeBoardState extends State<FreeBoard> {
     String school = '';
     String postID = '';
     String writerID = '';
+    bool isReported = false;
     int heartCount = 0;
     int replCount = 0;
     int scrapCount = 0;
@@ -69,7 +70,9 @@ class _FreeBoardState extends State<FreeBoard> {
                       scrapCount = snapshot.data?.docs[index]['scrap count'];
                       postID = snapshot.data?.docs[index]['post id'];
                       writerID = snapshot.data?.docs[index]['writer id'];
+                      isReported = snapshot.data?.docs[index]['is reported'];
                       return PostContents(
+                        isReported: isReported,
                         writerID: writerID,
                         postTime: postTime,
                         title: title,
@@ -109,7 +112,6 @@ class _FreeBoardState extends State<FreeBoard> {
 }
 
 class PostContents extends StatelessWidget {
-  //final GestureTapCallback onTap;
   final String title;
   final String school;
   final String content;
@@ -120,9 +122,11 @@ class PostContents extends StatelessWidget {
   final int heartCount;
   final String postID;
   final String postValue;
+  final bool isReported;
   final loginUser user;
 
   const PostContents({
+    required this.isReported,
     required this.writerID,
     required this.postValue,
     required this.user,
@@ -142,70 +146,87 @@ class PostContents extends StatelessWidget {
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 21);
     final contentStyle = TextStyle(color: Colors.grey[600], fontSize: 18);
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return FreeBoardDetail(
-                user: user,
-                postID: postID,
-                heartCount: heartCount,
-                replCount: replCount,
-                scrapCount: scrapCount,
-                title: title,
-                content: content,
-                postTime: postTime,
-                school: school,
-                postValue: postValue,
-                writerID: writerID,
-              );
-            },
-          ),
-        );
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(8, 0, 8, 2),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: titleStyle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    content,
-                    style: contentStyle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(Icons.favorite_border),
-                      Text(': $heartCount개'),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Icon(Icons.messenger_outline),
-                      Text(': ${replCount}개'),
-                    ],
-                  )
-                ],
+        onTap: () {
+          if (isReported == false) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return FreeBoardDetail(
+                    user: user,
+                    postID: postID,
+                    //게시글의 id
+                    heartCount: heartCount,
+                    replCount: replCount,
+                    scrapCount: scrapCount,
+                    title: title,
+                    content: content,
+                    postTime: postTime,
+                    school: school,
+                    postValue: postValue,
+                    //게시판의 종류
+                    writerID: writerID,
+                  );
+                },
               ),
-            ),
-          )
-        ],
-      ),
-    );
+            );
+          }
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(8, 0, 8, 2),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    isReported == false
+                        ? Text(
+                            title,
+                            style: titleStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : Text(
+                            '신고된 게시물 입니다',
+                            style: titleStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                    const SizedBox(height: 8),
+                    isReported == false
+                        ? Text(
+                            content,
+                            style: contentStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : Text(
+                            '신고된 게시물 입니다.',
+                            style: contentStyle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.favorite_border),
+                        Text(': $heartCount개'),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(Icons.messenger_outline),
+                        Text(': ${replCount}개'),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ));
   }
 }

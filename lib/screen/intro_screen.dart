@@ -3,15 +3,27 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../constant/color.dart';
 import 'login/login_screen.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
+
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    initializeFlutterFire();
+    super.initState();
+  }
+  void initializeFlutterFire() async {
+
+      await Firebase.initializeApp();
+  }
+
   //에뮬레이터 실행시에 처음 보여줄 화면
   // splash screen(로딩중) 이 될 화면. 이 화면은 크게 어려운거 없고 걍 읽어보셈
   @override
@@ -34,7 +46,8 @@ class _MyAppState extends State<MyApp> {
                     ),
                   );
                 },
-                child: Text('시작하기'))
+                child: Text('시작하기'),
+            )
           ],
         ),
       ),
