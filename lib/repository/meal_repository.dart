@@ -8,7 +8,9 @@ import '../model/meal.model.dart';
 class MealRepository{
 
   static Future<List<MealModel>> fetchData() async {
-    final date = DateTime.now().year.toString() + DateTime.now().month.toString().padLeft(2, '0');
+    final date = DateTime.now().year.toString() +
+        DateTime.now().month.toString().padLeft(2, '0');
+
 
     final response = await Dio().get(
       'https://open.neis.go.kr/hub/mealServiceDietInfo',
@@ -28,7 +30,7 @@ class MealRepository{
     return meal['mealServiceDietInfo'][1]['row']
         .map<MealModel>(
           (item) => MealModel.fromJson(json: item),
-    )
+        )
         .toList();
   }
 }
