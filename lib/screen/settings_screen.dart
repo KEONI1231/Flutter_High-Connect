@@ -6,7 +6,7 @@ import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/setting/ProfileCard/certified_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
 import 'package:per_pro/screen/setting/ProfileCard/mypost.dart';
-import 'package:per_pro/screen/setting/etc_screen/inquiry_screen.dart';
+import 'package:per_pro/component/custom_send_mail.dart';
 import 'package:per_pro/screen/setting/etc_screen/user_delete_beforlogin_screen.dart';
 import 'package:per_pro/screen/setting/personal_account_setting/change_email_beforlogin.dart';
 import 'package:per_pro/screen/setting/personal_account_setting/change_nickname_beforeLogin.dart';
@@ -139,7 +139,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     onPressed: () {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return certified_screen();
+                        return certified_screen(user: widget.user, ContainerDecoration:widget.ContainerDecoration,);
                       }));
                     },
                     child: Text(
@@ -213,7 +213,7 @@ class PersonalAccountSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return certified_screen();
+                    return certified_screen(user: user,ContainerDecoration: ContainerDecoration);
                   }));
                 },
                 child: Text(
@@ -389,8 +389,11 @@ class EtcSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return Inquiry(
-                        user: user, ContainerDecoration: ContainerDecoration);
+                    return SendMail(
+
+                        user: user, ContainerDecoration: ContainerDecoration,
+                              appBarText: '문의하기',
+                        );
                   }));
                 },
                 child: Row(

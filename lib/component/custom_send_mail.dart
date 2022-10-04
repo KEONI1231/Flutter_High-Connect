@@ -1,27 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/custom_button.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import '../../../component/alert_dialog.dart';
-import '../../../component/send_mail_custom_textfield.dart';
-import '../../../constant/color.dart';
+import 'alert_dialog.dart';
+import 'send_mail_custom_textfield.dart';
+import '../constant/color.dart';
 
-class Inquiry extends StatefulWidget {
+class SendMail extends StatefulWidget {
+  final XFile? certifiedImage;
+  final String appBarText;
   final loginUser user;
   final BoxDecoration ContainerDecoration;
 
-  const Inquiry({
+  const SendMail({
+    this.certifiedImage,
+    required this.appBarText,
     required this.user,
     required this.ContainerDecoration,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<Inquiry> createState() => _InquiryState();
+  State<SendMail> createState() => _SendMailState();
 }
 
-class _InquiryState extends State<Inquiry> {
+class _SendMailState extends State<SendMail> {
   final TextEditingController _mailTitleTextController =
       TextEditingController();
   final TextEditingController _mailContentTextController =
@@ -35,7 +40,7 @@ class _InquiryState extends State<Inquiry> {
           body: SingleChildScrollView(
         child: Column(
           children: [
-            CustomAppBar(titleText: '문의하기'),
+            CustomAppBar(titleText: widget.appBarText),
             const SizedBox(height: 24),
             Container(
               width: MediaQuery.of(context).size.width / 1.1,
@@ -92,7 +97,15 @@ class _InquiryState extends State<Inquiry> {
 
   void onSendEmailBtn() async {
     print(_mailContentTextController.text);
-    final Email email = Email(
+    final Email email = widget.certifiedImage != null ? Email(
+      body: '${_mailContentTextController.text}',
+      subject: '[${_mailTitleTextController.text}]',
+      recipients: ['forstudyhw2@gmail.com'],
+      cc: [],
+      bcc: [],
+      attachmentPaths: [widget.certifiedImage!.path],
+      isHTML: false,
+    ) : Email(
       body: '${_mailContentTextController.text}',
       subject: '[${_mailTitleTextController.text}]',
       recipients: ['forstudyhw2@gmail.com'],
