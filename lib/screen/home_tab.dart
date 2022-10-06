@@ -56,7 +56,7 @@ class _HomeMeal extends StatelessWidget {
       children: [
         SafeArea(
           child: SizedBox(
-            height: 300,
+            height: 305,
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(

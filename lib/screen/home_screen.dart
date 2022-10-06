@@ -1,13 +1,16 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/model/meal.model.dart';
-import 'package:per_pro/repository/meal_repository.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
 import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 import 'package:per_pro/screen/schedule_screen.dart';
+import '../constant/data.dart';
 import 'boards/alarm_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,7 +28,33 @@ class HomeScreen extends StatefulWidget {
 // 하단 네브바에 메뉴 6개넣으니까 너무 좁아 보여서 설정창은 앱바의 우측으로 뺐음.
 class _HomeScreenState extends State<HomeScreen> {
   Future<List<MealModel>> fetchData() async {
-    final mealModels = await MealRepository.fetchData();
+    final date = DateTime.now().year.toString() +
+        DateTime.now().month.toString().padLeft(2, '0');
+
+    final response = await Dio().get(
+      'https://open.neis.go.kr/hub/mealServiceDietInfo',
+      queryParameters: {
+        'serviceKey': serviceKey,
+        'Type': 'json',
+        'pIndex': 1,
+        'pSize': 30,
+        'ATPT_OFCDC_SC_CODE': widget.user.eduOfficeCode,
+        'SD_SCHUL_CODE': '7531106',
+        'MLSV_YMD': date,
+      },
+    );
+
+    Map<String, dynamic> meal = jsonDecode(response.data);
+
+    return meal['mealServiceDietInfo'][1]['row']
+        .map<MealModel>(
+          (item) => MealModel.fromJson(json: item),
+    )
+        .toList();
+  }
+
+  Future<List<MealModel>> fetchData2() async {
+    final mealModels = await fetchData();
 
     return mealModels;
   }
