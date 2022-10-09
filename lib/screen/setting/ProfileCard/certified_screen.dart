@@ -54,7 +54,6 @@ class _certified_screenState extends State<certified_screen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15))),
                   ),
-                  certifiedImage != null ? Text(certifiedImage!.path): Text(''),
                 ],
               ),
             ],

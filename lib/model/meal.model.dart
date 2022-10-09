@@ -60,3 +60,19 @@ class MealModel {
   CAL_INFO = json['CAL_INFO'],
   NTR_INFO = json['NTR_INFO'];
 }
+
+class schoolInfo {
+  // 필요한 것들만 활성화 시켜 놓음 ex) 학교명, 요리명, 칼로리정보 등
+  // final SchoolCode ATPT_OFCDC_SC_CODE;
+  // final String ATPT_OFCDC_SC_NM;
+  // final int SD_SCHUL_CODE;
+  final String? SCHUL_NM; //학교명
+  // final int MMEAL_SC_CODE;
+  // final int MLSV_FGR;
+
+  // final int MLSV_FROM_YMD;
+
+  schoolInfo.fromJson({required Map<String, dynamic> json}):
+        SCHUL_NM = json['SCHUL_NM'];
+
+}

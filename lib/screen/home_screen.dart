@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
@@ -30,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<MealModel>> fetchData() async {
     final date = DateTime.now().year.toString() +
         DateTime.now().month.toString().padLeft(2, '0');
-
-    final response = await Dio().get(
+    print(date);
+    final response= await Dio().get(
       'https://open.neis.go.kr/hub/mealServiceDietInfo',
       queryParameters: {
         'serviceKey': serviceKey,
@@ -43,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'MLSV_YMD': date,
       },
     );
-
+    //print(response);
     Map<String, dynamic> meal = jsonDecode(response.data);
 
     return meal['mealServiceDietInfo'][1]['row']
@@ -53,11 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
         .toList();
   }
 
-  Future<List<MealModel>> fetchData2() async {
+  /*Future<List<MealModel>> fetchData2() async {
     final mealModels = await fetchData();
 
     return mealModels;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               List<MealModel> meals = snapshot.data!;
               MealModel recentMeal = meals[0];
-              print(recentMeal.DDISH_NM);
+              //print(recentMeal.DDISH_NM);
 
               return TabBarView(
                 children: [

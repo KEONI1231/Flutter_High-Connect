@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/appbar.dart';
+import 'package:per_pro/component/custom_button.dart';
 
 import '../../component/account_textfield.dart';
 import '../../constant/color.dart';
@@ -37,6 +38,10 @@ class _findPwState extends State<findPw> {
                     Controller: _phoneNumberController,
                     label: '전화번호',
                   ),
+                  const SizedBox(height : 40),
+                  CustomButton(text: '확인', istext: true, onPressed: () {
+                    print('확인');
+                  })
                 ],
               ),
             )
@@ -45,4 +50,5 @@ class _findPwState extends State<findPw> {
       ),
     );
   }
+
 }
