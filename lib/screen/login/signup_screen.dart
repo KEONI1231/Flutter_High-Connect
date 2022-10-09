@@ -9,9 +9,9 @@ import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/component/unFocus.dart';
 import 'package:per_pro/constant/data.dart';
+import 'package:per_pro/model/school_information_model.dart';
 import '../../component/custom_button.dart';
 import '../../constant/color.dart';
-import '../../model/meal.model.dart';
 
 class signUp extends StatefulWidget {
   const signUp({Key? key}) : super(key: key);
@@ -64,23 +64,21 @@ class _signUpState extends State<signUp> {
     fetchData();
   }
 
+  var response;
+  dynamic schoolTotalInformation = [];
   fetchData() async {
-    var response;
-    for (int i = 0; i < 3; i++) {
-      response = await Dio().get(
-        'https://open.neis.go.kr/hub/schoolInfo',
-        queryParameters: {
-          'KEY': normalServiceKey,
-          'Type': 'json',
-          'pIndex': i,
-          'pSize': 1000,
-          'SCHUL_KND_SC_NM': '고등학교'
-        },
-      );
+    response = await Dio().get(
+      'https://open.neis.go.kr/hub/schoolInfo',
+      queryParameters: {
+        'KEY': normalServiceKey,
+        'Type': 'json',
+        'pIndex': 1,
+        'pSize': 1000,
+        'SCHUL_KND_SC_NM': '고등학교'
+      },
+    );
 
-
-      print(response.runtimeType);
-      /* final response1 = await Dio().get(
+    final response1 = await Dio().get(
       'https://open.neis.go.kr/hub/schoolInfo',
       queryParameters: {
         'KEY': normalServiceKey,
@@ -95,55 +93,54 @@ class _signUpState extends State<signUp> {
       queryParameters: {
         'KEY': normalServiceKey,
         'Type': 'json',
-       // 'pIndex': 3,
-        //'pSize': 1000,
+        'pIndex': 3,
+        'pSize': 1000,
         'SCHUL_KND_SC_NM': '고등학교'
       },
-    );*/
+    );
 
+    Map<String, dynamic> schoolName = jsonDecode(response.data);
+    Map<String, dynamic> schoolName1 = jsonDecode(response1.data);
+    Map<String, dynamic> schoolName2 = jsonDecode(response2.data);
+    List<dynamic> schoolInfo1 = schoolName['schoolInfo'][1]['row']
+        .map(
+          (item) => schoolInfo.fromJson(json: item),
+        )
+        .toList();
+    List<dynamic> schoolInfo2 = schoolName1['schoolInfo'][1]['row']
+        .map(
+          (item) => schoolInfo.fromJson(json: item),
+        )
+        .toList();
+    List<dynamic> schoolInfo3 = schoolName2['schoolInfo'][1]['row']
+        .map(
+          (item) => schoolInfo.fromJson(json: item),
+        )
+        .toList();
 
-      Map<String, dynamic> schoolName = jsonDecode(response.data);
-
-      // Map<String, dynamic> schoolName1 = jsonDecode(response1.data);
-      // Map<String, dynamic> schoolName2 = jsonDecode(response2.data);
-      /*print(
-      schoolName['mealServiceDietInfo'][1]['row'].map(
-            (item) => schoolInfo.fromJson(json: item),
-      ),
-    );*/
-
-      List<dynamic> asddd = [];
-      for (int i = 0; i < 3; i ++) {
-        asddd[i] = schoolName['schoolInfo'][1]['row']
-            .map(
-              (item) => schoolInfo.fromJson(json: item),
-        ).toList();
-      }
-      // List<dynamic> asddd1 = schoolName1['schoolInfo'][1]['row']
-      //     .map(
-      //       (item) => schoolInfo.fromJson(json: item),
-      // ).toList();
-      // List<dynamic> asddd2 = schoolName2['schoolInfo'][1]['row']
-      //     .map(
-      //       (item) => schoolInfo.fromJson(json: item),
-      // ).toList();
-
-      //print(schoolName['schoolInfo'][1]['row'].length);
-      //print(schoolName1['schoolInfo'][1]['row'].length);
-      //print(schoolName2['schoolInfo'][1]['row'].length);
-      for (int i = 0; i < asddd[i].length; i++) {
-        print(asddd[i].SCHUL_NM + (i + 1).toString());
-      }
-
-      /* for (int i = 0; i < asddd1.length; i++) {
-      print(asddd1[i].SCHUL_NM + (i+1).toString());
+    for (int i = 0; i < schoolInfo1.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
     }
-    for (int i = 0; i < asddd2.length; i++) {
-      print(asddd2[i].SCHUL_NM + (i+1).toString());
-    }*/
-      print("Asd");
+    for (int i = 0; i < schoolInfo2.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
+    }
+    for (int i = 0; i < schoolInfo3.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
+    }
+    schoolTotalInformation.addAll(schoolInfo1);
+    schoolTotalInformation.addAll(schoolInfo2);
+    schoolTotalInformation.addAll(schoolInfo3);
+    for (int i = 0; i < schoolTotalInformation.length; i++) {
+      print((i + 1).toString() +
+          "  " +
+          schoolTotalInformation[i].SCHUL_NM +
+          ", 코드 : " +
+          schoolTotalInformation[i].SD_SCHUL_CODE +
+          ", 교육청 : " +
+          schoolTotalInformation[i].ATPT_OFCDC_SC_CODE);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
