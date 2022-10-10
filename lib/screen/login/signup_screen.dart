@@ -30,8 +30,18 @@ class _signUpState extends State<signUp> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _nicknameTextController = TextEditingController();
   final TextEditingController _realNameTextController = TextEditingController();
-  final TextEditingController _phoneNumberTextController =
-      TextEditingController();
+  final TextEditingController _phoneNumberTextController = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  String _searchText = '';
+
+  _signUpState(){
+    _schoolTextController.addListener(() {
+      setState(() {
+        _searchText = _schoolTextController.text;
+      });
+    });
+  }
+
 
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -225,10 +235,44 @@ class _signUpState extends State<signUp> {
                           textInputType: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
-                        CustomTextField(
-                          label: '학교', // 학교인증용
-                          Controller: _schoolTextController,
-                          textInputType: TextInputType.text,
+                        Container(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 6,
+                                child: TextFormField(
+                                  focusNode: focusNode,
+                                  autofocus: true,
+                                  controller: _schoolTextController,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.grey[200],
+                                    filled: true,
+                                    //텍스트 필드를 통일화 하기위한 데코레이션,
+                                    //text 필드 데코레이션 정의 변수.
+                                    border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
+                                      ),
+                                    ),
+                                    prefixIcon: Icon(Icons.search, color: Colors.black,),
+                                    suffixIcon: focusNode.hasFocus ? IconButton(
+                                      icon: Icon(Icons.cancel,),
+                                      onPressed: () {
+                                        setState(() {
+                                          _schoolTextController.clear();
+                                          _searchText = '';
+                                        });
+                                      },
+                                    ) : Container(),
+                                    hintText: '학교를 검색해주세요.',
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
