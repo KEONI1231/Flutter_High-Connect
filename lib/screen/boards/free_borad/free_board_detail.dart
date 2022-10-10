@@ -185,12 +185,12 @@ class ReplView extends StatefulWidget {
 
 class _ReplViewState extends State<ReplView> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  String replContent = '';
-  String repledTime = '';
-  String forPrintRepledTime = '';
-  String replID = '';
-  int replHeart = 0;
-  bool isReported = false;
+  var replContent;
+  var repledTime;
+  var forPrintRepledTime;
+  var replID;
+  var replHeart;
+  var isReported;
 
   @override
   Widget build(BuildContext context) {
@@ -226,9 +226,7 @@ class _ReplViewState extends State<ReplView> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                           child: Column(
-                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
-
                             children: [
                               const SizedBox(height: 8),
                               Row(
@@ -310,15 +308,15 @@ class _ReplViewState extends State<ReplView> {
                   childCount: snapshot.data!.docs.length,
                   (BuildContext context, int index) {
                     if (snapshot.data!.docs.length != 0) {
-                      replContent = snapshot.data?.docs[index]['repl content'];
-                      repledTime = snapshot.data?.docs[index]['repled time'];
-                      replID = snapshot.data?.docs[index]['repl id'];
-                      replHeart = snapshot.data?.docs[index]['repl heart'];
-                      isReported = snapshot.data?.docs[index]['is reported'];
-                      forPrintRepledTime = repledTime.substring(0, 16);
+                      replContent[index] = snapshot.data?.docs[index]['repl content'];
+                      repledTime[index] = snapshot.data?.docs[index]['repled time'];
+                      replID[index] = snapshot.data?.docs[index]['repl id'];
+                      replHeart[index] = snapshot.data?.docs[index]['repl heart'];
+                      isReported[index] = snapshot.data?.docs[index]['is reported'];
+                      forPrintRepledTime[index] = repledTime.substring(0, 16);
+                      //print(replID);
                     }
                     return Column(
-                      //댓글들
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
@@ -363,6 +361,7 @@ class _ReplViewState extends State<ReplView> {
                                       children: [
                                         GestureDetector(
                                             onTap: () {
+                                              print(replID);
                                               ReportMessage(
                                                   context,
                                                   false,
@@ -378,11 +377,11 @@ class _ReplViewState extends State<ReplView> {
                                 ),
                                 const SizedBox(height: 8),
                                 isReported == false ? Text(
-                                  replContent,
+                                  replContent[index],
                                   style: contentStyle,
-                                ) : Text('신고된 댓글입니다.',
+                                ) : Text('신고된 댓글입니다.'+ replContent[index],
                                   style: contentStyle.copyWith(color: Colors.red[400]),
-                                ) ,
+                                ),//문제1) 어떤 댓글을 클릭하여 신고해도 마지막 댓글이 신고가 됨, 좋아요도 마찬가지
                                 const SizedBox(height: 8),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,

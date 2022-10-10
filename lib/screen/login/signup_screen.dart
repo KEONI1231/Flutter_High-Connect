@@ -118,27 +118,9 @@ class _signUpState extends State<signUp> {
         )
         .toList();
 
-    for (int i = 0; i < schoolInfo1.length; i++) {
-      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
-    }
-    for (int i = 0; i < schoolInfo2.length; i++) {
-      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
-    }
-    for (int i = 0; i < schoolInfo3.length; i++) {
-      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
-    }
     schoolTotalInformation.addAll(schoolInfo1);
     schoolTotalInformation.addAll(schoolInfo2);
     schoolTotalInformation.addAll(schoolInfo3);
-    for (int i = 0; i < schoolTotalInformation.length; i++) {
-      print((i + 1).toString() +
-          "  " +
-          schoolTotalInformation[i].SCHUL_NM +
-          ", 코드 : " +
-          schoolTotalInformation[i].SD_SCHUL_CODE +
-          ", 교육청 : " +
-          schoolTotalInformation[i].ATPT_OFCDC_SC_CODE);
-    }
   }
 
   @override
@@ -309,7 +291,7 @@ class _signUpState extends State<signUp> {
                         CustomButton(
                           text: '',
                           istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
-                          onPressed: onSignUpPressed, //계정생성 버튼.
+                          onPressed: onSignUpPressed//계정생성 버튼.
                         ),
                         const SizedBox(height: 50),
                       ],

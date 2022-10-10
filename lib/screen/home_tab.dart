@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/model/meal.model.dart';
 import 'package:per_pro/screen/boards/free_borad/free_board.dart';
 import '../component/meal_info.dart';
 import '../firebase_database_model/user.dart';
+import '../model/school_information_model.dart';
 
 class HomeTab extends StatelessWidget {
   final MealModel meal;
