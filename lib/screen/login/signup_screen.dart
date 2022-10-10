@@ -323,7 +323,7 @@ class _signUpState extends State<signUp> {
                         CustomButton(
                           text: '',
                           istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
-                          onPressed: onSignUpPressed, //계정생성 버튼.
+                          onPressed: onSignUpPressed//계정생성 버튼.
                         ),
                         const SizedBox(height: 50),
                       ],

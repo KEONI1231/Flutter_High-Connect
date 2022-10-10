@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
+
 import 'package:per_pro/model/school_information_model.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
@@ -10,6 +11,7 @@ import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 import 'package:per_pro/screen/schedule_screen.dart';
 import '../constant/data.dart';
+import '../model/school_information_model.dart';
 import 'boards/alarm_screen.dart';
 
 class HomeScreen extends StatefulWidget {
