@@ -186,12 +186,12 @@ class ReplView extends StatefulWidget {
 class _ReplViewState extends State<ReplView> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var replContent;
+
   var repledTime;
   var forPrintRepledTime;
   var replID;
   var replHeart;
   var isReported;
-
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 20);
@@ -305,105 +305,30 @@ class _ReplViewState extends State<ReplView> {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  childCount: snapshot.data!.docs.length,
-                  (BuildContext context, int index) {
-                    if (snapshot.data!.docs.length != 0) {
-                      replContent[index] = snapshot.data?.docs[index]['repl content'];
-                      repledTime[index] = snapshot.data?.docs[index]['repled time'];
-                      replID[index] = snapshot.data?.docs[index]['repl id'];
-                      replHeart[index] = snapshot.data?.docs[index]['repl heart'];
-                      isReported[index] = snapshot.data?.docs[index]['is reported'];
-                      forPrintRepledTime[index] = repledTime.substring(0, 16);
-                      //print(replID);
-                    }
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.account_circle,
-                                          color: PRIMARY_COLOR,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        isReported == false ? Text(
-                                          '익명',
-                                          style: titleStyle,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ) : Text(
-                                          '신고',
-                                          style:titleStyle,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          forPrintRepledTime,
-                                          style: contentStyle,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        GestureDetector(
-                                            onTap: () {
-                                              print(replID);
-                                              ReportMessage(
-                                                  context,
-                                                  false,
-                                                  widget.postValue,
-                                                  widget.postID,
-                                                  replID); //여기에 변수들을 넘겨서 처리해야함.
-                                              // ex { post-value, post-id}
-                                            },
-                                            child: Icon(Icons.more_vert)),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                isReported == false ? Text(
-                                  replContent[index],
-                                  style: contentStyle,
-                                ) : Text('신고된 댓글입니다.'+ replContent[index],
-                                  style: contentStyle.copyWith(color: Colors.red[400]),
-                                ),//문제1) 어떤 댓글을 클릭하여 신고해도 마지막 댓글이 신고가 됨, 좋아요도 마찬가지
-                                const SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    GestureDetector(
-                                        onTap: replHeartClick,
-                                        child: Icon(Icons.favorite_border)),
-                                    Text(': ${replHeart}개'),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Liner(),
-                      ],
-                    );
-                  },
-                ),
+                    childCount: snapshot.data!.docs.length,
+                    (BuildContext context, int index) {
+                  if (snapshot.data!.docs.length != 0) {
+                    replContent = (snapshot.data?.docs[index]['repl content']);
+                    repledTime = snapshot.data?.docs[index]['repled time'];
+                    replID = (snapshot.data?.docs[index]['repl id']);
+                    replHeart = (snapshot.data?.docs[index]['repl heart']);
+                    isReported = (snapshot.data?.docs[index]['is reported']);
+                    forPrintRepledTime = repledTime.substring(0, 16);
+                  }
+                  return EachRepl(
+                    postValue: widget.postValue,
+                    postID: widget.postID,
+                    contentStyle: contentStyle,
+                    titleStyle: titleStyle,
+                    forPrintRepledTime: forPrintRepledTime,
+                    isReported: isReported,
+                    replContent: replContent,
+                    repledTime: repledTime,
+                    replHeart: replHeart,
+                    replID: replID,
+                    user: widget.user
+                  );
+                }),
               ),
             ],
           ),
@@ -412,48 +337,6 @@ class _ReplViewState extends State<ReplView> {
     );
   }
 
-  void replHeartClick() async {
-    DocumentSnapshot postData = await firestore
-        .collection(widget.postValue)
-        .doc(widget.postID)
-        .collection('repl')
-        .doc(replID)
-        .get();
-    final List heartUserList =
-        List<String>.from(postData['repl heartuser'] ?? []);
-    if (heartUserList.contains(widget.user.ID) == false) {
-      //좋아요를 달지 않은 상태일때
-      heartUserList.add(widget.user.ID);
-      CustomCircular(context, '좋아요 등록중...');
-      await firestore
-          .collection(widget.postValue)
-          .doc(widget.postID)
-          .collection('repl')
-          .doc(replID)
-          .update({
-        'repl heartuser': heartUserList,
-        'repl heart': heartUserList.length - 1,
-      });
-      Navigator.pop(context);
-      DialogShow(context, '좋아요를 달았습니다');
-    } else if (heartUserList.contains(widget.user.ID) == true) {
-      //좋아요를 달았을때와 좋아요 수가 0개 일때
-      heartUserList.remove(widget.user.ID);
-      CustomCircular(context, '좋아요 지우는 중...');
-      await firestore
-          .collection(widget.postValue)
-          .doc(widget.postID)
-          .collection('repl')
-          .doc(replID)
-          .update({
-        'repl heartuser': heartUserList,
-        'repl heart': heartUserList.length - 1,
-      });
-      Navigator.pop(context);
-      DialogShow(context, '좋아요를 지웠습니다');
-    }
-    print(replID);
-  }
 
   void onHeartClick() async {
     //좋아요 함수
@@ -503,5 +386,171 @@ class Liner extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class EachRepl extends StatefulWidget {
+  final titleStyle;
+  final contentStyle;
+  final replContent;
+  final repledTime;
+  final forPrintRepledTime;
+  final replID;
+  final replHeart;
+  final isReported;
+  final postID;
+  final postValue;
+  final loginUser user;
+  const EachRepl({
+    required this.user,
+    required this.postID,
+    required this.postValue,
+    required this.titleStyle,
+    required this.contentStyle,
+    required this.replContent,
+      required this.replID,
+      required this.repledTime,
+      required this.forPrintRepledTime,
+      required this.isReported,
+      required this.replHeart,
+      Key? key})
+      : super(key: key);
+
+  @override
+  State<EachRepl> createState() => _EachReplState();
+}
+
+class _EachReplState extends State<EachRepl> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.account_circle,
+                          color: PRIMARY_COLOR,
+                        ),
+                        const SizedBox(width: 8),
+                        widget.isReported == false
+                            ? Text(
+                                '익명',
+                                style: widget.titleStyle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Text(
+                                '신고',
+                                style: widget.titleStyle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.forPrintRepledTime,
+                          style: widget.contentStyle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              print(widget.replID);
+                              ReportMessage(context, false,widget.postValue,
+                                  widget.postID, widget.replID); //여기에 변수들을 넘겨서 처리해야함.
+                              // ex { post-value, post-id}
+                            },
+                            child: Icon(Icons.more_vert)),
+                      ],
+                    )
+                  ],
+                ),
+                const SizedBox(height: 8),
+                widget.isReported == false
+                    ? Text(
+                        widget.replContent,
+                        style: widget.contentStyle,
+                      )
+                    : Text(
+                        '신고된 댓글입니다.',
+                        style: widget.contentStyle.copyWith(color: Colors.red[400]),
+                      ), //문제1) 어떤 댓글을 클릭하여 신고해도 마지막 댓글이 신고가 됨, 좋아요도 마찬가지 (모두 해결)
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                        onTap: widget.isReported != true ? replHeartClick : (){},
+                        child: Icon(Icons.favorite_border)),
+                    Text(': ${widget.replHeart}개'),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Liner(),
+      ],
+    );
+  }
+
+  void replHeartClick() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    DocumentSnapshot postData = await firestore
+        .collection(widget.postValue)
+        .doc(widget.postID)
+        .collection('repl')
+        .doc(widget.replID)
+        .get();
+    final List heartUserList =
+    List<String>.from(postData['repl heartuser'] ?? []);
+    if (heartUserList.contains(widget.user.ID) == false) {
+      //좋아요를 달지 않은 상태일때
+      heartUserList.add(widget.user.ID);
+      CustomCircular(context, '좋아요 등록중...');
+      await firestore
+          .collection(widget.postValue)
+          .doc(widget.postID)
+          .collection('repl')
+          .doc(widget.replID)
+          .update({
+        'repl heartuser': heartUserList,
+        'repl heart': heartUserList.length - 1,
+      });
+      Navigator.pop(context);
+      DialogShow(context, '좋아요를 달았습니다');
+    } else if (heartUserList.contains(widget.user.ID) == true) {
+      //좋아요를 달았을때와 좋아요 수가 0개 일때
+      heartUserList.remove(widget.user.ID);
+      CustomCircular(context, '좋아요 지우는 중...');
+      await firestore
+          .collection(widget.postValue)
+          .doc(widget.postID)
+          .collection('repl')
+          .doc(widget.replID)
+          .update({
+        'repl heartuser': heartUserList,
+        'repl heart': heartUserList.length - 1,
+      });
+      Navigator.pop(context);
+      DialogShow(context, '좋아요를 지웠습니다');
+    }
   }
 }
