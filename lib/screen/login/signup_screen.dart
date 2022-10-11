@@ -76,7 +76,7 @@ class _signUpState extends State<signUp> {
         'pSize': 1000,
         'SCHUL_KND_SC_NM': '고등학교'
       },
-    );
+    ); //서울, 대구, 부산, 인천, 광주, 대전, 울산, 세종, 경기,
 
     final response1 = await Dio().get(
       'https://open.neis.go.kr/hub/schoolInfo',
@@ -87,7 +87,8 @@ class _signUpState extends State<signUp> {
         'pSize': 1000,
         'SCHUL_KND_SC_NM': '고등학교'
       },
-    );
+    ); //경기, 강원, 충북, 충남, 전북, 전남, 경북,
+
     final response2 = await Dio().get(
       'https://open.neis.go.kr/hub/schoolInfo',
       queryParameters: {
@@ -97,7 +98,7 @@ class _signUpState extends State<signUp> {
         'pSize': 1000,
         'SCHUL_KND_SC_NM': '고등학교'
       },
-    );
+    ); // 경북, 경남, 제주
 
     Map<String, dynamic> schoolName = jsonDecode(response.data);
     Map<String, dynamic> schoolName1 = jsonDecode(response1.data);
@@ -118,9 +119,40 @@ class _signUpState extends State<signUp> {
         )
         .toList();
 
+    for (int i = 0; i < schoolInfo1.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
+    }
+    for (int i = 0; i < schoolInfo2.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
+    }
+    for (int i = 0; i < schoolInfo3.length; i++) {
+      //print(schoolInfo1[i].SCHUL_NM + " : " + (i + 1).toString() + ", " + schoolInfo1[i].SD_SCHUL_CODE + ", " +  schoolInfo1[i].ATPT_OFCDC_SC_CODE);
+    }
+    for (int i = 0; i < schoolTotalInformation.length; i++) {
+      // print((i + 1).toString() +
+      //     "  " +
+      //     schoolTotalInformation[i].SCHUL_NM +
+      //     ", 코드 : " +
+      //     schoolTotalInformation[i].SD_SCHUL_CODE +
+      //     ", 교육청 : " +
+      //     schoolTotalInformation[i].ATPT_OFCDC_SC_CODE);
+    }
     schoolTotalInformation.addAll(schoolInfo1);
     schoolTotalInformation.addAll(schoolInfo2);
     schoolTotalInformation.addAll(schoolInfo3);
+
+    Map<String, String> schoolNameToCodeMap = {};
+
+    for (int i = 0; i < schoolTotalInformation.length; i++) {
+      schoolNameToCodeMap[schoolTotalInformation[i].SCHUL_NM] = schoolTotalInformation[i].SD_SCHUL_CODE;
+    }
+
+    print(schoolNameToCodeMap);
+
+    List<String> schoolNames = [for (int i = 0; i < schoolTotalInformation.length; i++)
+      schoolTotalInformation[i].SCHUL_NM];
+
+    print(schoolNames.length);
   }
 
   @override
