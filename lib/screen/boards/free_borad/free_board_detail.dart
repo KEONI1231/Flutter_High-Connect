@@ -71,6 +71,7 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
               school: widget.school,
               scrapCount: widget.scrapCount,
               postID: widget.postID,
+              writerID: widget.writerID,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 16),
@@ -142,6 +143,7 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
         'repl content': replContent.text,
         'repl id': widget.user.ID + widget.user.replCount.toString() + '!@#',
         'repl heart': 0,
+        'repl writer id' : widget.user.ID,
         'repled time': DateTime.now().toString(),
         'repl heartuser': [''],
         'is reported': false,
@@ -164,8 +166,9 @@ class ReplView extends StatefulWidget {
   final loginUser user;
   final String postID;
   final String postValue;
-
+  final String writerID;
   const ReplView({
+    required this.writerID,
     required this.postID,
     required this.postValue,
     required this.user,
@@ -186,12 +189,12 @@ class ReplView extends StatefulWidget {
 class _ReplViewState extends State<ReplView> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var replContent;
-
   var repledTime;
   var forPrintRepledTime;
   var replID;
   var replHeart;
   var isReported;
+  var replWriterID;
   @override
   Widget build(BuildContext context) {
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 20);
@@ -282,7 +285,10 @@ class _ReplViewState extends State<ReplView> {
                                                 true,
                                                 widget.postValue,
                                                 widget.postID,
-                                                '');
+                                                '',
+                                              widget.writerID,
+                                              widget.user.ID
+                                            );
                                             //post id, reported content 보내기
                                             //댓글은 어떻게 처리하지
                                             //댓글 신고인지 게시글 신고인지
@@ -314,6 +320,7 @@ class _ReplViewState extends State<ReplView> {
                     replHeart = (snapshot.data?.docs[index]['repl heart']);
                     isReported = (snapshot.data?.docs[index]['is reported']);
                     forPrintRepledTime = repledTime.substring(0, 16);
+                    replWriterID = (snapshot.data?.docs[index]['repl writer id']);
                   }
                   return EachRepl(
                     postValue: widget.postValue,
@@ -326,7 +333,8 @@ class _ReplViewState extends State<ReplView> {
                     repledTime: repledTime,
                     replHeart: replHeart,
                     replID: replID,
-                    user: widget.user
+                    user: widget.user,
+                    replWriterID : replWriterID
                   );
                 }),
               ),
@@ -336,7 +344,6 @@ class _ReplViewState extends State<ReplView> {
       },
     );
   }
-
 
   void onHeartClick() async {
     //좋아요 함수
@@ -401,7 +408,9 @@ class EachRepl extends StatefulWidget {
   final postID;
   final postValue;
   final loginUser user;
+  final replWriterID;
   const EachRepl({
+    required this.replWriterID,
     required this.user,
     required this.postID,
     required this.postValue,
@@ -469,9 +478,8 @@ class _EachReplState extends State<EachRepl> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              print(widget.replID);
-                              ReportMessage(context, false,widget.postValue,
-                                  widget.postID, widget.replID); //여기에 변수들을 넘겨서 처리해야함.
+                              widget.isReported != true ? ReportMessage(context, false,widget.postValue,
+                                  widget.postID, widget.replID,widget.replWriterID,widget.user.ID) : (){}; //여기에 변수들을 넘겨서 처리해야함 .
                               // ex { post-value, post-id}
                             },
                             child: Icon(Icons.more_vert)),

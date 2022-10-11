@@ -128,10 +128,6 @@ class _AddPostState extends State<AddPost> {
         });
         await firestore
             .collection(widget.postValue)
-            .doc('latest')
-            .update({'latest post': contentTextController.text});
-        await firestore
-            .collection(widget.postValue)
             .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
             .collection('repl')
             .doc(widget.user.ID + widget.user.postCount.toString() + '!@#')
