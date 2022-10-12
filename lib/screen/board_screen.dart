@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
+import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/main.dart';
+import 'package:per_pro/screen/boards/free_borad/free_board.dart';
+
+import '../component/add_post_screen.dart';
 
 class BoardScreen extends StatelessWidget {
-  const BoardScreen({Key? key,}) : super(key: key);
+  final loginUser user;
+  const BoardScreen({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +31,7 @@ class BoardScreen extends StatelessWidget {
               const SizedBox(height: 24),
               mypage(ts: ts), // 내 글들 모음
               const SizedBox(height: 24),
-              totalboard(ts: ts), // 게시판 모음
+              totalboard(user: user, ts: ts), // 게시판 모음
               const SizedBox(height: 24),
               subboard(ts: ts), // 서브 게시판 모음
               const SizedBox(height: 24),
@@ -85,7 +93,9 @@ class mypage extends StatelessWidget {
 
 class totalboard extends StatelessWidget {
   final TextStyle ts;
+  final loginUser user;
   const totalboard({
+    required this.user,
     required this.ts,
     Key? key,
   }) : super(key: key);
@@ -113,7 +123,14 @@ class totalboard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 16),
-            Text('자유게시판', style: ts),
+            GestureDetector(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                    return FreeBoard(postValue: 'post-free-board', user: user);
+                  }));
+                },
+                child: Text('자유게시판', style: ts)),
             SizedBox(height: 16),
             Text('워드클라우드', style: ts),
             SizedBox(height: 16),

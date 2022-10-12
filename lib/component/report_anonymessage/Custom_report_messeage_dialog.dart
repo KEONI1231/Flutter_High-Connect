@@ -77,24 +77,40 @@ Future ReportMessage(context, bool isPost, String postValue, String postID,
 deletePost(context, bool isPost, String postID, String writerID,
     String postValue, String replID) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  Stream collectionStream = firestore.collection(postValue).doc(postID).collection('repl').snapshots();
-  collectionStream.delete();
-  if (isPost == true) { 
+  if (isPost == true) {
+    //게시글 삭제
+    final postData = await firestore.collection(postValue).doc(postID).get();
+    final replIdList = List<String>.from(postData['repl id collector'] ?? []);
+    print(replIdList.length);
+
+    for (int i = 1; i < replIdList.length; i++) {
+      await firestore
+          .collection(postValue)
+          .doc(postID)
+          .collection('repl')
+          .doc(replIdList[i])
+          .delete();
+    } //게시물 안의 모든 댓글 제거
     await firestore
         .collection(postValue)
         .doc(postID)
         .collection('repl')
-        .doc().delete();
+        .doc(postID)
+        .set({});
+    await firestore.collection(postValue).doc(postID).set({});
 
     for (int i = 0; i < 2; i++) {
       Navigator.pop(context);
     }
     DialogShow(context, '게시글 삭제를 완료했습니다.');
   } else if (isPost == false) {
+    //댓글 삭제
     await firestore
         .collection(postValue)
         .doc(postID)
-        .collection('repl').doc(replID).delete();
+        .collection('repl')
+        .doc(replID)
+        .delete();
     Navigator.pop(context);
     DialogShow(context, '게시글 삭제를 완료했습니다.');
   }

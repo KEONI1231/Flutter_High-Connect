@@ -96,6 +96,7 @@ class _AddPostState extends State<AddPost> {
   }
 
   void postfreeboard() async {
+
     if (widget.postValue == 'post-free-board') {
       if (formKey.currentState == null) {
         return;
@@ -125,6 +126,7 @@ class _AddPostState extends State<AddPost> {
           'report content' : '',
           'heart user': [''],
           'scrap user': [''],
+          'repl id collector' : [''],
         });
         await firestore
             .collection(widget.postValue)

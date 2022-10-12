@@ -120,6 +120,9 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
   }
 
   void addRepl() async {
+    DocumentSnapshot postData =
+        await firestore.collection(widget.postValue).doc(widget.postID).get();
+    final List replIdList = List<String>.from(postData['repl id collector'] ?? []);
     if (formKey.currentState == null) {
       return;
     }
@@ -143,11 +146,15 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
         'repl content': replContent.text,
         'repl id': widget.user.ID + widget.user.replCount.toString() + '!@#',
         'repl heart': 0,
-        'repl writer id' : widget.user.ID,
+        'repl writer id': widget.user.ID,
         'repled time': DateTime.now().toString(),
         'repl heartuser': [''],
         'is reported': false,
         'report content': ''
+      });
+      replIdList.add(widget.user.ID + widget.user.replCount.toString() + '!@#');
+      await firestore.collection(widget.postValue).doc(widget.postID).update({
+        'repl id collector': replIdList,
       });
       Navigator.pop(context);
       DialogShow(context, '댓글을 작성했습니다!');
@@ -286,9 +293,8 @@ class _ReplViewState extends State<ReplView> {
                                                 widget.postValue,
                                                 widget.postID,
                                                 '',
-                                              widget.writerID,
-                                              widget.user.ID
-                                            );
+                                                widget.writerID,
+                                                widget.user.ID);
                                             //post id, reported content 보내기
                                             //댓글은 어떻게 처리하지
                                             //댓글 신고인지 게시글 신고인지
@@ -320,22 +326,22 @@ class _ReplViewState extends State<ReplView> {
                     replHeart = (snapshot.data?.docs[index]['repl heart']);
                     isReported = (snapshot.data?.docs[index]['is reported']);
                     forPrintRepledTime = repledTime.substring(0, 16);
-                    replWriterID = (snapshot.data?.docs[index]['repl writer id']);
+                    replWriterID =
+                        (snapshot.data?.docs[index]['repl writer id']);
                   }
                   return EachRepl(
-                    postValue: widget.postValue,
-                    postID: widget.postID,
-                    contentStyle: contentStyle,
-                    titleStyle: titleStyle,
-                    forPrintRepledTime: forPrintRepledTime,
-                    isReported: isReported,
-                    replContent: replContent,
-                    repledTime: repledTime,
-                    replHeart: replHeart,
-                    replID: replID,
-                    user: widget.user,
-                    replWriterID : replWriterID
-                  );
+                      postValue: widget.postValue,
+                      postID: widget.postID,
+                      contentStyle: contentStyle,
+                      titleStyle: titleStyle,
+                      forPrintRepledTime: forPrintRepledTime,
+                      isReported: isReported,
+                      replContent: replContent,
+                      repledTime: repledTime,
+                      replHeart: replHeart,
+                      replID: replID,
+                      user: widget.user,
+                      replWriterID: replWriterID);
                 }),
               ),
             ],
@@ -409,14 +415,14 @@ class EachRepl extends StatefulWidget {
   final postValue;
   final loginUser user;
   final replWriterID;
-  const EachRepl({
-    required this.replWriterID,
-    required this.user,
-    required this.postID,
-    required this.postValue,
-    required this.titleStyle,
-    required this.contentStyle,
-    required this.replContent,
+  const EachRepl(
+      {required this.replWriterID,
+      required this.user,
+      required this.postID,
+      required this.postValue,
+      required this.titleStyle,
+      required this.contentStyle,
+      required this.replContent,
       required this.replID,
       required this.repledTime,
       required this.forPrintRepledTime,
@@ -478,8 +484,16 @@ class _EachReplState extends State<EachRepl> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              widget.isReported != true ? ReportMessage(context, false,widget.postValue,
-                                  widget.postID, widget.replID,widget.replWriterID,widget.user.ID) : (){}; //여기에 변수들을 넘겨서 처리해야함 .
+                              widget.isReported != true
+                                  ? ReportMessage(
+                                      context,
+                                      false,
+                                      widget.postValue,
+                                      widget.postID,
+                                      widget.replID,
+                                      widget.replWriterID,
+                                      widget.user.ID)
+                                  : () {}; //여기에 변수들을 넘겨서 처리해야함 .
                               // ex { post-value, post-id}
                             },
                             child: Icon(Icons.more_vert)),
@@ -495,14 +509,16 @@ class _EachReplState extends State<EachRepl> {
                       )
                     : Text(
                         '신고된 댓글입니다.',
-                        style: widget.contentStyle.copyWith(color: Colors.red[400]),
+                        style: widget.contentStyle
+                            .copyWith(color: Colors.red[400]),
                       ), //문제1) 어떤 댓글을 클릭하여 신고해도 마지막 댓글이 신고가 됨, 좋아요도 마찬가지 (모두 해결)
                 const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                        onTap: widget.isReported != true ? replHeartClick : (){},
+                        onTap:
+                            widget.isReported != true ? replHeartClick : () {},
                         child: Icon(Icons.favorite_border)),
                     Text(': ${widget.replHeart}개'),
                   ],
@@ -528,7 +544,7 @@ class _EachReplState extends State<EachRepl> {
         .doc(widget.replID)
         .get();
     final List heartUserList =
-    List<String>.from(postData['repl heartuser'] ?? []);
+        List<String>.from(postData['repl heartuser'] ?? []);
     if (heartUserList.contains(widget.user.ID) == false) {
       //좋아요를 달지 않은 상태일때
       heartUserList.add(widget.user.ID);

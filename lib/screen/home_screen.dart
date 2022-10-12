@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     user: widget.user,
                   ),
                   WordCloudBoard(),
-                  BoardScreen(),
+                  BoardScreen(user : widget.user),
                   Schedule(),
                   alarmscreen(),
                 ],
