@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/report_anonymessage/report_post_screen.dart';
 import 'package:per_pro/component/report_anonymessage/report_repl_screen.dart';
-
 import '../../constant/color.dart';
 
 Future ReportMessage(context, bool isPost, String postValue, String postID,
@@ -91,14 +88,7 @@ deletePost(context, bool isPost, String postID, String writerID,
           .doc(replIdList[i])
           .delete();
     } //게시물 안의 모든 댓글 제거
-    await firestore
-        .collection(postValue)
-        .doc(postID)
-        .collection('repl')
-        .doc(postID)
-        .set({});
-    await firestore.collection(postValue).doc(postID).set({});
-
+    await firestore.collection(postValue).doc(postID).delete();
     for (int i = 0; i < 2; i++) {
       Navigator.pop(context);
     }
