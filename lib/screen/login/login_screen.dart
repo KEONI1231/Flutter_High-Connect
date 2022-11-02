@@ -36,6 +36,7 @@ class _login_screenState extends State<login_screen> {
                     children: [
                       Image.asset('asset/img/login_screen_logo.png'),
                       login_part(),
+
                       bottom_part(
                         //텍스트 버튼을 모아둔 봄
                         onPressed_signup: onPressed_signup_btn, //회원가입 버튼
@@ -78,6 +79,8 @@ class login_part extends StatefulWidget {
 }
 
 class _login_partState extends State<login_part> {
+  bool alwaysLoginCheck = false;
+  final ts = TextStyle(color: PRIMARY_COLOR);
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -98,7 +101,21 @@ class _login_partState extends State<login_part> {
               Controller: _pwTextController,
               label: 'PASSWORD 입력'),
           SizedBox(
-            height: 40.0,
+            height: 16.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text('로그인 상태 유지',style: ts),
+              Switch(
+                value: alwaysLoginCheck,
+                onChanged: (value) {
+                  setState(() {
+                    alwaysLoginCheck = value;
+                  });
+                },
+              ),
+            ],
           ),
           ButtonTheme(
             //로그인 성공시 홈화면으로 가게 해주는 네비게이터 버튼. 버튼클릭시

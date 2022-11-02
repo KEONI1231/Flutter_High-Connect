@@ -20,5 +20,6 @@ Future DialogShow(context, String contentText) async {
             ),
           ],
         );
-      });
+      },
+  );
 }
