@@ -3,27 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:per_pro/component/add_post_screen.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/screen/boards/free_borad/free_board_detail.dart';
 import '../../../constant/color.dart';
+import 'board_detail.dart';
 
-class FreeBoard extends StatefulWidget {
+
+class BoardDefaultForm extends StatefulWidget {
   final String postValue;
-
   final loginUser user;
 
-  const FreeBoard({
+  const BoardDefaultForm({
     required this.postValue,
     required this.user,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FreeBoard> createState() => _FreeBoardState();
+  State<BoardDefaultForm> createState() => _BoardDefaultFormState();
 }
 
-class _FreeBoardState extends State<FreeBoard> {
+class _BoardDefaultFormState extends State<BoardDefaultForm> {
   @override
   Widget build(BuildContext context) {
+    var boardTitle = '';
     String title = '';
     String content = '';
     String postTime = '';
@@ -35,7 +36,15 @@ class _FreeBoardState extends State<FreeBoard> {
     int replCount = 0;
     int scrapCount = 0;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+    if(widget.postValue == 'post-free-board') {
+      boardTitle = '자유게시판';
+    }
+    else if(widget.postValue == 'post-love-board') {
+      boardTitle = '연애게시판';
+    }
+    else {
+      boardTitle = 'null';
+    }
     return Scaffold(
       backgroundColor: BRIGHT_COLOR,
       floatingActionButton: renderFloatingActionButton(),
@@ -43,7 +52,7 @@ class _FreeBoardState extends State<FreeBoard> {
       body: SafeArea(
         child: Column(
           children: [
-            CustomAppBar(titleText: '자유게시판'),
+            CustomAppBar(titleText: boardTitle),
             SizedBox(height: 8),
             SizedBox(height: 8),
             StreamBuilder<QuerySnapshot>(
@@ -72,6 +81,7 @@ class _FreeBoardState extends State<FreeBoard> {
                       writerID = snapshot.data?.docs[index]['writer id'];
                       isReported = snapshot.data?.docs[index]['is reported'];
                       return PostContents(
+                        boardTitle: boardTitle,
                         isReported: isReported,
                         writerID: writerID,
                         postTime: postTime,
@@ -102,7 +112,7 @@ class _FreeBoardState extends State<FreeBoard> {
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
-            return AddPost(postValue: 'post-free-board', user: widget.user);
+            return AddPost(postValue: widget.postValue, user: widget.user);
           }));
         },
         backgroundColor: PRIMARY_COLOR,
@@ -124,8 +134,9 @@ class PostContents extends StatelessWidget {
   final String postValue;
   final bool isReported;
   final loginUser user;
-
+  final String boardTitle;
   const PostContents({
+    required this.boardTitle,
     required this.isReported,
     required this.writerID,
     required this.postValue,
@@ -151,10 +162,12 @@ class PostContents extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return FreeBoardDetail(
+                  return BoardDetail(
+                    boardTitle: boardTitle,
+                    postValue: postValue,
+                    //게시판의 종류
                     user: user,
-                    postID: postID,
-                    //게시글의 id
+                    postID: postID, //게시글의 id
                     heartCount: heartCount,
                     replCount: replCount,
                     scrapCount: scrapCount,
@@ -162,8 +175,6 @@ class PostContents extends StatelessWidget {
                     content: content,
                     postTime: postTime,
                     school: school,
-                    postValue: postValue,
-                    //게시판의 종류
                     writerID: writerID,
                   );
                 },

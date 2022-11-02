@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-import 'package:per_pro/main.dart';
-import 'package:per_pro/screen/boards/free_borad/free_board.dart';
 
-import '../component/add_post_screen.dart';
+import '../component/board/board_default_form.dart';
+
 
 class BoardScreen extends StatelessWidget {
   final loginUser user;
@@ -127,7 +126,7 @@ class totalboard extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return FreeBoard(postValue: 'post-free-board', user: user);
+                    return BoardDefaultForm(postValue: 'post-free-board', user: user);
                   }));
                 },
                 child: Text('자유게시판', style: ts)),

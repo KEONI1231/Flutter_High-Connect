@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
-import 'package:per_pro/screen/boards/free_borad/free_board.dart';
+import '../component/board/board_default_form.dart';
 import '../component/meal_info.dart';
 import '../firebase_database_model/user.dart';
 import '../model/school_information_model.dart';
@@ -189,6 +189,7 @@ class HomeBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String latestFreePost = '';
+    String latestLovePost = '';
     final ContainerDecoration = BoxDecoration(
       color: Colors.white,
       //border: Border.all(width: 2, color: PRIMARY_COLOR),
@@ -236,12 +237,22 @@ class HomeBoard extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return FreeBoard(
+                        return BoardDefaultForm(
                           postValue: 'post-free-board',
                           user: user,
                         );
                       }));
                     },
+                    /*
+                      235 ~ 244. 터치 이벤트를 받아서 자유게시판으로 넘어가는 부분임.
+                      1. 240번째 줄에 postValue: 'post-free-board',
+                         파이어 베이스 컬렉션 이름을 넘겨줌.
+                         free_board.dart에서 쓰기위한 거임.
+
+                         연애 게시판이나 급식 게시판에선 post-meal-board 또는
+                         post-love-board등으로 작명할 수 있을 듯.
+
+                     */
                     child: Row(
                       children: [
                         Text('자유 게시판', style: ts),
@@ -276,20 +287,45 @@ class HomeBoard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              Row(
-                children: [
-                  Text('연애 게시판', style: ts),
-                  SizedBox(width: 24),
-                  Flexible(
-                    child: Text(
-                      '연애 게시판에 올라온 최근 게시물',
-                      style: tsContent,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('post-love-board')
+                      .orderBy('posted time', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    //latestFreePost = snapshot.data?.docs[0]['content'];
+                    snapshot.data!.docs.length != 0
+                        ? latestLovePost = snapshot.data?.docs[0]['content']
+                        : latestLovePost = '최근 게시물이 없습니다.';
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(color: PRIMARY_COLOR);
+                    }
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return BoardDefaultForm(
+                            postValue: 'post-love-board',
+                            user: user,
+                          );
+                        }));
+                      },
+                      child: Row(
+                        children: [
+                          Text('연애 게시판', style: ts),
+                          SizedBox(width: 24),
+                          Flexible(
+                            child: Text(
+                              latestLovePost,
+                              style: tsContent,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
               SizedBox(height: 16),
               Row(
                 children: [
@@ -308,11 +344,11 @@ class HomeBoard extends StatelessWidget {
               SizedBox(height: 16),
               Row(
                 children: [
-                  Text('연애 게시판', style: ts),
+                  Text('동아리 게시판', style: ts),
                   SizedBox(width: 24),
                   Flexible(
                     child: Text(
-                      '연애 게시판에 올라온 최근 게시물',
+                      '동아리 게시판에 올라온 최근 게시물',
                       style: tsContent,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

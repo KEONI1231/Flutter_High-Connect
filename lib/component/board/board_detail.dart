@@ -8,7 +8,7 @@ import 'package:per_pro/firebase_database_model/user.dart';
 import '../../../component/report_anonymessage/Custom_report_messeage_dialog.dart';
 import '../../../constant/color.dart';
 
-class FreeBoardDetail extends StatefulWidget {
+class BoardDetail extends StatefulWidget {
   final String postID;
   final String title;
   final String content;
@@ -20,8 +20,9 @@ class FreeBoardDetail extends StatefulWidget {
   final int scrapCount;
   final loginUser user;
   final String postValue;
-
-  const FreeBoardDetail({
+  final String boardTitle;
+  const BoardDetail({
+    required this.boardTitle,
     required this.writerID,
     required this.postValue,
     required this.postID,
@@ -37,10 +38,10 @@ class FreeBoardDetail extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<FreeBoardDetail> createState() => _FreeBoardDetailState();
+  State<BoardDetail> createState() => _BoardDetailState();
 }
 
-class _FreeBoardDetailState extends State<FreeBoardDetail> {
+class _BoardDetailState extends State<BoardDetail> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   bool? _isChecked = false;
   final TextEditingController replContent = TextEditingController();
@@ -61,6 +62,7 @@ class _FreeBoardDetailState extends State<FreeBoardDetail> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ReplView(
+              boardTitle: widget.boardTitle,
               postValue: widget.postValue,
               user: widget.user,
               postTime: widget.postTime,
@@ -174,7 +176,9 @@ class ReplView extends StatefulWidget {
   final String postID;
   final String postValue;
   final String writerID;
+  final String boardTitle;
   const ReplView({
+    required this.boardTitle,
     required this.writerID,
     required this.postID,
     required this.postValue,
@@ -202,8 +206,10 @@ class _ReplViewState extends State<ReplView> {
   var replHeart;
   var isReported;
   var replWriterID;
+
   @override
   Widget build(BuildContext context) {
+    var boardTitle = widget.boardTitle;
     final titleStyle = TextStyle(color: PRIMARY_COLOR, fontSize: 20);
     final contentStyle = TextStyle(color: Colors.grey[600], fontSize: 14);
     return StreamBuilder<QuerySnapshot>(
@@ -221,10 +227,10 @@ class _ReplViewState extends State<ReplView> {
         return Expanded(
           child: CustomScrollView(
             slivers: [
-              const SliverAppBar(
+              SliverAppBar(
                 centerTitle: true,
                 backgroundColor: PRIMARY_COLOR,
-                title: Text('자유게시판'),
+                title: Text(widget.boardTitle),
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
