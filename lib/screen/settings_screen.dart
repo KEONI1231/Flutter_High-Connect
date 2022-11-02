@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:per_pro/component/alert_dialog.dart';
 import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circle_button.dart';
+import 'package:per_pro/constant/data.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
 import 'package:per_pro/screen/setting/ProfileCard/certified_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
@@ -11,6 +13,7 @@ import 'package:per_pro/screen/setting/etc_screen/user_delete_beforlogin_screen.
 import 'package:per_pro/screen/setting/personal_account_setting/change_email_beforlogin.dart';
 import 'package:per_pro/screen/setting/personal_account_setting/change_nickname_beforeLogin.dart';
 import 'package:per_pro/screen/setting/personal_account_setting/change_pw_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constant/color.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -115,7 +118,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height:8),
+                      const SizedBox(height: 8),
                       Text(
                         '이름 : ${widget.user.realName}',
                         style: ts.copyWith(fontSize: 15),
@@ -139,7 +142,10 @@ class _ProfileCardState extends State<ProfileCard> {
                     onPressed: () {
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return certified_screen(user: widget.user, ContainerDecoration:widget.ContainerDecoration,);
+                        return certified_screen(
+                          user: widget.user,
+                          ContainerDecoration: widget.ContainerDecoration,
+                        );
                       }));
                     },
                     child: Text(
@@ -213,7 +219,8 @@ class PersonalAccountSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return certified_screen(user: user,ContainerDecoration: ContainerDecoration);
+                    return certified_screen(
+                        user: user, ContainerDecoration: ContainerDecoration);
                   }));
                 },
                 child: Text(
@@ -269,14 +276,18 @@ class PersonalAccountSetting extends StatelessWidget {
   }
 }
 
-class AppSetting extends StatelessWidget {
+class AppSetting extends StatefulWidget {
   final BoxDecoration ContainerDecoration;
-
   const AppSetting({
     required this.ContainerDecoration,
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<AppSetting> createState() => _AppSettingState();
+}
+
+class _AppSettingState extends State<AppSetting> {
   @override
   Widget build(BuildContext context) {
     final ts = TextStyle(
@@ -285,7 +296,7 @@ class AppSetting extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
       child: Container(
         width: MediaQuery.of(context).size.width / 1.1,
-        decoration: ContainerDecoration,
+        decoration: widget.ContainerDecoration,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
           child: Column(
@@ -305,12 +316,7 @@ class AppSetting extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return signUp();
-                  }));
-                },
+                onTap: darkOnOff,
                 child: Text(
                   '다크모드 on / off',
                   style: ts,
@@ -334,6 +340,24 @@ class AppSetting extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void darkOnOff() async {
+    bool isDarkOn = false;
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    try {
+      isDarkOn = sp.getBool(darkModeState)!;
+      if (isDarkOn == true) {
+        sp.setBool(darkModeState, false);
+        DialogShow(context, '다크 모드가 꺼졌습니다.');
+      } else if (isDarkOn == false) {
+        sp.setBool(darkModeState, true);
+        DialogShow(context, '다크 모드가 켜졌습니다.');
+      }
+    } catch (e) {
+      sp.setBool(darkModeState, true);
+      DialogShow(context, '다크 모드가 켜졌습니다.');
+    }
   }
 }
 
@@ -366,7 +390,7 @@ class EtcSetting extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
-                    return DeleteAccount(user : user);
+                    return DeleteAccount(user: user);
                   }));
                 },
                 child: Text(
@@ -390,10 +414,10 @@ class EtcSetting extends StatelessWidget {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (BuildContext context) {
                     return SendMail(
-
-                        user: user, ContainerDecoration: ContainerDecoration,
-                              appBarText: '문의하기',
-                        );
+                      user: user,
+                      ContainerDecoration: ContainerDecoration,
+                      appBarText: '문의하기',
+                    );
                   }));
                 },
                 child: Row(

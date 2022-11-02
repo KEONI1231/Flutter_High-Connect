@@ -1,15 +1,22 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../component/alert_dialog.dart';
+import '../component/circular_progress_indicator_dialog.dart';
 import '../constant/color.dart';
+import '../constant/data.dart';
+import '../firebase_database_model/user.dart';
+import 'home_screen.dart';
 import 'login/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
-
 }
 
 class _MyAppState extends State<MyApp> {
@@ -19,9 +26,9 @@ class _MyAppState extends State<MyApp> {
     initializeFlutterFire();
     super.initState();
   }
-  void initializeFlutterFire() async {
 
-      await Firebase.initializeApp();
+  void initializeFlutterFire() async {
+    await Firebase.initializeApp();
   }
 
   //에뮬레이터 실행시에 처음 보여줄 화면
@@ -37,16 +44,94 @@ class _MyAppState extends State<MyApp> {
             Image.asset('asset/img/logo.png'), //고등어 이미지.
             intro_bottom(), //각종 기본적인 텍스트.
             ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return login_screen(); //로그인 화면으로 이동.
-                      },
-                    ),
-                  );
-                },
-                child: Text('시작하기'),
+              onPressed: () async {
+                String stateid;
+                String statepw;
+                bool login;
+                SharedPreferences sp = await SharedPreferences.getInstance();
+                try {
+                  stateid = sp.getString(userId)!;
+                  statepw = sp.getString(userPassword)!;
+                  login = sp.getBool(loginState)!;
+                  if (login == true) {
+                    FirebaseFirestore firestore = FirebaseFirestore.instance;
+                    String id;
+                    String pw;
+                    List<String> anonyMessage = [];
+                    String nickName;
+                    String realName;
+                    String mySchool;
+                    String email;
+                    String phoneNumber;
+                    String eduOfficeCode;
+                    int boolAdmin;
+                    int boolCertificated;
+                    int postCount;
+                    int replCount;
+                    String createdTime;
+                    DocumentSnapshot userData;
+                    try {
+                      // try catch.
+                      CustomCircular(context, '로그인 중...');
+                      userData =
+                      await firestore.collection('users').doc(stateid).get();
+                      id = userData['id'];
+                      pw = userData['pw'];
+                      if (id == stateid && pw == statepw) {
+                        nickName = userData['nick name'];
+                        realName = userData['real name'];
+                        mySchool = userData['my school'];
+                        email = userData['email'];
+                        phoneNumber = userData['phone number'];
+                        eduOfficeCode = userData['edu office code'];
+                        boolAdmin = userData['bool Admin'];
+                        boolCertificated = userData['bool certificated'];
+                        createdTime = userData['created Time'];
+                        postCount = userData['post count'];
+                        replCount = userData['repl count'];
+                        anonyMessage.addAll((List.from(userData['anony message'])));
+                        loginUser user = new loginUser(
+                          id,
+                          nickName,
+                          pw,
+                          realName,
+                          mySchool,
+                          email,
+                          phoneNumber,
+                          eduOfficeCode,
+                          anonyMessage,
+                          boolAdmin,
+                          boolCertificated,
+                          createdTime,
+                          postCount,
+                          replCount,
+                        );
+                        Navigator.pop(context);
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(builder: (BuildContext context) {
+                          return HomeScreen(user: user);
+                        }));
+                      } else {
+                        Navigator.pop(context);
+                        DialogShow(context, '회원정보가 잘못되었습니다.');
+                      }
+                    } catch (e) {
+                      Navigator.pop(context);
+                      //DialogShow(context, '시스템 에러');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) {
+                            return login_screen(); //로그인 화면으로 이동.
+                          },
+                        ),
+                      );
+                    }
+                  }
+                } catch (e) {}
+
+
+              },
+              child: Text('시작하기'),
             )
           ],
         ),
