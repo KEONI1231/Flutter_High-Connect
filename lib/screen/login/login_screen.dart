@@ -14,14 +14,14 @@ import '../../component/unFocus.dart';
 import '../../constant/data.dart';
 import '../home_screen.dart';
 
-class login_screen extends StatefulWidget {
-  const login_screen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<login_screen> createState() => _login_screenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _login_screenState extends State<login_screen> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +37,8 @@ class _login_screenState extends State<login_screen> {
                   child: Column(
                     children: [
                       Image.asset('asset/img/login_screen_logo.png'),
-                      login_part(),
-                      bottom_part(
+                      LoginPart(),
+                      BottomPart(
                         //텍스트 버튼을 모아둔 봄
                         onPressed_signup: onPressed_signup_btn, //회원가입 버튼
                         onPressed_findaccount:
@@ -72,18 +72,19 @@ class _login_screenState extends State<login_screen> {
   }
 }
 
-class login_part extends StatefulWidget {
-  const login_part({Key? key}) : super(key: key);
+class LoginPart extends StatefulWidget {
+  const LoginPart({Key? key}) : super(key: key);
 
   @override
-  State<login_part> createState() => _login_partState();
+  State<LoginPart> createState() => _LoginPartState();
 }
 
-class _login_partState extends State<login_part> {
+class _LoginPartState extends State<LoginPart> {
   bool alwaysLoginCheck = false;
   final ts = TextStyle(color: PRIMARY_COLOR);
   final TextEditingController _idTextController = TextEditingController();
   final TextEditingController _pwTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -108,7 +109,7 @@ class _login_partState extends State<login_part> {
               Text('로그인 상태 유지', style: ts),
               Switch(
                 value: alwaysLoginCheck,
-                onChanged: (value) async{
+                onChanged: (value) async {
                   SharedPreferences sp = await SharedPreferences.getInstance();
                   setState(() {
                     alwaysLoginCheck = value;
@@ -124,19 +125,20 @@ class _login_partState extends State<login_part> {
             minWidth: 80.0,
             height: 30.0,
             child: ElevatedButton(
-                //로그인 시도 버튼.
-                style: ElevatedButton.styleFrom(
-                  primary: PRIMARY_COLOR,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0), //버튼모양 둥글게.
-                  ),
+              //로그인 시도 버튼.
+              style: ElevatedButton.styleFrom(
+                primary: PRIMARY_COLOR,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0), //버튼모양 둥글게.
                 ),
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                  size: 35.0,
-                ),
-                onPressed: tryLogin),
+              ),
+              child: Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+                size: 35.0,
+              ),
+              onPressed: tryLogin,
+            ),
           ),
         ],
       ),
@@ -144,8 +146,10 @@ class _login_partState extends State<login_part> {
   }
 
   void tryLogin() async {
-
     FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String stateid;
+    String statepw;
+    bool login;
     String id;
     String pw;
     List<String> anonyMessage = [];
@@ -169,6 +173,14 @@ class _login_partState extends State<login_part> {
       id = userData['id'];
       pw = userData['pw'];
       if (id == _idTextController.text && pw == _pwTextController.text) {
+        if (alwaysLoginCheck == true) {
+          SharedPreferences sp = await SharedPreferences.getInstance();
+          try {
+            sp.setString(userId, _idTextController.text)!;
+            sp.setString(userPassword, _pwTextController.text)!;
+            sp.setBool(loginState, true)!;
+          } catch (e) {}
+        }
         nickName = userData['nick name'];
         realName = userData['real name'];
         mySchool = userData['my school'];
@@ -213,11 +225,11 @@ class _login_partState extends State<login_part> {
   }
 }
 
-class bottom_part extends StatelessWidget {
+class BottomPart extends StatelessWidget {
   final VoidCallback onPressed_signup;
   final VoidCallback onPressed_findaccount;
 
-  const bottom_part({
+  const BottomPart({
     required this.onPressed_signup,
     required this.onPressed_findaccount,
     Key? key,

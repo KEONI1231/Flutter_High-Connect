@@ -5,6 +5,7 @@ import 'package:per_pro/component/appbar.dart';
 import 'package:per_pro/component/circle_button.dart';
 import 'package:per_pro/constant/data.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
+import 'package:per_pro/screen/login/login_screen.dart';
 import 'package:per_pro/screen/setting/ProfileCard/certified_screen.dart';
 import 'package:per_pro/screen/login/signup_screen.dart';
 import 'package:per_pro/screen/setting/ProfileCard/mypost.dart';
@@ -278,6 +279,7 @@ class PersonalAccountSetting extends StatelessWidget {
 
 class AppSetting extends StatefulWidget {
   final BoxDecoration ContainerDecoration;
+
   const AppSetting({
     required this.ContainerDecoration,
     Key? key,
@@ -401,7 +403,7 @@ class EtcSetting extends StatelessWidget {
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
-                  _onPowerKey(context, ts);
+                  tryLogout(context, ts);
                 },
                 child: Text(
                   '로그아웃',
@@ -438,19 +440,30 @@ class EtcSetting extends StatelessWidget {
       ),
     );
   }
-
-  Future _onPowerKey(context, ts) async {
+  Future tryLogout(context, ts) async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: BRIGHT_COLOR,
           title: Text('알림', style: ts),
-          content: Text('종료하시겠습니까?', style: ts),
+          content: Text('로그아웃 하시겠습니까?', style: ts),
           actions: [
             TextButton(
               onPressed: () {
-                SystemChannels.platform.invokeListMethod('SystemNavigator.pop');
+                try {
+                  sp.setString(userId, '!')!;
+                  sp.setString(userPassword, '!')!;
+                  sp.setBool(loginState, false)!;
+                } catch (e) {}
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute( //페이지 스택 제거
+                    builder: (BuildContext context) =>
+                        LoginScreen()), (route) => false);
+
+
+
               },
               child: Text('예', style: ts),
             ),
