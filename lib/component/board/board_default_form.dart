@@ -42,6 +42,9 @@ class _BoardDefaultFormState extends State<BoardDefaultForm> {
     else if(widget.postValue == 'post-love-board') {
       boardTitle = '연애게시판';
     }
+    else if(widget.postValue == 'post-meal-board') {
+      boardTitle = '급식게시판';
+    }
     else {
       boardTitle = 'null';
     }

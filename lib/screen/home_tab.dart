@@ -327,20 +327,45 @@ class HomeBoard extends StatelessWidget {
                     );
                   }),
               SizedBox(height: 16),
-              Row(
-                children: [
-                  Text('급식 게시판', style: ts),
-                  SizedBox(width: 24),
-                  Flexible(
-                    child: Text(
-                      '급식 게시판에 올라온 최근 게시물',
-                      style: tsContent,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+              StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection('post-meal-board')
+                      .orderBy('posted time', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    //latestFreePost = snapshot.data?.docs[0]['content'];
+                    snapshot.data!.docs.length != 0
+                        ? latestLovePost = snapshot.data?.docs[0]['content']
+                        : latestLovePost = '최근 게시물이 없습니다.';
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(color: PRIMARY_COLOR);
+                    }
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                              return BoardDefaultForm(
+                                postValue: 'post-meal-board',
+                                user: user,
+                              );
+                            }));
+                      },
+                      child: Row(
+                        children: [
+                          Text('급식 게시판', style: ts),
+                          SizedBox(width: 24),
+                          Flexible(
+                            child: Text(
+                              latestLovePost,
+                              style: tsContent,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
               SizedBox(height: 16),
               Row(
                 children: [
