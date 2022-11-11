@@ -10,6 +10,7 @@ import 'package:per_pro/component/circular_progress_indicator_dialog.dart';
 import 'package:per_pro/component/unFocus.dart';
 import 'package:per_pro/constant/data.dart';
 import 'package:per_pro/model/school_information_model.dart';
+import 'package:per_pro/screen/login/search_school.dart';
 import '../../component/custom_button.dart';
 import '../../constant/color.dart';
 
@@ -34,13 +35,50 @@ class _signUpState extends State<signUp> {
   FocusNode focusNode = FocusNode();
   String _searchText = '';
 
-  _signUpState(){
-    _schoolTextController.addListener(() {
-      setState(() {
-        _searchText = _schoolTextController.text;
-      });
-    });
-  }
+  // _signUpState(){
+  //   _schoolTextController.addListener(() {
+  //     setState(() {
+  //       _searchText = _schoolTextController.text;
+  //     });
+  //   });
+  // }
+
+  // Widget _buildBody(BuildContext context){
+  //   return StreamBuilder<QuerySnapshot>(
+  //     stream: fetchData(),
+  //     builder: (context, snapshot){
+  //       if(!snapshot.hasData) return LinearProgressIndicator();
+  //       return _buildList(context, snapshot.data!.docs);
+  //     },
+  //   );
+  // }
+  //
+  // Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot){
+  //   List<DocumentSnapshot> _searchResult = [];
+  //   for(DocumentSnapshot d in snapshot){
+  //     if(d.data.toString().contains(_searchText)){
+  //       _searchResult.add(d);
+  //     }
+  //   }
+  //   return ListView.builder(
+  //     itemCount: _searchResult.length,
+  //     itemBuilder: (context, index){
+  //       return _buildListItem(context, _searchResult[index]);
+  //     }
+  //   );
+  // }
+  //
+  // Widget _buildListItem(BuildContext context, DocumentSnapshot data){
+  //   final school = fetchData().fromSnapshot(data);
+  //   return ListTile(
+  //     title: Text(school.schoolName),
+  //     onTap: (){
+  //       setState(() {
+  //         _schoolTextController.text = school.schoolName;
+  //       });
+  //     },
+  //   );
+  // }
 
 
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
@@ -163,6 +201,8 @@ class _signUpState extends State<signUp> {
       schoolTotalInformation[i].SCHUL_NM];
 
     print(schoolNames.length);
+
+    // return schoolNames;
   }
 
   @override
@@ -235,45 +275,20 @@ class _signUpState extends State<signUp> {
                           textInputType: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
-                        Container(
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 6,
-                                child: TextFormField(
-                                  focusNode: focusNode,
-                                  autofocus: true,
-                                  controller: _schoolTextController,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.grey[200],
-                                    filled: true,
-                                    //텍스트 필드를 통일화 하기위한 데코레이션,
-                                    //text 필드 데코레이션 정의 변수.
-                                    border: const OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(8.0),
-                                      ),
-                                    ),
-                                    prefixIcon: Icon(Icons.search, color: Colors.black,),
-                                    suffixIcon: focusNode.hasFocus ? IconButton(
-                                      icon: Icon(Icons.cancel,),
-                                      onPressed: () {
-                                        setState(() {
-                                          _schoolTextController.clear();
-                                          _searchText = '';
-                                        });
-                                      },
-                                    ) : Container(),
-                                    hintText: '학교를 검색해주세요.',
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (BuildContext context) {
+                              return SearchSchoolScreen();
+                            }));
+                          },
+                          child: CustomTextField(
+                            label: '학교검색', // 학교인증용
+                            Controller: _schoolTextController,
+                            textInputType: TextInputType.text,
                           ),
                         ),
+                        // _buildBody(context),
                         const SizedBox(height: 16),
                         DropdownButtonFormField<String>(
                           validator: (String? val) {
