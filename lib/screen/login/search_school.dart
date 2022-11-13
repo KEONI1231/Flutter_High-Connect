@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../component/unFocus.dart';
+
 class SearchSchoolScreen extends StatefulWidget {
   const SearchSchoolScreen({Key? key}) : super(key: key);
 
@@ -24,10 +26,16 @@ class _SearchSchoolScreenState extends State<SearchSchoolScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          Expanded(
+    return Scaffold(
+      body: GestureDetector(
+        onTap: unFocused,
+        child: SafeArea(
+          child: Column(
+            children: [
+          Container(
+          child: Row(
+          children: [
+            Expanded(
             flex: 6,
             child: TextFormField(
               focusNode: focusNode,
@@ -60,7 +68,12 @@ class _SearchSchoolScreenState extends State<SearchSchoolScreen> {
               ),
             ),
           )
-        ],
+          ],
+    ),
+    ),
+            ]
+          ),
+        ),
       ),
     );
   }
