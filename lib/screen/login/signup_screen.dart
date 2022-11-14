@@ -31,7 +31,8 @@ class _signUpState extends State<signUp> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _nicknameTextController = TextEditingController();
   final TextEditingController _realNameTextController = TextEditingController();
-  final TextEditingController _phoneNumberTextController = TextEditingController();
+  final TextEditingController _phoneNumberTextController =
+      TextEditingController();
   FocusNode focusNode = FocusNode();
   String _searchText = '';
 
@@ -79,7 +80,6 @@ class _signUpState extends State<signUp> {
   //     },
   //   );
   // }
-
 
   //텍스트폼필드를 컨트롤 하기위한 변수. 강의에 나오니 알아서 찾아보슈
   final GlobalKey<FormState> formKey = GlobalKey();
@@ -192,13 +192,16 @@ class _signUpState extends State<signUp> {
     Map<String, String> schoolNameToCodeMap = {};
 
     for (int i = 0; i < schoolTotalInformation.length; i++) {
-      schoolNameToCodeMap[schoolTotalInformation[i].SCHUL_NM] = schoolTotalInformation[i].SD_SCHUL_CODE;
+      schoolNameToCodeMap[schoolTotalInformation[i].SCHUL_NM] =
+          schoolTotalInformation[i].SD_SCHUL_CODE;
     }
 
     print(schoolNameToCodeMap);
 
-    List<String> schoolNames = [for (int i = 0; i < schoolTotalInformation.length; i++)
-      schoolTotalInformation[i].SCHUL_NM];
+    List<String> schoolNames = [
+      for (int i = 0; i < schoolTotalInformation.length; i++)
+        schoolTotalInformation[i].SCHUL_NM
+    ];
 
     print(schoolNames.length);
 
@@ -275,18 +278,10 @@ class _signUpState extends State<signUp> {
                           textInputType: TextInputType.text,
                         ),
                         const SizedBox(height: 16),
-                        GestureDetector(
-                          onTap: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(builder: (BuildContext context) {
-                              return SearchSchoolScreen();
-                            }));
-                          },
-                          child: CustomTextField(
-                            label: '학교검색', // 학교인증용
-                            Controller: _schoolTextController,
-                            textInputType: TextInputType.text,
-                          ),
+                        SchoolSearchTextFormField(
+                          label: '학교',
+                          Controller: _schoolTextController,
+                          textInputType: TextInputType.text,
                         ),
                         // _buildBody(context),
                         const SizedBox(height: 16),
@@ -380,10 +375,10 @@ class _signUpState extends State<signUp> {
                         ),
                         const Text('● 이부분은 약관'),
                         CustomButton(
-                          text: '',
-                          istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
-                          onPressed: onSignUpPressed//계정생성 버튼.
-                        ),
+                            text: '',
+                            istext: false, //text 가 false 면 버튼안에 내용이 화살표아이콘
+                            onPressed: onSignUpPressed //계정생성 버튼.
+                            ),
                         const SizedBox(height: 50),
                       ],
                     ),
@@ -536,5 +531,62 @@ class _signUpState extends State<signUp> {
         DialogShow(context, '이미 가입한 이메일이거나 서버 에러가 발생하였습니다.');
       }*/
     }
+  }
+}
+
+class SchoolSearchTextFormField extends StatelessWidget {
+  final String label;
+  final TextEditingController Controller;
+  final TextInputType textInputType;
+  const SchoolSearchTextFormField({
+    required this.Controller,
+    required this.label,
+    required this.textInputType,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchSchoolScreen(),
+          ),
+        );
+      },
+      controller: Controller,
+      decoration: InputDecoration(
+        fillColor: Colors.grey[200],
+        filled: true,
+        //텍스트 필드를 통일화 하기위한 데코레이션,
+        //text 필드 데코레이션 정의 변수.
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+        ),
+        labelText: label,
+        hintText: '학교를 검색해주세요.',
+        suffixIcon: IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SearchSchoolScreen(),
+              ),
+            );
+          },
+        ),
+      ),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return '학교를 입력해주세요.';
+        }
+        return null;
+      },
+    );
   }
 }
