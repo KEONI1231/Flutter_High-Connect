@@ -241,6 +241,7 @@ class PostContents extends StatelessWidget {
               ),
             )
           ],
-        ));
+        ),
+    );
   }
 }

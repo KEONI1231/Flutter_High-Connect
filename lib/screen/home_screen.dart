@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:per_pro/constant/color.dart';
 import 'package:per_pro/firebase_database_model/user.dart';
-
 import 'package:per_pro/model/school_information_model.dart';
 import 'package:per_pro/screen/board_screen.dart';
 import 'package:per_pro/screen/home_tab.dart';
@@ -11,11 +10,11 @@ import 'package:per_pro/screen/settings_screen.dart';
 import 'package:per_pro/screen/boards/word_cloud_board.dart';
 import 'package:per_pro/screen/schedule_screen.dart';
 import '../constant/data.dart';
-import '../model/school_information_model.dart';
 import 'boards/alarm_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final loginUser user;
+
   const HomeScreen({
     required this.user,
     Key? key,
@@ -32,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final date = DateTime.now().year.toString() +
         DateTime.now().month.toString().padLeft(2, '0');
     print(date);
-    final response= await Dio().get(
+    final response = await Dio().get(
       'https://open.neis.go.kr/hub/mealServiceDietInfo',
       queryParameters: {
         'serviceKey': serviceKey,
@@ -44,21 +43,14 @@ class _HomeScreenState extends State<HomeScreen> {
         'MLSV_YMD': date,
       },
     );
-    //print(response);
     Map<String, dynamic> meal = jsonDecode(response.data);
 
     return meal['mealServiceDietInfo'][1]['row']
         .map<MealModel>(
           (item) => MealModel.fromJson(json: item),
-    )
+        )
         .toList();
   }
-
-  /*Future<List<MealModel>> fetchData2() async {
-    final mealModels = await fetchData();
-
-    return mealModels;
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           backgroundColor: BRIGHT_COLOR,
           appBar: AppBar(
-            title: Text('Navi'),
             centerTitle: true,
             backgroundColor: PRIMARY_COLOR,
             actions: [
@@ -98,11 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: CircularProgressIndicator(),
                 );
               }
-
               List<MealModel> meals = snapshot.data!;
               MealModel recentMeal = meals[0];
-              //print(recentMeal.DDISH_NM);
-
               return TabBarView(
                 children: [
                   HomeTab(
@@ -110,14 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     user: widget.user,
                   ),
                   WordCloudBoard(),
-                  BoardScreen(user : widget.user),
+                  BoardScreen(user: widget.user),
                   Schedule(),
                   alarmscreen(),
                 ],
               );
             },
           ),
-          extendBodyBehindAppBar: true, // add this line
+          extendBodyBehindAppBar: true,
+          // add this line
           bottomNavigationBar: Container(
             color: BRIGHT_COLOR, //색상
             child: Container(

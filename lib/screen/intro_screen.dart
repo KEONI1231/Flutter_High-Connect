@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,101 +44,118 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
               onPressed: tryLogin,
               child: Text('시작하기'),
-            )
+            ),
+            /*ElevatedButton(
+              onPressed: test,
+
+              child: Text('Dio Test'),
+            )*/
           ],
         ),
       ),
     );
   }
 
-  void tryLogin() async {
-    String stateid;
-    String statepw;
-    bool login;
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    try {
-      stateid = sp.getString(userId)!;
-      statepw = sp.getString(userPassword)!;
-      login = sp.getBool(loginState)!;
-      print("=========================");
-      print(stateid);
-      print(statepw);
-      print(login);
-      print("=========================");
-      if (login == true) {
-        FirebaseFirestore firestore = FirebaseFirestore.instance;
-        String id;
-        String pw;
-        List<String> anonyMessage = [];
-        String nickName;
-        String realName;
-        String mySchool;
-        String email;
-        String phoneNumber;
-        String eduOfficeCode;
-        int boolAdmin;
-        int boolCertificated;
-        int postCount;
-        int replCount;
-        String createdTime;
-        DocumentSnapshot userData;
-        try {
-          // try catch.
-          CustomCircular(context, '로그인 중...');
-          userData = await firestore.collection('users').doc(stateid).get();
-          id = userData['id'];
-          pw = userData['pw'];
-          if (id == stateid && pw == statepw) {
-            nickName = userData['nick name'];
-            realName = userData['real name'];
-            mySchool = userData['my school'];
-            email = userData['email'];
-            phoneNumber = userData['phone number'];
-            eduOfficeCode = userData['edu office code'];
-            boolAdmin = userData['bool Admin'];
-            boolCertificated = userData['bool certificated'];
-            createdTime = userData['created Time'];
-            postCount = userData['post count'];
-            replCount = userData['repl count'];
-            anonyMessage.addAll((List.from(userData['anony message'])));
-            loginUser user = new loginUser(
-              id,
-              nickName,
-              pw,
-              realName,
-              mySchool,
-              email,
-              phoneNumber,
-              eduOfficeCode,
-              anonyMessage,
-              boolAdmin,
-              boolCertificated,
-              createdTime,
-              postCount,
-              replCount,
-            );
-            Navigator.pop(context);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) {
-              return HomeScreen(user: user);
-            }));
-          } else {
-            Navigator.pop(context);
-            DialogShow(context, '회원정보가 잘못되었습니다.');
+/*
+   test() async {
+
+    Dio dio = new Dio();
+
+
+      Response response = await dio.post(
+          'http://127.0.0.1:3000/api/create',
+          data: {
+            'id': 'value1',
+            'name': 'value2',
+            'email': 'value3'
           }
-        } catch (e) {
-          Navigator.pop(context);
-          //DialogShow(context, '시스템 에러');
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return LoginScreen(); //로그인 화면으로 이동.
-              },
-            ),
+      );
+      print("Asdf");
+      print("sdaf");
+      print(response.data);
+  }
+*/
+
+
+
+void tryLogin() async {
+  String stateid;
+  String statepw;
+  bool login;
+  SharedPreferences sp = await SharedPreferences.getInstance();
+  try {
+    stateid = sp.getString(userId)!;
+    statepw = sp.getString(userPassword)!;
+    login = sp.getBool(loginState)!;
+    print("=========================");
+    print(stateid);
+    print(statepw);
+    print(login);
+    print("=========================");
+    if (login == true) {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      String id;
+      String pw;
+      List<String> anonyMessage = [];
+      String nickName;
+      String realName;
+      String mySchool;
+      String email;
+      String phoneNumber;
+      String eduOfficeCode;
+      int boolAdmin;
+      int boolCertificated;
+      int postCount;
+      int replCount;
+      String createdTime;
+      DocumentSnapshot userData;
+      try {
+        // try catch.
+        CustomCircular(context, '로그인 중...');
+        userData = await firestore.collection('users').doc(stateid).get();
+        id = userData['id'];
+        pw = userData['pw'];
+        if (id == stateid && pw == statepw) {
+          nickName = userData['nick name'];
+          realName = userData['real name'];
+          mySchool = userData['my school'];
+          email = userData['email'];
+          phoneNumber = userData['phone number'];
+          eduOfficeCode = userData['edu office code'];
+          boolAdmin = userData['bool Admin'];
+          boolCertificated = userData['bool certificated'];
+          createdTime = userData['created Time'];
+          postCount = userData['post count'];
+          replCount = userData['repl count'];
+          anonyMessage.addAll((List.from(userData['anony message'])));
+          loginUser user = new loginUser(
+            id,
+            nickName,
+            pw,
+            realName,
+            mySchool,
+            email,
+            phoneNumber,
+            eduOfficeCode,
+            anonyMessage,
+            boolAdmin,
+            boolCertificated,
+            createdTime,
+            postCount,
+            replCount,
           );
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return HomeScreen(user: user);
+          }));
+        } else {
+          Navigator.pop(context);
+          DialogShow(context, '회원정보가 잘못되었습니다.');
         }
-      }
-      else {
+      } catch (e) {
+        Navigator.pop(context);
+        //DialogShow(context, '시스템 에러');
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
@@ -149,8 +164,8 @@ class _MyAppState extends State<MyApp> {
           ),
         );
       }
-
-    } catch (e) {
+    }
+    else {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (BuildContext context) {
@@ -159,8 +174,16 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     }
+  } catch (e) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return LoginScreen(); //로그인 화면으로 이동.
+        },
+      ),
+    );
   }
-}
+}}
 
 class intro_bottom extends StatefulWidget {
   const intro_bottom({Key? key}) : super(key: key);

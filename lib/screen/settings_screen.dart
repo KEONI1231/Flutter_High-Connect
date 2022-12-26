@@ -156,7 +156,6 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                 ],
               ),
-
               SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -317,6 +316,7 @@ class _AppSettingState extends State<AppSetting> {
                 ],
               ),
               const SizedBox(height: 16),
+              /*
               GestureDetector(
                 onTap: darkOnOff,
                 child: Text(
@@ -324,6 +324,7 @@ class _AppSettingState extends State<AppSetting> {
                   style: ts,
                 ),
               ),
+              */
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
@@ -461,9 +462,6 @@ class EtcSetting extends StatelessWidget {
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute( //페이지 스택 제거
                     builder: (BuildContext context) =>
                         LoginScreen()), (route) => false);
-
-
-
               },
               child: Text('예', style: ts),
             ),

@@ -135,7 +135,7 @@ class _HomeWordCloud extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          Text(
+          const Text(
             '<오늘의 워드클라우드>',
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -157,7 +157,7 @@ class _HomeWordCloud extends StatelessWidget {
             onPressed: () {
               DefaultTabController.of(context)?.animateTo(1);
             },
-            child: Text('의견 반영하기'),
+            child: const Text('의견 반영하기'),
           ),
         ],
       ),
@@ -172,14 +172,13 @@ class _HomeBannerAd extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {},
-      child: Text('배너 광고'),
+      child: const Text('배너 광고'),
     );
   }
 }
 
 class HomeBoard extends StatelessWidget {
   final loginUser user;
-
   const HomeBoard({
     required this.user,
     Key? key,
